@@ -29,12 +29,10 @@ In this code, the main method begins by creating an instance of MyClass called o
 
 #
 #### Before Calling "modifyObject"
-![alt text](img/6.1.png)
 
 The main method initializes obj in the heap. The string "Object1" is stored in the String Pool, and obj.name references it.
 #
 #### After Calling "modifyObject"
-![alt text](img/6.2.png)
 
 After modifyObject: The modifyObject method changes obj.value to 10 and obj.name to point to "ModifiedObject1", which is added to the String Pool.
 
@@ -67,13 +65,11 @@ In this code, a similar sequence begins with the creation of a MyClass instance 
 
 #
 #### Before Calling "changeReference"
-![alt text](img/6.3.png)
 
 Initial State: The main method initializes obj in the heap. The string "Object2" is stored in the String Pool, and obj.name references it.
 
 #
 #### After Calling "changeReference"
-![alt text](img/6.4.png)
 
 After changeReference: The changeReference method assigns a new MyClass object to x, which has a value of 10 and name "NewObject2". This new string is added to the String Pool, but obj retains its original values.
 

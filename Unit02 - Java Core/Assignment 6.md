@@ -25,16 +25,13 @@ class MyClass {
     String name;
 }
 ```
-In this code, the main method begins by creating an instance of MyClass called obj and assigns initial values to its value and name properties. This object is allocated in the heap memory, with a reference to it stored in the stack frame for the main method. When modifyObject is called with obj as the argument, a new stack frame for this method is created, and x, the parameter, points to the same heap object as obj. Inside modifyObject, x.value and x.name are modified, which directly changes the obj object in the heap. Consequently, when control returns to the main method, the changes made to obj are still present, leading to the output showing the updated values of value and name as 10 and "ModifiedObject1", respectively. This demonstrates how passing a reference to a method in Java allows that method to alter the actual object in the heap.
 
-#
-#### Before Calling "modifyObject"
 
-The main method initializes obj in the heap. The string "Object1" is stored in the String Pool, and obj.name references it.
-#
-#### After Calling "modifyObject"
+- **Heap Memory**: When main() starts, it allocates memory for obj of type MyClass on the heap. The object has fields value and name, which are initially set to 5 and "Object1" respectively.
+- **Stack Memory**: main() method's stack frame contains a reference obj to the memory location of the MyClass object on the heap.
+- **Passing by Reference**: When modifyObject(obj) is called, a new stack frame is created for modifyObject. The reference x now points to the same memory location in the heap as obj. Therefore, changes to x inside modifyObject directly affect the MyClass object that obj references.
+- **Output**: After modifyObject completes, obj.value is 10 and obj.name is "ModifiedObject1", demonstrating that modifications via x affect the actual object obj references.
 
-After modifyObject: The modifyObject method changes obj.value to 10 and obj.name to point to "ModifiedObject1", which is added to the String Pool.
 
 #
 ## **Code 2 : Changing Reference to a New Object**
@@ -61,17 +58,13 @@ class MyClass {
     String name; 
 }
 ```
-In this code, a similar sequence begins with the creation of a MyClass instance named obj and initialization of its properties in the main method. This object resides in the heap, with obj as a reference to it in the stack. However, the behavior diverges when changeReference is called. Here, a new stack frame is created, and x, the parameter, initially points to the same object as obj. Within changeReference, x is assigned a new instance of MyClass, which is allocated in the heap. This new object has its value and name properties set to 10 and "NewObject2". However, this change only affects the local reference x within the method. The original obj reference in the main method still points to the initial heap object, which remains unmodified. Thus, when main resumes, it prints the unchanged values of obj.value and obj.name as 5 and "Object2", respectively. This highlights how reassigning a local reference inside a method does not alter the original object reference outside that method, as only the local reference x is updated to point to the new object, while obj continues to point to the original object.
+- **Heap Memory**: Similar to Code 1, main() allocates memory for obj of type MyClass on the heap, with fields value (5) and name ("Object2").
+- **Stack Memory**: main()'s stack frame contains a reference obj pointing to the heap object.
+- **Changing Reference**: In changeReference, x initially points to the same heap object as obj. However, within changeReference, x is reassigned to a new instance of MyClass. This new instance (x) has its own memory allocation on the heap with value set to 10 and name set to "NewObject2".
+- **Effect of Reassignment**: The reassignment of x inside changeReference does not affect the original reference obj in main(). Therefore, after changeReference completes, obj.value is still 5 and obj.name remains "Object2".
+- **Output**: This highlights that changes to x (reassignment to a new object) are local to changeReference and do not affect the original object reference obj outside of this method.
 
-#
-#### Before Calling "changeReference"
 
-Initial State: The main method initializes obj in the heap. The string "Object2" is stored in the String Pool, and obj.name references it.
-
-#
-#### After Calling "changeReference"
-
-After changeReference: The changeReference method assigns a new MyClass object to x, which has a value of 10 and name "NewObject2". This new string is added to the String Pool, but obj retains its original values.
 
 #
 In Code1, modifications to the object via x affect the object that obj references, demonstrating that both x and obj point to the same heap object. In Code2, x is reassigned to a new object within the method, which does not impact the original object that obj references, highlighting that changes to local references do not affect the references outside the method.

@@ -44,24 +44,25 @@ Inheritance allows one class to inherit properties and behavior from another. Th
 
 ```java
 class Animal {
-    public void sound() {
-        System.out.println("The animal makes a sound");
+    public void eat() {
+        System.out.println("The animal eats");
     }
 }
 
-class Dog extends Animal {
-    @Override
-    public void sound() {
-        System.out.println("The dog barks");
+class Cat extends Animal {
+    public void meows() {
+        System.out.println("The cat meows");
     }
 }
 
-public class Inheritance {
+public class SimpleAnimalExample {
     public static void main(String[] args) {
-        Dog myDog = new Dog();
-        myDog.sound(); 
+        Cat myCat = new Cat();
+        myCat.eat(); 
+        myCat.meows(); 
     }
 }
+
 ```
 #
 ### Polymorphism

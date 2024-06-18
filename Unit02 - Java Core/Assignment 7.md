@@ -65,3 +65,27 @@ Handles file operations related to employee data, including reading from CSV (bo
 | **readEmployeesFromCSVManual(String filePath)**         | Reads employee data from a CSV file using manual parsing.      |
 | **readEmployeesFromCSVOpenCSV(String filePath)**         | Reads employee data from a CSV file using the OpenCSV library. |
 | **writeEmployeesToCSV(List employees, String filePath)** | Writes a list of employees to a CSV file.                      |
+
+#
+### App Run
+![alt text](img/1.png)
+
+#
+### Select file and Import Data
+![alt text](img/1.1.png)
+
+#
+### Add new Employee
+![alt text](img/1.2.png)
+
+#
+### Filter Data
+![alt text](img/1.3.png)
+
+#
+### Filter and Export Data to csv
+![alt text](img/1.4.png)
+
+#
+### New CSV File
+![alt text](img/1.5.png)

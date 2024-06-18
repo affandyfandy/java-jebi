@@ -41,6 +41,7 @@ public class Dog {
 }
 ```
 This Java code defines a class named Dog that serves as a blueprint for creating dog objects, each with specific characteristics and behaviors. The class includes three private attributes: color, name, and breed, which represent the dog's properties and ensure encapsulation by restricting direct access from outside the class. The Dog class provides a constructor that initializes these attributes when a new dog object is created. This constructor uses the this keyword to differentiate between the class attributes and the parameters passed during object instantiation. Additionally, the class includes three public methods: wagTail(), bark(), and eat(), each of which outputs a message describing the corresponding behavior of the dog, incorporating the dog's name for personalized output.
+![alt text](img/1.1.png)
 
 #
 ### 2. Design Class Teacher and Subject
@@ -113,6 +114,7 @@ public class Main {
 }
 ```
 In Main class it creates a Teacher object named "Tam" who is 35 years old, and a Subject object representing "Mathematics". The Subject object is assigned to class "1". The program then simulates Tam teaching Mathematics to class 1 by calling the teach method on the Teacher object with the Subject object as an argument, resulting in a printed message describing the teaching activity.
+![alt text](img/1.2.png)
 #
 ### 3. Design Class Teacher and Subject (Array)
 ```java
@@ -142,6 +144,7 @@ public class Student {
     }
 }
 ```
+The Student class models a student with a name, age, and an array of subjects that the student is learning. The constructor initializes the student's name, age, and a subject array that can hold up to five subjects. The learn method allows the student to start learning a new subject by adding it to the array, and if the array is full, it prints a message indicating that no more subjects can be added.
 ```java
 public class Subject {
     // States
@@ -164,6 +167,7 @@ public class Subject {
     }
 }
 ```
+The Subject class represents a subject that can be taught and learned. It has two properties: name and classId, which are initialized through the constructor. The class provides getter methods to access these properties, allowing other parts of the program to retrieve the subject's name and associated class.
 ```java
 public class Teacher {
     // States
@@ -184,6 +188,7 @@ public class Teacher {
     }
 }
 ```
+The Teacher class models a teacher with a name, age, and the subject they are currently teaching. The constructor initializes the teacher's name and age, while the teach method allows the teacher to teach a subject by setting the subject property and printing a message indicating what subject and class the teacher is instructing.
 ```java
 public class Main {
     public static void main(String[] args) {
@@ -206,3 +211,5 @@ public class Main {
     }
 }
 ```
+The Main class serves as the entry point of the program, where the interactions between the teacher, subjects, and student are demonstrated. It creates a Teacher named Tam, who is 35 years old, and two Subject instances: Mathematics for class 1 and Science for class 2. A Student named John, who is 15 years old, is also created. The teacher teaches Mathematics, and John learns both Mathematics and Science. 
+![alt text](img/1.3.png)

@@ -55,4 +55,6 @@ public class MyClass implements FirstInterface, SecondInterface {
 
 MyClass implements both FirstInterface and SecondInterface. Since both interfaces have a log method, we must resolve the conflict by overriding the log method in MyClass. Inside the overridden log method, we use `FirstInterface.super.log(string)` to explicitly call the log method from FirstInterface. This way, we decide which default method to use when there is a name conflict. We can also choose to call `SecondInterface.super.log(string)` if we want to use the default method from SecondInterface.
 
-By overriding the conflicting default method in the implementing class and explicitly specifying which interface's method to call using the `InterfaceName.super.methodName` syntax, we can resolve the ambiguity and ensure the correct default method is used. This approach allows us to effectively manage multiple inheritance of interfaces with default methods in Java.
+
+#
+### 2.2 - Explain the difference between abstract class and interface (Syntax and Purpose)

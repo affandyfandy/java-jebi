@@ -49,7 +49,6 @@ public class MyClass implements FirstInterface, SecondInterface {
         myClass.firstMethod("Hello from firstMethod");
         myClass.secondMethod();
         
-
         myClass.log("Logging message");
     }
 }
@@ -61,3 +60,57 @@ MyClass implements both FirstInterface and SecondInterface. Since both interface
 
 #
 ### 2.2 - Explain the difference between abstract class and interface (Syntax and Purpose)
+
+### Abstract Class
+
+`Syntax`
+- An abstract class is declared using the abstract keyword.
+- It can have abstract methods as well as concrete methods (methods with a body).
+- Abstract methods are declared without implementation using the abstract keyword and are intended to be overridden by subclasses.
+- Concrete methods in an abstract class can provide default behavior which subclasses can optionally override.
+
+`Purpose`
+- An abstract class allows you to define a template for other classes to extend and inherit from.
+- It can contain member variables, constructors, and methods (both abstract and concrete).
+- Abstract classes are useful when you have a base class that defines some methods but needs subclasses to provide specific implementations for certain methods.
+
+
+#
+### Interface
+`Syntax`
+- An interface is declared using the interface keyword.
+- It can only contain constants, method signatures (methods without a body), and default methods (methods with a default implementation introduced in Java 8).
+- All methods in an interface are implicitly public and abstract (even if not explicitly specified).
+- Interfaces cannot have instance fields (variables) other than constants.
+
+`Purpose`
+- Interfaces provide a way to achieve abstraction and multiple inheritance in Java.
+- They define a contract that classes must follow; any class that implements an interface must provide concrete implementations for all methods defined in the interface.
+- Interfaces are useful when you want to specify a set of methods that a class must implement, regardless of the class's inheritance hierarchy.
+
+#
+### Key Differences
+- Abstract classes can have abstract methods as well as concrete methods. Interfaces can only have method signatures (abstract methods) or default methods (with a default implementation).
+
+- Java does not support multiple inheritance of classes, but a class can implement multiple interfaces. This allows interfaces to provide a form of multiple inheritance.
+
+- Abstract classes are used to define a common behavior among several subclasses, while interfaces are used to define a contract that classes can adhere to, regardless of their inheritance.
+
+- Abstract classes are used to define common behavior and provide some default functionality, while interfaces define a contract that classes must follow, allowing for multiple inheritance of type. Both are important tools in Java for achieving abstraction and defining relationships between classes.
+
+
+#
+### 2.3 - Research @FunctionalInterface
+`@FunctionalInterface` is an annotation used to denote that an interface is intended to be a functional interface. A functional interface is one that contains exactly one abstract method. This concept is closely related to functional programming paradigms, where functions are treated as first-class citizens.
+
+### Purpose and Usage
+- **Lambda Expressions**: Functional interfaces enable the use of lambda expressions, which provide a concise syntax for defining anonymous functions directly within Java code.
+- **Single Abstract Method (SAM)**: Any interface with exactly one abstract method can be marked as a functional interface using @FunctionalInterface.
+
+#
+### Key Functional Interfaces
+- **Function**: Represents a function that accepts one argument and produces a result. It has methods like apply for computation and compose for function chaining.
+- **Supplier**: Represents a supplier of results, used to generate or supply values without taking any input.
+- **Consumer**: Represents an operation that accepts a single input argument and returns no result. Useful for operations with side effects.
+- **Predicate**: Represents a boolean-valued function of one argument. Commonly used for filtering elements in collections.
+- **UnaryOperator and BinaryOperator**: Specializations of Function for cases where the input and output types are the same (UnaryOperator for single argument and BinaryOperator for two arguments).

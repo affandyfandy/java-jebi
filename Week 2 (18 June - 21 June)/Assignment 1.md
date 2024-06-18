@@ -44,8 +44,126 @@ This Java code defines a class named Dog that serves as a blueprint for creating
 
 #
 ### 2. Design Class Teacher and Subject
+```java
+public class Subject {
+    // States
+    private String name;
+    private String classId;
 
+    // Constructor for creating Subject with name
+    public Subject(String name) {
+        this.name = name;
+    }
 
+    // Getters
+    public String getName() {
+        return name;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    // Setter for classId
+    public void setClassId(String classId) {
+        this.classId = classId;
+    }
+}
+```
+```java
+public class Teacher {
+    // States
+    private String name;
+    private int age;
+    private String subject;
+
+    // Constructor for creating teacher with name and age
+    public Teacher(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Constructor for creating teacher with subject
+    public Teacher(String name, String subject) {
+        this.name = name;
+        this.subject = subject;
+    }
+
+    // Behavior: teaching
+    public void teach(Subject subject) {
+        System.out.println("Teacher " + name + " teaching " + subject.getName() + " for Class " + subject.getClassId());
+    }
+}
+```
 
 #
 ### 3. Design Class Teacher and Subject (Array)
+```java
+public class Student {
+    // States
+    private String name;
+    private int age;
+    private Subject[] subjects; // Array to hold subjects the student is learning
+
+    // Constructor for creating student with name and age
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+        this.subjects = new Subject[5]; // Assuming a student can learn up to 5 subjects initially
+    }
+
+    // Method for learning a subject
+    public void learn(Subject subject) {
+        for (int i = 0; i < subjects.length; i++) {
+            if (subjects[i] == null) {
+                subjects[i] = subject;
+                System.out.println(name + " is learning " + subject.getName() + " for Class " + subject.getClassId());
+                return;
+            }
+        }
+        System.out.println(name + " cannot learn more subjects. Array is full.");
+    }
+}
+```
+```java
+public class Subject {
+    // States
+    private String name;
+    private String classId;
+
+    // Constructor for creating Subject with name and classId
+    public Subject(String name, String classId) {
+        this.name = name;
+        this.classId = classId;
+    }
+
+    // Getters
+    public String getName() {
+        return name;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+}
+```
+```java
+public class Teacher {
+    // States
+    private String name;
+    private int age;
+    private Subject subject;
+
+    // Constructor for creating teacher with name and age
+    public Teacher(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Method for teaching a subject
+    public void teach(Subject subject) {
+        this.subject = subject;
+        System.out.println("Teacher " + name + " is teaching " + subject.getName() + " for Class " + subject.getClassId());
+    }
+}
+```

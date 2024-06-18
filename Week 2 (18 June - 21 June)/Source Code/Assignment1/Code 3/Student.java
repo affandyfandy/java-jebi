@@ -8,7 +8,7 @@ public class Student {
     public Student(String name, int age) {
         this.name = name;
         this.age = age;
-        this.subjects = new Subject[5]; // Assuming a student can learn up to 5 subjects initially
+        this.subjects = new Subject[5]; 
     }
 
     // Method for learning a subject

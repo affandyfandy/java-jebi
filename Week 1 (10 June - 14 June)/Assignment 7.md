@@ -68,24 +68,24 @@ Handles file operations related to employee data, including reading from CSV (bo
 
 #
 ### App Run
-![alt text](img/1.png)
+![alt text](img/7.png)
 
 #
 ### Select file and Import Data
-![alt text](img/1.1.png)
+![alt text](img/7.1.png)
 
 #
 ### Add new Employee
-![alt text](img/1.2.png)
+![alt text](img/7.2.png)
 
 #
 ### Filter Data
-![alt text](img/1.3.png)
+![alt text](img/7.3.png)
 
 #
 ### Filter and Export Data to csv
-![alt text](img/1.4.png)
+![alt text](img/7.4.png)
 
 #
 ### New CSV File
-![alt text](img/1.5.png)
+![alt text](img/7.5.png)

@@ -70,6 +70,7 @@ public class Subject {
     }
 }
 ```
+ Subject class represents a subject that can be taught. It has two properties: name and classId. The name represents the subject's name, while classId indicates the class or group the subject is associated with. The class includes a constructor to initialize the name, getters to access name and classId, and a setter to update the classId.
 ```java
 public class Teacher {
     // States
@@ -95,7 +96,23 @@ public class Teacher {
     }
 }
 ```
+ Teacher class represents a teacher. It has three properties: name, age, and subject, where subject is the subject they are teaching. The class provides two constructors: one to create a teacher with a name and age, and another to create a teacher with a name and a specific subject. It also includes a teach method, which takes a Subject object as an argument and prints a message indicating that the teacher is teaching that particular subject for a specific class.
+```java
+public class Main {
+    public static void main(String[] args) {
+        // Creating a Teacher with name and age
+        Teacher tamTeacher = new Teacher("Tam", 35);
 
+        // Creating a Subject with name
+        Subject mathSubject = new Subject("Mathematics");
+        mathSubject.setClassId("1");
+
+        // Teaching the subject
+        tamTeacher.teach(mathSubject);
+    }
+}
+```
+In Main class it creates a Teacher object named "Tam" who is 35 years old, and a Subject object representing "Mathematics". The Subject object is assigned to class "1". The program then simulates Tam teaching Mathematics to class 1 by calling the teach method on the Teacher object with the Subject object as an argument, resulting in a printed message describing the teaching activity.
 #
 ### 3. Design Class Teacher and Subject (Array)
 ```java
@@ -164,6 +181,28 @@ public class Teacher {
     public void teach(Subject subject) {
         this.subject = subject;
         System.out.println("Teacher " + name + " is teaching " + subject.getName() + " for Class " + subject.getClassId());
+    }
+}
+```
+```java
+public class Main {
+    public static void main(String[] args) {
+        // Create a Teacher
+        Teacher tamTeacher = new Teacher("Tam", 35);
+
+        // Create Subjects
+        Subject mathSubject = new Subject("Mathematics", "1");
+        Subject scienceSubject = new Subject("Science", "2");
+
+        // Create a Student
+        Student johnStudent = new Student("John", 15);
+
+        // Teacher teaches Mathematics
+        tamTeacher.teach(mathSubject);
+
+        // Student John learns Mathematics and Science
+        johnStudent.learn(mathSubject);
+        johnStudent.learn(scienceSubject);
     }
 }
 ```

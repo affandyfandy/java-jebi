@@ -15,7 +15,8 @@ public interface FirstInterface {
         System.out.println("This method is default implementation from FirstInterface: " + string);
     }
 }
-
+```
+```java
 public interface SecondInterface {
     void secondMethod();
 
@@ -23,7 +24,8 @@ public interface SecondInterface {
         System.out.println("This method is default implementation from SecondInterface: " + string);
     }
 }
-
+```
+```java
 public class MyClass implements FirstInterface, SecondInterface {
     @Override
     public void firstMethod(String string) {
@@ -55,6 +57,7 @@ public class MyClass implements FirstInterface, SecondInterface {
 
 MyClass implements both FirstInterface and SecondInterface. Since both interfaces have a log method, we must resolve the conflict by overriding the log method in MyClass. Inside the overridden log method, we use `FirstInterface.super.log(string)` to explicitly call the log method from FirstInterface. This way, we decide which default method to use when there is a name conflict. We can also choose to call `SecondInterface.super.log(string)` if we want to use the default method from SecondInterface.
 
+![alt text](img/2.1.png)
 
 #
 ### 2.2 - Explain the difference between abstract class and interface (Syntax and Purpose)

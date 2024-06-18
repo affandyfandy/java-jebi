@@ -6,7 +6,7 @@ Console Menu. Menu input from keyboard:
 - 3 - Filter by name (like), id (like), dobirth – year (equal), department (equal);
 - 4 - Filter and export to csv file, order by Dobirth;
 #
-**Source Coude** : https://github.com/affandyfandy/java-jebi/tree/main/Unit02%20-%20Java%20Core/code/ConsoleMenu/menu
+**Source Coude** : https://github.com/affandyfandy/java-jebi/tree/main/Week%201%20(10%20June%20-%2014%20June)/Source%20code/ConsoleMenu/menu
 #
 ### Project Structure
 ```

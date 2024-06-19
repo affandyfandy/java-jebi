@@ -118,7 +118,9 @@ MyClass implements both FirstInterface and SecondInterface. Since both interface
 
 
 #
-### 2.4 - Implement `SavingAccount` and `CurrentAccount`
+### 2.4 - Implement SavingAccount and CurrentAccount
+
+**Source Code** : https://github.com/affandyfandy/java-jebi/tree/main/Week%202%20(18%20June%20-%2021%20June)/Source%20Code/Assignment2/Account
 
 `1. Account.java`
 

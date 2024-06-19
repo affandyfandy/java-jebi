@@ -1,64 +1,28 @@
 import java.util.Arrays;
 import java.util.Random;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class MultiThreadedSort {
-    private static final int THRESHOLD = 2; // Threshold for switching to sequential sort
+    private static final int THREAD_COUNT = 4;
 
-    // RecursiveAction for merge sort
-    private static class MergeSortTask extends RecursiveAction {
-        private final int[] array;
-        private final int start, end;
-
-        public MergeSortTask(int[] array, int start, int end) {
-            this.array = array;
-            this.start = start;
-            this.end = end;
-        }
-
-        @Override
-        protected void compute() {
-            if (end - start <= THRESHOLD) {
-                Arrays.sort(array, start, end + 1); // Sequential sort for small chunks
-            } else {
-                int mid = (start + end) / 2;
-                MergeSortTask leftTask = new MergeSortTask(array, start, mid);
-                MergeSortTask rightTask = new MergeSortTask(array, mid + 1, end);
-                invokeAll(leftTask, rightTask); // Fork and join subtasks
-                merge(array, start, mid, end); // Merge sorted parts
-            }
-        }
-
-        private void merge(int[] array, int start, int mid, int end) {
-            int[] temp = new int[end - start + 1];
-            int left = start, right = mid + 1, index = 0;
-
-            while (left <= mid && right <= end) {
-                if (array[left] <= array[right]) {
-                    temp[index++] = array[left++];
-                } else {
-                    temp[index++] = array[right++];
-                }
-            }
-            while (left <= mid) {
-                temp[index++] = array[left++];
-            }
-            while (right <= end) {
-                temp[index++] = array[right++];
-            }
-
-            System.arraycopy(temp, 0, array, start, temp.length); // Copy sorted elements back
-        }
-    }
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         int[] array = generateRandomArray(20); // Generate random array
         System.out.println("Original array: " + Arrays.toString(array));
 
-        ForkJoinPool pool = new ForkJoinPool(); // Create a thread pool
-        pool.invoke(new MergeSortTask(array, 0, array.length - 1)); // Sort the array
-        pool.shutdown(); // Shutdown the pool
+        ExecutorService executor = Executors.newFixedThreadPool(THREAD_COUNT);
+
+        // Divide the array into equal parts for each thread
+        int segmentLength = array.length / THREAD_COUNT;
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            int start = i * segmentLength;
+            int end = (i == THREAD_COUNT - 1) ? array.length - 1 : (start + segmentLength - 1);
+            executor.execute(new SortTask(array, start, end));
+        }
+
+        executor.shutdown();
+        executor.awaitTermination(1, TimeUnit.MINUTES);
 
         System.out.println("Sorted array: " + Arrays.toString(array));
     }
@@ -71,5 +35,22 @@ public class MultiThreadedSort {
             array[i] = random.nextInt(100); // Generate random integers between 0 and 99
         }
         return array;
+    }
+
+    // Runnable task to sort a segment of the array
+    private static class SortTask implements Runnable {
+        private final int[] array;
+        private final int start, end;
+
+        public SortTask(int[] array, int start, int end) {
+            this.array = array;
+            this.start = start;
+            this.end = end;
+        }
+
+        @Override
+        public void run() {
+            Arrays.sort(array, start, end + 1); // Sort the segment of the array
+        }
     }
 }

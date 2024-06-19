@@ -10,20 +10,27 @@ public class Assignment3 {
 
         int max = Integer.MIN_VALUE;
         int secondMax = Integer.MIN_VALUE;
+        int maxCount = 0;
 
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] > max) {
                 secondMax = max;
+                indices.clear();
                 max = arr[i];
-            } else if (arr[i] > secondMax && arr[i] != max) {
+                maxCount = 1;
+            } else if (arr[i] == max) {
+                maxCount++;
+            } else if (arr[i] > secondMax) {
                 secondMax = arr[i];
+                indices.clear();
+                indices.add(i);
+            } else if (arr[i] == secondMax) {
+                indices.add(i);
             }
         }
 
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] == secondMax) {
-                indices.add(i);
-            }
+        if (maxCount == arr.length || secondMax == Integer.MIN_VALUE) {
+            return new ArrayList<>();
         }
 
         return indices;

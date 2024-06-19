@@ -114,3 +114,72 @@ MyClass implements both FirstInterface and SecondInterface. Since both interface
 - **Consumer**: Represents an operation that accepts a single input argument and returns no result. Useful for operations with side effects.
 - **Predicate**: Represents a boolean-valued function of one argument. Commonly used for filtering elements in collections.
 - **UnaryOperator and BinaryOperator**: Specializations of Function for cases where the input and output types are the same (UnaryOperator for single argument and BinaryOperator for two arguments).
+
+
+
+#
+### 2.4 - Implement `SavingAccount` and `CurrentAccount`
+
+`1. Account.java`
+
+The Account interface defines the contract for any type of account. It specifies methods that any class implementing this interface must provide. Account interface Provides a common contract for different account types and includes default and static methods for shared functionality.
+
+**Methods :**
+- *void deposit(double amount)*: A method to deposit money into the account.
+- *void withdraw(double amount)*: A method to withdraw money from the account.
+- *double getBalance()*: A method to check the current balance of the account.
+- *String getAccountId()*: A method to get the account ID.
+
+**Default Methods :**
+- *default void log(String message)*: This method logs a message prefixed with the account ID. It's provided with a default implementation, so it doesn't need to be overridden by the implementing classes unless customization is needed.
+- *default void printBalance()*: This method prints the account's balance. It's another default method provided for convenience.
+  
+**Static Method :**
+
+- *static void isValidAccountId(String accountId)*: This method checks if the given account ID is valid. It uses a regular expression to ensure the account ID starts with "SA" for saving accounts or "CA" for current accounts, followed by four digits.
+
+#
+`2. SavingAccount.java`
+
+The SavingAccount class implements the Account interface and represents a savings account.
+
+**Fields:**
+- private double balance: Stores the balance of the account.
+- private String accountId: Stores the account ID.
+
+**Constructor:**
+- public SavingAccount(String accountId): Initializes the account with the given ID and prints a message indicating the account creation.
+  
+**Implemented Methods:**
+- @Override public void deposit(double amount): Adds the specified amount to the balance and prints a deposit message.
+- @Override public void withdraw(double amount): Withdraws the specified amount from the balance if sufficient funds are available; otherwise, it prints a message indicating insufficient funds.
+- @Override public double getBalance(): Returns the current balance.
+- @Override public String getAccountId(): Returns the account ID.
+- @Override public void log(String message): Logs a message with a prefix indicating it’s from a saving account.
+
+#
+`3. CurrentAccount`
+
+The CurrentAccount class also implements the Account interface and represents a current account, which allows overdrafts up to a certain limit.
+
+**Fields:**
+- private double balance: Stores the balance of the account.
+- private double overdraftLimit = 500: Sets an overdraft limit of $500.
+- private String accountId: Stores the account ID.
+
+**Constructor:**
+- public CurrentAccount(String accountId): Initializes the account with the given ID and prints a message indicating the account creation and overdraft limit.
+  
+**Implemented Methods:**
+- @Override public void deposit(double amount): Adds the specified amount to the balance and prints a deposit message.
+- @Override public void withdraw(double amount): Withdraws the specified amount if it does not exceed the balance plus the overdraft limit; otherwise, it prints a message indicating the overdraft limit has been exceeded.
+- @Override public double getBalance(): Returns the current balance.
+- @Override public String getAccountId(): Returns the account ID.
+- @Override public void log(String message): Logs a message with a prefix indicating it’s from a current account.
+
+#
+`4. Main Class`
+
+The Main class serves as the entry point and demonstrates the creation and usage of both SavingAccount and CurrentAccount objects. The main method starts by creating a SavingAccount with a valid ID, then it deposits and withdraws amounts, logs a message, and prints the balance. This process is repeated for a second saving account, each time showing the balance updates and ensuring the operations adhere to the available funds. Subsequently, the method demonstrates the creation of a CurrentAccount, performs similar transactions including a withdrawal that tests the overdraft limit, logs the outcome, and prints the balance to show the effect of the overdraft facility. 
+
+Finally, a second current account is created to illustrate what happens when an attempt is made to exceed the overdraft limit. Throughout the method, account IDs are validated using the interface’s static method to ensure they follow the required format. This approach not only highlights the functionality of each account type but also emphasizes the interface’s role in providing a consistent method set across different account implementations.

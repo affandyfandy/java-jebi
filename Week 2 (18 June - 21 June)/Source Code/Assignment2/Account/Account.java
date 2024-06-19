@@ -16,7 +16,6 @@ public interface Account {
         }
     }
     
-    // New default method
     default void printBalance() {
         System.out.println("Account (" + getAccountId() + ") balance: $" + getBalance());
     }

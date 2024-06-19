@@ -1,5 +1,3 @@
-#### Week 2 (Assignment 1)
-#
 ### 1. Design Class with states and behaviors
 ```java
 public class Dog {

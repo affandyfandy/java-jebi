@@ -1,5 +1,3 @@
-#### Week 2 (Assignment 1)
-#
 ### 2.1 - What happen if implement 2 interface have same default method? How to solve? Demo in code.
 When implementing multiple interfaces in Java, if both interfaces have a default method with the same name and signature, a conflict arises. This is because the implementing class cannot decide which default method to inherit. Java provides a way to resolve this conflict by explicitly specifying which default method to use or by overriding the default method in the implementing class
 

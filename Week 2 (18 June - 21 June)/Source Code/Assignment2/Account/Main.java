@@ -17,14 +17,14 @@ public class Main {
         Account currentAccount1 = new CurrentAccount("CU-2001");
         Account.isValidAccountId("CU-2001");
         currentAccount1.deposit(2000);
-        currentAccount1.withdraw(2500); // Within overdraft limit
+        currentAccount1.withdraw(2500); 
         currentAccount1.log("Transaction completed.");
         currentAccount1.printBalance();
         
         Account currentAccount2 = new CurrentAccount("CU-2002");
         Account.isValidAccountId("CU-2002");
         currentAccount2.deposit(500);
-        currentAccount2.withdraw(1200); // Overdraft limit exceeded
+        currentAccount2.withdraw(1200); 
         currentAccount2.log("Transaction attempted and failed.");
         currentAccount2.printBalance();
     }

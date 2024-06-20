@@ -132,6 +132,16 @@ public class BankAccount {
 }
 
 ```
+#### Explanation
+`Instance Variables:`
+
+- **private double balance:** This variable holds the current balance of the bank account.
+- **private final Lock lock = new ReentrantLock();:** This is an instance of ReentrantLock, which is used for thread synchronization. It allows multiple threads to coordinate access to shared resources (in this case, the balance variable).
+Methods:
+
+- **deposit(double amount):** This method allows depositing money into the account. It first acquires the lock using lock.lock() to ensure exclusive access to the balance variable. It then updates the balance by adding the amount, prints a message indicating the deposit, and finally releases the lock using lock.unlock().
+
+- **withdraw(double amount):** This method allows withdrawing money from the account. Similar to deposit, it acquires the lock to ensure exclusive access, checks if the balance is sufficient to cover the withdrawal amount, updates the balance if sufficient, prints appropriate messages based on success or failure of withdrawal, and releases the lock after the operation.
 ```java
 public class BankAccountDemo {
     public static void main(String[] args) {
@@ -166,8 +176,30 @@ public class BankAccountDemo {
         withdrawThread.start();
     }
 }
-
 ```
+`Explanation`
+- Program Creates an instance of BankAccount named account.
+
+- Deposit Task (Runnable depositTask):
+
+    - Uses a lambda expression to define a task that deposits $100 into account ten times (for (int i = 0; i < 10; i++) { account.deposit(100); }).
+  - Introduces a small delay (Thread.sleep(100)) after each deposit operation to simulate some processing time.
+- Withdraw Task (Runnable withdrawTask):
+
+    - Uses a lambda expression to define a task that withdraws $50 from account ten times (for (int i = 0; i < 10; i++) { account.withdraw(50); }).
+    - Also introduces a small delay (Thread.sleep(100)) after each withdrawal operation for demonstration purposes.
+- hread Creation and Execution:
+
+    - Creates two Thread objects (depositThread and withdrawThread) with depositTask and withdrawTask, respectively.
+  - Starts both threads using depositThread.start() and withdrawThread.start().
+
+#
+#### Thread Execution and Synchronization:
+- Both deposit and withdraw methods in BankAccount use a ReentrantLock (lock) to ensure that only one thread can modify the balance variable at a time. This prevents concurrent access issues such as race conditions and ensures thread safety.
+
+- While one thread holds the lock (for example, during a deposit or withdrawal operation), other threads attempting to acquire the lock will be blocked (lock.lock()). They will wait until the lock is released (lock.unlock()) before proceeding.
+
+- This approach guarantees that deposits and withdrawals are performed safely and sequentially, even when multiple threads are accessing the BankAccount instance concurrently.
 #
 ### 4.3 - Write a Java program that sorts an array of integers using multiple threads.
 The MultiThreadedSort program sorts an array of integers using multiple threads. It divides the array into segments and assigns each segment to a thread for sorting concurrently using an ExecutorService.

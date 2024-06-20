@@ -1,31 +1,39 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-// Custom exception for Lab 2
-class Lab2Exception extends RuntimeException {
-    public Lab2Exception(String message) {
+// Custom exception for menu selection
+class InvalidMenuSelectionException extends RuntimeException {
+    public InvalidMenuSelectionException(String message) {
         super(message);
     }
 }
 
 public class Lab2 {
-    public static void main(String[] args) {
-        String[] menu = {"Item 1: Pizza", "Item 2: Burger", "Item 3: Pasta", "Item 4: Salad", "Item 5: Sushi"};
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.println("Enter a number between 0 and 4 to select a menu item:");
-            int index = scanner.nextInt();
 
-            // Check if the index is within the valid range
-            if (index < 0 || index >= menu.length) {
-                throw new Lab2Exception("Invalid selection. Please select a number between 0 and 4.");
+    public static void main(String[] args) {
+        // Define an array of fruit options
+        String[] fruits = {"Option 1: Apple", "Option 2: Banana", "Option 3: Cherry", "Option 4: Orange", "Option 5: Elderberry"};
+        
+        // Use try-with-resources to ensure the Scanner is closed automatically
+        try (Scanner input = new Scanner(System.in)) {
+            System.out.println("\n\nEnter a number between 0 and 4 to select a fruit:");
+
+            // Capture the user's selection
+            int selection = input.nextInt();
+
+            // Validate the selection
+            if (selection < 0 || selection >= fruits.length) {
+                throw new InvalidMenuSelectionException("Invalid selection. Please choose a number between 0 and 4.");
             }
 
-            // Print the selected menu item
-            System.out.println("You selected: " + menu[index]);
+            // Display the selected fruit
+            System.out.println("You selected: " + fruits[selection]);
 
         } catch (InputMismatchException e) {
+            // Handle non-integer input
             System.out.println("Error: Please enter a valid integer.");
-        } catch (Lab2Exception e) {
+        } catch (InvalidMenuSelectionException e) {
+            // Handle out-of-bounds selection
             System.out.println("Error: " + e.getMessage());
         }
     }

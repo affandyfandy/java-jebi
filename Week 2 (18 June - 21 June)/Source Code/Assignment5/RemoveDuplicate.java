@@ -11,7 +11,7 @@ public class RemoveDuplicate {
     public static void main(String[] args) {
         String inputFile = "data.csv";
         String outputFile = "output.csv";
-        String keyField = "id"; // Assuming 'id' is the key field
+        String keyField = "id"; 
 
         try {
             removeDuplicates(inputFile, outputFile, keyField);

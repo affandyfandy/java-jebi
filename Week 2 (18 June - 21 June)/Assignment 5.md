@@ -433,8 +433,306 @@ public class ConcurrentHashMapExample {
     }
 }
 ```
+#### Sample Output
+```
+Initial ConcurrentHashMap: {1=Alice, 2=Bob, 3=Charlie}
+Reader thread - Key: 1, Value: Alice
+Reader thread - Key: 2, Value: Bob
+Reader thread - Key: 3, Value: Charlie
+Writer thread added David
+Reader thread - Key: 4, Value: David
+Final ConcurrentHashMap: {1=Alice, 2=Bob, 3=Charlie, 4=David}
+```
+- The initial map contents are displayed.
+- The reader thread iterates over the map and prints each key-value pair it reads.
+- The writer thread adds "4 -> David" to the map and prints its message.
+- The reader thread, after the writer thread completes, iterates again and shows the updated map.
+- Finally, the main thread prints the final contents of the map.
+#
 - ConcurrentHashMap allows concurrent access to different parts of the map, providing thread-safety without blocking operations.
 - It supports high concurrency for both read and write operations.
 - Modifications (adds, removes, updates) are thread-safe and do not require external synchronization.
 - Iteration over the map is also safe and reflects the most recent state of the map.
 - ConcurrentHashMap is particularly useful in multithreaded applications where multiple threads need to access and modify a shared map concurrently.
+
+
+#
+### 5.8 - Analysis and Implementation of equals() and hashCode() in Java
+In Java, the equals() and hashCode() methods are fundamental for object comparison and collection manipulation. These methods are essential when creating custom objects, especially if the objects will be stored in collections like HashSet or used as keys in HashMap. This report delves into the purpose, contract, and best practices for overriding these methods and illustrates practical applications with code examples.
+
+#### The equals() Method
+`Purpose`
+The equals() method in Java is used to compare two objects for logical equality. By default, the equals() method in the Object class checks if two references point to the same object, which is reference equality. However, for many applications, logical equality—comparison of actual object data—is required.
+
+`Contract for equals()`
+The equals() method must adhere to several key properties to function correctly:
+
+- Reflexive: For any non-null reference value x, x.equals(x) must return true.
+- Symmetric: For any non-null reference values x and y, x.equals(y) should return true if and only if y.equals(x) returns true.
+- Transitive: For any non-null reference values x, y, and z, if x.equals(y) returns true and y.equals(z) returns true, then x.equals(z) should return true.
+- Consistent: For any non-null reference values x and y, multiple invocations of x.equals(y) should consistently return true or false, provided no information used in equals comparisons is modified.
+- Non-nullity: For any non-null reference value x, x.equals(null) must return false.
+
+Implementation Example
+Consider the Employee class. We aim to compare Employee objects based on their id field to ensure logical equality:
+
+```java
+public class Employee {
+    private int id;
+    private String name;
+
+    public Employee(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Employee employee = (Employee) obj;
+        return id == employee.id; // Logical equality based on 'id' field
+    }
+}
+```
+In this example, two Employee objects are considered equal if their id values are the same, adhering to the logical equality principle.
+
+#### The hashCode() Method
+`Purpose`
+The hashCode() method provides an integer hash code that represents the object. This hash code is used by hash-based collections such as HashMap and HashSet to efficiently store and retrieve objects. The hashCode() method must be overridden whenever the equals() method is overridden to ensure consistent behavior.
+
+`Contract for hashCode()`
+The hashCode() method must fulfill the following requirements:
+
+- Consistency: The hash code must consistently return the same value if no object information used in equals comparisons is modified.
+- Equal Objects: If two objects are equal according to the equals() method, their hashCode() method must return the same integer.
+- Unequal Objects: It is not mandatory, but ideally, different objects should produce different hash codes to minimize hash collisions.
+
+Implementation Example
+Continuing with the Employee class, we override hashCode() to return a hash based on the id field:
+
+```java
+import java.util.Objects;
+
+public class Employee {
+    private int id;
+    private String name;
+
+    public Employee(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Employee employee = (Employee) obj;
+        return id == employee.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id); // Hash based on 'id' field
+    }
+}
+```
+
+The Objects.hash(id) method generates a hash code using the id field, ensuring that equal Employee objects have the same hash code.
+
+#
+### 5.9 - Recognizing Duplicate Employees by ID in a HashSet
+Necessity for equals() and hashCode()
+To store Employee objects in a HashSet and identify duplicates based on id, both equals() and hashCode() must be overridden. The HashSet uses hashCode() to determine the bucket for storage and equals() to check for equality among objects in the same bucket.
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+public class EmployeeHashSet {
+    public static void main(String[] args) {
+        Set<Employee> employees = new HashSet<>();
+
+        Employee e1 = new Employee(1, "Alice");
+        Employee e2 = new Employee(2, "Bob");
+        Employee e3 = new Employee(1, "Charlie"); // Duplicate ID as e1
+
+        employees.add(e1);
+        employees.add(e2);
+        employees.add(e3); // e3 won't be added as it is considered a duplicate of e1
+
+        System.out.println("HashSet size: " + employees.size()); // Output: 2
+        employees.forEach(System.out::println); // Prints: Alice and Bob
+    }
+}
+```
+In this implementation, adding e3 does not increase the set size because it is considered equal to e1.
+
+#
+### 5.10 - Creating a Map with Composite Key (Department, EmployeeID)
+`Concept of Composite Key`
+To use a combination of department and employeeID as a key in a Map, a composite key class is necessary. This class should properly override equals() and hashCode() to ensure each key is unique and the Map handles it correctly.
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+public class EmployeeComposite {
+    public static void main(String[] args) {
+        Map<EmployeeKey, Employee> employeeMap = new HashMap<>();
+
+        EmployeeKey key1 = new EmployeeKey("HR", 101);
+        Employee e1 = new Employee(101, "Alice");
+
+        EmployeeKey key2 = new EmployeeKey("Finance", 102);
+        Employee e2 = new Employee(102, "Bob");
+
+        EmployeeKey key3 = new EmployeeKey("HR", 103);
+        Employee e3 = new Employee(103, "Charlie");
+
+        employeeMap.put(key1, e1);
+        employeeMap.put(key2, e2);
+        employeeMap.put(key3, e3);
+
+        System.out.println("Employees in HR department:");
+        employeeMap.entrySet().stream()
+                .filter(entry -> "HR".equals(entry.getKey().getDepartment()))
+                .forEach(entry -> System.out.println(entry.getValue()));
+        
+        EmployeeKey searchKey = new EmployeeKey("Finance", 102);
+        Employee foundEmployee = employeeMap.get(searchKey);
+        System.out.println("Employee found: " + foundEmployee); // Output: Bob
+    }
+}
+
+class EmployeeKey {
+    private final String department;
+    private final int employeeID;
+
+    public EmployeeKey(String department, int employeeID) {
+        this.department = department;
+        this.employeeID = employeeID;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public int getEmployeeID() {
+        return employeeID;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        EmployeeKey that = (EmployeeKey) obj;
+        return employeeID == that.employeeID && Objects.equals(department, that.department);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(department, employeeID);
+    }
+}
+```
+This code demonstrates how to use a composite key in a Map to ensure each Employee can be uniquely identified by both their department and employeeID.
+
+#
+### 5.11 - Analyzing and Fixing Code for ConcurrentModificationException
+`Issue with Modification During Iteration`
+Modifying an ArrayList during iteration using a for-each loop results in a ConcurrentModificationException. This exception occurs because the collection's structure changes while an iterator is being used.
+
+`Fixed Implementation`
+Using an Iterator directly provides a safe way to remove elements during iteration:
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class Main {
+    public static void demo() {
+        List<String> data = new ArrayList<>();
+        data.add("Joe");
+        data.add("Helen");
+        data.add("Test");
+        data.add("Test");
+        data.add("Rien");
+        data.add("Ruby");
+
+        Iterator<String> iterator = data.iterator();
+        while (iterator.hasNext()) {
+            String d = iterator.next();
+            if (d.equals("Test")) {
+                iterator.remove(); // Safe removal
+            }
+        }
+
+        System.out.println(data); // Output: [Joe, Helen, Rien, Ruby]
+    }
+
+    public static void main(String[] args) {
+        demo();
+    }
+}
+```
+This approach avoids ConcurrentModificationException by using the Iterator's remove() method, which ensures thread-safe modification.
+
+#### Handling Concurrent Access in Java
+`Problem with Concurrent Access`
+Concurrent modification of collections like ArrayList can lead to race conditions and unpredictable behavior. Using concurrent collections such as CopyOnWriteArrayList or synchronization mechanisms ensures safe access.
+
+`Concurrent Access Example`
+Using CopyOnWriteArrayList for thread-safe operations:
+```java
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class Main {
+    public static void demo() {
+        List<String> data = new CopyOnWriteArrayList<>();
+        data.add("Joe");
+        data.add("Helen");
+        data.add("Test");
+        data.add("Test");
+        data.add("Rien");
+        data.add("Ruby");
+
+        for (String d : data) {
+            if (d.equals("Test")) {
+                data.remove(d); // Safe removal in concurrent environment
+            }
+        }
+
+        System.out.println(data); // Output: [Joe, Helen, Rien, Ruby]
+    }
+
+    public static void main(String[] args) {
+        demo();
+    }
+}
+```
+This ensures that the list is safely modified even in a concurrent environment, eliminating the risk of ConcurrentModificationException.
+
+
+#
+### 5.12 - What happen multiple threads to access and modify a shared collection concurrently
+`Key Issues with Concurrent Access and Modification`
+
+**1. ConcurrentModificationException**
+   
+    ConcurrentModificationException occurs when one thread modifies a collection while another thread is iterating over it, and the modification is not synchronized properly. This exception is thrown to indicate that the collection has been structurally modified in an unexpected way. Structural modifications are changes that affect the size of the collection, such as adding or removing elements.
+**2. Data Inconsistency**
+   
+    When multiple threads modify a shared collection without proper synchronization, data inconsistencies can occur. This happens because the threads can read and write values in an interleaved manner, leading to unpredictable results.
+
+    Example Scenario
+    Imagine two threads attempting to add different elements to the same ArrayList at the same time. The internal state of the list might become inconsistent, leading to lost updates or duplicate entries.
+
+**3. Race Conditions**
+   
+    Race conditions occur when the outcome of a program depends on the relative timing of events, such as the order in which threads access shared resources. If one thread reads a collection while another modifies it, the final state of the collection might depend on the precise timing of these operations, leading to unpredictable behavior.
+
+**4. Deadlocks and Livelocks**
+   
+    If thread synchronization is not handled correctly, it can lead to deadlocks, where two or more threads are stuck waiting for each other to release resources, or livelocks, where threads keep changing state in response to each other without making any progress.

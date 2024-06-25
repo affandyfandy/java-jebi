@@ -49,6 +49,7 @@ These steps configure a Spring application to connect to a MySQL database by set
 
 #
 ### Create Model
+Source Code : [Contact.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%201/src/main/java/jebi/hendardi/lecture5/model/Contact.java)
 
 - This Java class Contact models contact information within an application. 
 - It is annotated with @Entity from the Jakarta Persistence API, indicating it is a database entity. 
@@ -58,6 +59,8 @@ These steps configure a Spring application to connect to a MySQL database by set
 
 #
 ### Create JPA repository
+Source Code : [ContactRepository.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%201/src/main/java/jebi/hendardi/lecture5/repository/ContactRepository.java)
+
 - The ContactRepository interface is a Spring Data repository that manages Contact entities. 
 - It extends JpaRepository<Contact, String>, allowing it to inherit built-in methods for CRUD operations on Contact objects, where String represents the type of the entity's primary key. 
 - Annotated with @Repository, it is automatically recognized as a repository component by Spring, facilitating seamless integration with the application's data layer. 
@@ -65,6 +68,7 @@ These steps configure a Spring application to connect to a MySQL database by set
 
 #
 ### Create controller
+Source Code : [ContactController.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%201/src/main/java/jebi/hendardi/lecture5/controller/ContactController.java)
 
 The ContactController class, annotated with @RestController and mapped to /api/v1/contacts, serves as the endpoint controller for managing Contact entities within the application. It handles CRUD (Create, Read, Update, Delete) operations through various HTTP methods:
 

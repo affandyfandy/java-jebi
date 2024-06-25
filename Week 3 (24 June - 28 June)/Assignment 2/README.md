@@ -37,6 +37,9 @@ Visit https://start.spring.io/ and create a new Spring project by selecting the 
 
 #
 ### Create Model
+
+`Source Code` : [Employee.java] (https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/model/Employee.java)
+
 The Employee model class serves as a blueprint for representing employee data in project.
 
 **Annotation**
@@ -54,6 +57,8 @@ The Employee model class serves as a blueprint for representing employee data in
 
 #
 ### Create Repository
+`Source Code` : [EmployeeRepository.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/repository/EmployeeRepository.java)
+
 - The EmployeeRepository interface acts as an intermediary between your application and the database, leveraging Spring Data JPA to provide CRUD operations for the Employee entity. 
 
 - EmployeeRepository extends the Spring Data JPA interface JpaRepository. This interface provides methods for performing CRUD operations (save, findById, findAll, delete, etc.) on the Employee entity.
@@ -67,7 +72,7 @@ The Employee model class serves as a blueprint for representing employee data in
 
 #
 ### Create Service
-
+`Source Code` : [EmployeeService.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/service/EmployeeService.java)
 
 EmployeeService class serves as a pivotal component in application's service layer, encapsulating business logic related to employees. Annotations (@Service, @Transactional) denote its role and transactional behavior. It leverages EmployeeRepository for data access operations, promoting separation of concerns and enhancing maintainability. 
 
@@ -131,6 +136,8 @@ EmployeeService class serves as a pivotal component in application's service lay
 #
 ### Create Batch Configuration
 
+`Source Code` : [BatchConfig.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/config/BatchConfig.java)
+
 The BatchConfig class serves as the configuration hub for Spring Batch operations within your application. It orchestrates the reading, processing, and writing of Employee data from a CSV file to a database.
 
 
@@ -173,6 +180,7 @@ The BatchConfig class serves as the configuration hub for Spring Batch operation
 - **Data Mapping**: Maps data from CSV (FlatFileItemReader, lineMapper()) to domain objects (Employee) for insertion into the database (writer()).
 #
 ### Create Processor
+`Source Code` : [EmployeeProcessor.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/config/EmployeeProcessor.java)
 
 The EmployeeProcessor class in this Spring Batch application implements the ItemProcessor interface to handle Employee objects during batch processing. It currently serves as an identity processor, returning each input Employee without modification.
 
@@ -189,6 +197,7 @@ The EmployeeProcessor class in this Spring Batch application implements the Item
 - **Return Type**: Employee - Returns the processed Employee object, which can be modified or filtered based on business logic.
 #
 ### Create Controller
+`Source Code` : [EmployeeController.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/controller/EmployeeController.java)
 
 The EmployeeController class acts as the REST controller for managing Employee resources. It handles HTTP requests, delegates operations to EmployeeService for data manipulation, and launches batch jobs (importEmployee) for bulk data import operations.
 

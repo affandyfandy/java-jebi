@@ -1,8 +1,9 @@
 #
-#### Assignment 2 - Spring CRUD with CSV Import to database
+### Assignment 2 - Spring CRUD with CSV Import to database
+
 
 #
-#### Initialize Project
+## 1. Initialize Project
 Visit https://start.spring.io/ and create a new Spring project by selecting the following dependencies:
 - `Spring Data JPA` : This dependency provides robust support for database interaction using Java Persistence API (JPA). It facilitates the creation of data access layers and repositories, enabling seamless integration with relational databases.
 - `PostgreSQL Driver` : The PostgreSQL Driver is a JDBC driver for PostgreSQL databases, enabling your Spring application to connect to and interact with PostgreSQL databases
@@ -15,7 +16,7 @@ Visit https://start.spring.io/ and create a new Spring project by selecting the 
 #
 ### Create Configuration
 
-![alt text](image-1.png)
+![alt text](img/image-1.png)
 
 **Database Configuration**:
 
@@ -38,7 +39,7 @@ Visit https://start.spring.io/ and create a new Spring project by selecting the 
 #
 ### Create Model
 
-`Source Code` : [Employee.java] (https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/model/Employee.java)
+`Source Code` : [Employee.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/model/Employee.java)
 
 The Employee model class serves as a blueprint for representing employee data in project.
 
@@ -56,7 +57,7 @@ The Employee model class serves as a blueprint for representing employee data in
 - **Integration with JPA**: Allows the Employee entity to be managed by the Java Persistence API (JPA), facilitating data persistence and retrieval operations.
 
 #
-### Create Repository
+## 2. Create Repository
 `Source Code` : [EmployeeRepository.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/repository/EmployeeRepository.java)
 
 - The EmployeeRepository interface acts as an intermediary between your application and the database, leveraging Spring Data JPA to provide CRUD operations for the Employee entity. 
@@ -71,7 +72,7 @@ The Employee model class serves as a blueprint for representing employee data in
 - **Integration with Spring Data JPA**: Integrates seamlessly with Spring Data JPA to leverage its features such as automatic query generation based on method names (deleteBy..., findBy...) and repository abstraction, simplifying database operations within the application.
 
 #
-### Create Service
+## 3. Create Service
 `Source Code` : [EmployeeService.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/service/EmployeeService.java)
 
 EmployeeService class serves as a pivotal component in application's service layer, encapsulating business logic related to employees. Annotations (@Service, @Transactional) denote its role and transactional behavior. It leverages EmployeeRepository for data access operations, promoting separation of concerns and enhancing maintainability. 
@@ -134,7 +135,7 @@ EmployeeService class serves as a pivotal component in application's service lay
 
 - **Integration with Repository**: Acts as an intermediary between the controller (or other components) and the EmployeeRepository, facilitating data access operations and abstracting away the underlying data access mechanism.
 #
-### Create Batch Configuration
+## 4. Create Batch Configuration
 
 `Source Code` : [BatchConfig.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/config/BatchConfig.java)
 
@@ -179,7 +180,7 @@ The BatchConfig class serves as the configuration hub for Spring Batch operation
 
 - **Data Mapping**: Maps data from CSV (FlatFileItemReader, lineMapper()) to domain objects (Employee) for insertion into the database (writer()).
 #
-### Create Processor
+### 5. Create Processor
 `Source Code` : [EmployeeProcessor.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/config/EmployeeProcessor.java)
 
 The EmployeeProcessor class in this Spring Batch application implements the ItemProcessor interface to handle Employee objects during batch processing. It currently serves as an identity processor, returning each input Employee without modification.
@@ -196,7 +197,7 @@ The EmployeeProcessor class in this Spring Batch application implements the Item
 - **Input Parameter**: Employee employee - Represents an Employee object read from the input source (e.g., CSV file).
 - **Return Type**: Employee - Returns the processed Employee object, which can be modified or filtered based on business logic.
 #
-### Create Controller
+## 6. Create Controller
 `Source Code` : [EmployeeController.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/controller/EmployeeController.java)
 
 The EmployeeController class acts as the REST controller for managing Employee resources. It handles HTTP requests, delegates operations to EmployeeService for data manipulation, and launches batch jobs (importEmployee) for bulk data import operations.
@@ -225,10 +226,6 @@ The EmployeeController class acts as the REST controller for managing Employee r
 - `JobLauncher jobLauncher`: Launches Spring Batch jobs.
 - `Job job`: Represents the Spring Batch job (importEmployee) configured in BatchConfig.
 
-
-
-
-
 **Response Entities:**
 
 - `ResponseEntity<List<Employee>>`: Wraps the list of employees and HTTP status for GET requests.
@@ -247,3 +244,75 @@ The EmployeeController class acts as the REST controller for managing Employee r
 - **Integration with Service Layer**: Injects EmployeeService to perform business logic operations on Employee data.
 
 - **Batch Job Launching**: Uses JobLauncher to initiate the importEmployee batch job (job) for importing CSV data into the database.
+
+
+#
+## 7. Demo Run Project
+### Start Project
+When the project is successfully started, the employee table is automatically created in the database.
+
+**Entity Annotations:**
+- The Employee class is annotated with `@Entity`, `@Table`, `@Column` from the jakarta.persistence package.
+- These annotations provide metadata to Hibernate and Spring Data JPA about how to map the Java class Employee to corresponding database tables and columns.
+
+![alt text](img/2.2.png)
+
+#
+### Import data to DB
+Since the database is initially empty, data needs to be imported from the ImportData.csv file using a HTTP `POST` request to `/employee/import`
+
+**Note**: Ensure that the CSV file is located in `src\main\resources\ImportData.csv`, as specified in `BatchConfig.java`.
+
+![alt text](img/2.3.png)
+
+After the HTTP `POST` request to `/employee/import` is successful, the data from the CSV file is imported into the employee table in the database.
+
+
+#
+### Retrieve All Employees
+Retrieve all employees from the database using a HTTP `GET` request to `/employee/all`.
+
+![alt text](img/2.4.png)
+
+
+#
+### Retrieve Employee by EmployeeID
+Retrieve a specific employee by their employeeID using a HTTP `GET` request to `/employee/find/{employeeID}`.
+![alt text](img/2.5.png)
+
+
+#
+### Add New Employee
+Add a new employee to the database using a HTTP `POST` request to `/employee/add`.
+
+- Prepare a JSON payload containing details of a new employee.
+- Send a `POST` request to `/employee/add` with the JSON payload in the request body.
+
+![alt text](img/2.6.png)
+
+#
+### Update Employee by EmployeeID
+Update an existing employee's information identified by their employeeID using a HTTP `PUT` request to `/employee/update/{employeeID}`
+
+- Replace {employeeID} with the ID of an existing employee.
+- Prepare a JSON payload containing updated information for the employee.
+- Send a `PUT` request to `/employee/update/{employeeID}` with the JSON payload.
+  
+![alt text](img/2.7.png)
+#
+### Delete Employee by EmployeeID
+Delete an employee from the database by their employeeID using a HTTP `DELETE` request to `/employee/delete/{employeeID}`
+
+![alt text](img/2.8.png)
+
+#
+### Filter Employees by Department
+Filter employees by their department using HTTP `GET` requests to `/employee/{department}` for different departments.
+
+
+Send a `GET` request to `/employee/{department}` where {department} is replaced with specific department names like **WEB** or **MOBILE**.
+
+
+![alt text](img/2.9.png)
+
+![alt text](img/2.10.png)

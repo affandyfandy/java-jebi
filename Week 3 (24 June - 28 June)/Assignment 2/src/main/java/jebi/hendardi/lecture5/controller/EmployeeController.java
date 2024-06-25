@@ -22,7 +22,6 @@ import jebi.hendardi.lecture5.model.Employee;
 import jebi.hendardi.lecture5.service.EmployeeService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;

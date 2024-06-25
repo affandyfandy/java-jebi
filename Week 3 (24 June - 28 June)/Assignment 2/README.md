@@ -1,7 +1,24 @@
 #
 ### Assignment 2 - Spring CRUD with CSV Import to database
 
-
+#### Structure Project
+```
+menu
+├── src\main\java\jebi\hendardi\lecture5
+│   ├── Lecture5Application.java
+│   ├── config\
+│   │   ├── BatchConfig.java
+│   │   └── EmployeProcessor.java
+│   │── controller\
+│   │   └── EmployeeController.java
+│   ├── model\
+│   │   └── Employee.java
+│   ├── repository\
+│   │   └── EmployeeRepository.java
+│   └── service/
+│       └── EmployeeService.java
+└── pom.xml
+```
 #
 ## 1. Initialize Project
 Visit https://start.spring.io/ and create a new Spring project by selecting the following dependencies:

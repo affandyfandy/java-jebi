@@ -23,8 +23,8 @@ menu
 ## 1. Initialize Project
 Visit https://start.spring.io/ and create a new Spring project by selecting the following dependencies:
 - `Spring Data JPA` : This dependency provides robust support for database interaction using Java Persistence API (JPA). It facilitates the creation of data access layers and repositories, enabling seamless integration with relational databases.
-- `PostgreSQL Driver` : The PostgreSQL Driver is a JDBC driver for PostgreSQL databases, enabling your Spring application to connect to and interact with PostgreSQL databases
-- `Spring Web` : This dependency equips your application with capabilities for developing web applications, including RESTful services. It includes essential tools for building and deploying web-based services and applications.
+- `PostgreSQL Driver` : The PostgreSQL Driver is a JDBC driver for PostgreSQL databases, enabling Spring application to connect to and interact with PostgreSQL databases
+- `Spring Web` : This dependency equips project application with capabilities for developing web applications, including RESTful services. It includes essential tools for building and deploying web-based services and applications.
 - `Lombok` : Library that simplifies Java code by automating the creation of boilerplate code such as getters, setters, and constructors. 
 - `Spring Batch` : Spring Batch is a framework within the Spring ecosystem focused on processing large volumes of batch data. It provides reusable functions for tasks like reading large datasets, processing them, and writing back to databases. Spring Batch handles transactions, chunk-based processing, and job restartability, making it suitable for complex and reliable batch processing tasks.
   
@@ -77,7 +77,7 @@ The Employee model class serves as a blueprint for representing employee data in
 ## 4. Create Repository
 `Source Code` : [EmployeeRepository.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/repository/EmployeeRepository.java)
 
-- The EmployeeRepository interface acts as an intermediary between your application and the database, leveraging Spring Data JPA to provide CRUD operations for the Employee entity. 
+- The EmployeeRepository interface acts as an intermediary between project application and the database, leveraging Spring Data JPA to provide CRUD operations for the Employee entity. 
 
 - EmployeeRepository extends the Spring Data JPA interface JpaRepository. This interface provides methods for performing CRUD operations (save, findById, findAll, delete, etc.) on the Employee entity.
 
@@ -156,7 +156,7 @@ EmployeeService class serves as a pivotal component in application's service lay
 
 `Source Code` : [BatchConfig.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/config/BatchConfig.java)
 
-The BatchConfig class serves as the configuration hub for Spring Batch operations within your application. It orchestrates the reading, processing, and writing of Employee data from a CSV file to a database.
+The BatchConfig class serves as the configuration hub for Spring Batch operations within project application. It orchestrates the reading, processing, and writing of Employee data from a CSV file to a database.
 
 
 **Annotations:**

@@ -1,7 +1,7 @@
 #
 ### Assignment 2 - Spring CRUD with CSV Import to database
 
-#### Structure Project
+#### Project Structure
 ```
 menu
 ├── src\main\java\jebi\hendardi\lecture5

@@ -15,7 +15,7 @@ menu
 │   │   └── Employee.java
 │   ├── repository\
 │   │   └── EmployeeRepository.java
-│   └── service/
+│   └── service\
 │       └── EmployeeService.java
 └── pom.xml
 ```

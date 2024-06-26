@@ -196,6 +196,16 @@ The BatchConfig class serves as the configuration hub for Spring Batch operation
 - **Transaction Management**: Manages transactions (platformTransactionManager) to ensure data integrity during batch processing operations.
 
 - **Data Mapping**: Maps data from CSV (FlatFileItemReader, lineMapper()) to domain objects (Employee) for insertion into the database (writer()).
+
+
+#
+
+**Workflow Exlanation (CSV to Database):**
+
+   - `CSV Reader (itemReader)`: Captivatingly reads rows of data from the CSV file.
+   - `Line Mapper`: Ingeniously maps CSV rows to Employee objects using meticulous settings like delimiters and field mappings.
+   - `Processor (EmployeeProcessor)`: Optionally adds flair by processing data before the grand save.
+   - `Writer (writer)`: Magnanimously saves the Employee data into the database using the trusted EmployeeRepository.
 #
 ## 7. Create Processor
 `Source Code` : [EmployeeProcessor.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/config/EmployeeProcessor.java)
@@ -213,6 +223,9 @@ The EmployeeProcessor class in this Spring Batch application implements the Item
 **Process Method : `public Employee process(Employee employee)`**
 - **Input Parameter**: Employee employee - Represents an Employee object read from the input source (e.g., CSV file).
 - **Return Type**: Employee - Returns the processed Employee object, which can be modified or filtered based on business logic.
+
+
+
 #
 ## 8. Create Controller
 `Source Code` : [EmployeeController.java](https://github.com/affandyfandy/java-jebi/blob/week_03/Week%203%20(24%20June%20-%2028%20June)/Assignment%202/src/main/java/jebi/hendardi/lecture5/controller/EmployeeController.java)
@@ -261,6 +274,8 @@ The EmployeeController class acts as the REST controller for managing Employee r
 - **Integration with Service Layer**: Injects EmployeeService to perform business logic operations on Employee data.
 
 - **Batch Job Launching**: Uses JobLauncher to initiate the importEmployee batch job (job) for importing CSV data into the database.
+
+
 
 
 #

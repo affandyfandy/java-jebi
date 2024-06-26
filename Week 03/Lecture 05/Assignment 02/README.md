@@ -32,7 +32,6 @@ Visit https://start.spring.io/ and create a new Spring project by selecting the 
 
 #
 ## 2. Create Configuration
-
 ![alt text](img/image-1.png)
 
 **Database Configuration**:
@@ -53,6 +52,12 @@ Visit https://start.spring.io/ and create a new Spring project by selecting the 
 
 - `spring.batch.jdbc.initialize-schema=always`: Tells Spring Batch to initialize its database schema (BATCH_ tables) always when the application starts up. This is useful for ensuring that the necessary batch processing tables are created or updated as needed.
 
+
+**Multipart File Upload Configuration:**
+
+- `spring.servlet.multipart.enabled=true`: Enables multipart (file upload) support in the Spring Boot application.
+- `spring.servlet.multipart.max-file-size=2MB`: Sets the maximum size for a single uploaded file to 2MB. If a file larger than this is uploaded, the server will reject it.
+- `spring.servlet.multipart.max-request-size=2MB`: Sets the maximum size for the entire multipart request to 2MB. This includes all files and form data in the request. If the combined size exceeds this limit, the server will reject the request.
 #
 ## 3. Create Model
 
@@ -243,6 +248,7 @@ The EmployeeController class acts as the REST controller for managing Employee r
 | PUT         | `/employee/update/{employeeID}`   | Updates an employee identified by `employeeID` with new details using `employeeService.updateEmployee(updatedEmployee)`. |
 | DELETE      | `/employee/delete/{employeeID}`   | Deletes an employee from the database by `employeeID` using `employeeService.deleteEmployee(employeeID)`. |
 | POST        | `/employee/import`                | Initiates a batch job (`importEmployee`) to import data from a CSV file (`ImportData.csv`) into the database using `jobLauncher.run(job, jobParameters)`. |
+| POST      | `/employee/upload`   | Uploads a CSV file and processes it to store the data into the database using `employeeService.addEmployee(employee)`. The file must be a valid CSV with the expected format. |
 
 
 **Annotations:**
@@ -301,10 +307,45 @@ After the HTTP `POST` request to `/employee/import` is successful, the data from
 
 
 #
+### Upload and store CSV File to database
+
+- **HTTP Method**: POST
+- **Endpoint**: /employee/upload
+- **Description**: This endpoint allows users to upload a CSV file containing employee data. The file is processed to extract employee information, which is then stored in the database.
+- **Request Parameter**: file (MultipartFile) - The CSV file to be uploaded.
+
+**Request Handling**:
+
+- `public ResponseEntity<String> uploadCsvFile(@RequestParam("file") MultipartFile file)`: This method handles the file upload request. It accepts a MultipartFile parameter named file.
+
+**File Validation**:
+
+- `if (file.isEmpty())`: Checks if the uploaded file is empty.
+- `return new ResponseEntity<>("File is empty", HttpStatus.BAD_REQUEST)`;: If the file is empty, it returns a 400 Bad Request response with a message.
+
+**File Processing:**
+
+- `try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream())))`: Reads the file content using a BufferedReader.
+- r`eader.lines().skip(1).map(this::mapToEmployee).collect(Collectors.toList());`: Reads the file line by line, skips the first line (header), maps each line to an Employee object, and collects the results into a List<Employee>.
+
+**Data Saving:**
+- `employees.forEach(employeeService::addEmployee)`;: Iterates over the list of Employee objects and saves each one to the database using *employeeService.addEmployee*.
+
+
+
+**If File is empty**
+![alt text](img/2.11.png)
+
+**Upload success**
+![alt text](img/2.12.png)
+
+![alt text](img/2.13.png)
+#
 ### Retrieve All Employees
 Retrieve all employees from the database using a HTTP `GET` request to `/employee/all`.
 
 ![alt text](img/2.4.png)
+
 
 
 #
@@ -348,3 +389,5 @@ Send a `GET` request to `/employee/{department}` where {department} is replaced 
 ![alt text](img/2.9.png)
 
 ![alt text](img/2.10.png)
+
+

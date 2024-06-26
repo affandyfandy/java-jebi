@@ -172,21 +172,21 @@ The BatchConfig class serves as the configuration hub for Spring Batch operation
 
 **Bean Definitions:**
 
-- **itemReader()**: Creates and configures a FlatFileItemReader bean to read data from a CSV file (ImportData.csv). Skips the header line (setLinesToSkip(1)) and maps each line using a custom LineMapper.
+- `itemReader()`: Creates and configures a FlatFileItemReader bean to read data from a CSV file (ImportData.csv). Skips the header line (setLinesToSkip(1)) and maps each line using a custom LineMapper.
 
-- **processor()**: Defines a bean of type EmployeeProcessor, which presumably processes each Employee read from the CSV file.
+- `processor()`: Defines a bean of type EmployeeProcessor, which presumably processes each Employee read from the CSV file.
 
-- **writer()**: Configures a RepositoryItemWriter bean that uses EmployeeRepository to save (methodName("save")) processed Employee objects into the database.
+- `writer()`: Configures a RepositoryItemWriter bean that uses EmployeeRepository to save (methodName("save")) processed Employee objects into the database.
 
-- **importStep()**: Defines a batch Step named "csvImport". It reads from itemReader(), processes using processor(), writes using writer(), and is executed asynchronously (taskExecutor(new SimpleAsyncTaskExecutor())). It handles chunks of 100 Employee objects per transaction (chunk(100, platformTransactionManager)).
+- *`importStep()`: Defines a batch Step named "csvImport". It reads from itemReader(), processes using processor(), writes using writer(), and is executed asynchronously (taskExecutor(new SimpleAsyncTaskExecutor())). It handles chunks of 100 Employee objects per transaction (chunk(100, platformTransactionManager)).
 
-- **runJob()**: Configures a Spring Batch Job named "importEmployee" that starts with importStep().
+- `runJob()`: Configures a Spring Batch Job named "importEmployee" that starts with importStep().
 
 **LineMapper Configuration:**
 
-- **lineMapper()**: Defines a custom LineMapper (DefaultLineMapper<Employee>) for mapping lines from the CSV file to Employee objects.
-- **DelimitedLineTokenizer**: Specifies the delimiter (,), allowing parsing of CSV lines into fields (employeeID, name, dob, address, department).
-- **BeanWrapperFieldSetMapper**: Maps fields from the CSV file to properties of Employee using JavaBeans conventions.
+- `lineMapper()`: Defines a custom LineMapper (DefaultLineMapper<Employee>) for mapping lines from the CSV file to Employee objects.
+- `DelimitedLineTokenizer`: Specifies the delimiter (,), allowing parsing of CSV lines into fields (employeeID, name, dob, address, department).
+- `BeanWrapperFieldSetMapper`: Maps fields from the CSV file to properties of Employee using JavaBeans conventions.
 
 **Purpose of BatchConfig Class:**
 - **Batch Configuration**: Configures Spring Batch jobs and steps (importStep(), runJob()) to handle bulk data processing (e.g., importing CSV data into a database).

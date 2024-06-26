@@ -200,7 +200,7 @@ The BatchConfig class serves as the configuration hub for Spring Batch operation
 
 #
 
-**Workflow Exlanation (CSV to Database):**
+**Workflow Explanation (CSV to Database):**
 
    - `CSV Reader (itemReader)`: Captivatingly reads rows of data from the CSV file.
    - `Line Mapper`: Ingeniously maps CSV rows to Employee objects using meticulous settings like delimiters and field mappings.

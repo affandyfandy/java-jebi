@@ -312,7 +312,9 @@ After the HTTP `POST` request to `/employee/import` is successful, the data from
 - **HTTP Method**: POST
 - **Endpoint**: /employee/upload
 - **Description**: This endpoint allows users to upload a CSV file containing employee data. The file is processed to extract employee information, which is then stored in the database.
-- **Request Parameter**: file (MultipartFile) - The CSV file to be uploaded.
+- **Request Parameter**: form-data "file" (MultipartFile) - The CSV file to be uploaded.
+
+**Note** : Ensure that the form data key for the file upload is `file` to match the request parameter `@RequestParam("file")`. If there's a mismatch in key name, the file won't be processed correctly.
 
 **Request Handling**:
 

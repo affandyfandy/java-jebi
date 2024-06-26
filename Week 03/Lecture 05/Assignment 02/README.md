@@ -26,7 +26,7 @@ Visit https://start.spring.io/ and create a new Spring project by selecting the 
 - `PostgreSQL Driver` : The PostgreSQL Driver is a JDBC driver for PostgreSQL databases, enabling Spring application to connect to and interact with PostgreSQL databases
 - `Spring Web` : This dependency equips project application with capabilities for developing web applications, including RESTful services. It includes essential tools for building and deploying web-based services and applications.
 - `Lombok` : Library that simplifies Java code by automating the creation of boilerplate code such as getters, setters, and constructors. 
-- `Spring Batch` : Spring Batch is a framework within the Spring ecosystem focused on processing large volumes of batch data, including CSV files. It provides reusable functions for tasks like reading large datasets, processing them, and writing back to databases. Spring Batch handles transactions, chunk-based processing, and job restartability.
+- `Spring Batch` : Spring Batch is a framework within the Spring ecosystem focused on processing large volumes of batch data, including CSV files. Spring Batch simplifies the process of importing CSV data into databases. It includes a FlatFileItemReader for reading CSV files, a configurable ItemProcessor for data transformation or filtering, and a JdbcBatchItemWriter for efficient database writes. These components work together to handle transactions, chunk-based processing, and job restartability.
   
     ![alt text](img/2.1.png)
 

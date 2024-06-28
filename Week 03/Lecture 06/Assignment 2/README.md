@@ -154,4 +154,3 @@ It will show each `amount` in the `invoice` table is the sum of the `amount` fie
 1. **Table Creation**: Tables are created with necessary fields and relationships, ensuring referential integrity and proper data organization.
 2. **Triggers**: Triggers enforce rules for calculating the `amount` fields, maintaining consistency and data integrity automatically.
 3. **Mock Data**: Mock data is inserted to demonstrate the functionality and verify that the triggers and calculations work as expected.
-4. **Professional Design**: The design follows best practices, using `UUID` for unique identification and ensuring that all calculated fields are dynamically updated.

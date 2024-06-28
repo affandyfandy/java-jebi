@@ -137,7 +137,7 @@ After inserting the mock data, verify that the triggers have correctly calculate
 SELECT * FROM invoice_detail;
 ```
 
-You should see that each `amount` in `invoice_detail` is calculated as `quantity * unit_price`.
+It will show each `amount` in `invoice_detail` is calculated as `quantity * unit_price`.
 
 #### Check Invoice Amounts
 
@@ -145,7 +145,7 @@ You should see that each `amount` in `invoice_detail` is calculated as `quantity
 SELECT * FROM invoice;
 ```
 
-You should see that each `amount` in the `invoice` table is the sum of the `amount` fields from the corresponding `invoice_detail` entries.
+It will show each `amount` in the `invoice` table is the sum of the `amount` fields from the corresponding `invoice_detail` entries.
 
 ## Summary
 

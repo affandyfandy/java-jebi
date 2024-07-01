@@ -2,7 +2,10 @@
 
 ## 1. Working with Annotations
 
-App.java
+Source Code : https://github.com/affandyfandy/java-jebi/tree/week_04/Week%2004/Assignment%202/Code/lab1
+
+
+**App.java**
 ```java
 package jebi.hendardi.assignment.config;
 
@@ -15,16 +18,16 @@ public class AppConfig {
 }
 ```
 
-
-EmailService.java
+#
+**EmailService.java**
 ```java
 public interface EmailService {
     void sendEmail(String to, String subject, String body);
 }
 ```
 
-
-EmailServiceImpl.java
+#
+**EmailServiceImpl.java**
 ```java
 import org.springframework.stereotype.Service;
 
@@ -38,8 +41,8 @@ public class EmailServiceImpl implements EmailService {
     }
 }
 ```
-
-EmployeeService.java
+#
+**EmployeeService.java**
 ```java
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,8 +85,8 @@ public class EmployeeService {
 }
 ```
 
-
-UnitTest : EmployeeServiceTest.java 
+##
+**UnitTest : EmployeeServiceTest.java**
 ```java
 
 import org.junit.jupiter.api.Test;
@@ -113,7 +116,7 @@ public class EmployeeServiceTest {
 }
 ```
 
-Output :
+**Output Unit Test :**
 ![alt text](img/image.png)
 
 

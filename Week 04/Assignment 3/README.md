@@ -2,6 +2,9 @@
 
 ## 1. Adding Bean Scopes to Assignment 2
 
+Source Code : https://github.com/affandyfandy/java-jebi/tree/week_04/Week%2004/Assignment%203/Code/lab1
+
+
 ### Update EmployeeService.java
 
 **Explanation:**

@@ -137,7 +137,7 @@ public class RemoveDuplicates {
     public static void main(String[] args) {
         String inputFile = "data.csv";
         String outputFile = "output.csv";
-        String keyField = "id";
+        String keyField = "id"; 
 
         try {
             removeDuplicates(inputFile, outputFile, keyField);
@@ -161,11 +161,11 @@ public class RemoveDuplicates {
 
         // Process each line of the input file
         while ((line = reader.readLine()) != null) {
-            String[] fields = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1); // Split by comma, ignoring commas inside quotes
-
+            String[] fields = line.split(",");
             if (fields.length > 0) {
-                String key = fields[0].replaceAll("^\"|\"$", ""); 
+                String key = fields[0]; 
 
+                // Check if this key is already present (to remove duplicates)
                 if (!uniqueEntries.containsKey(key)) {
                     uniqueEntries.put(key, line);
                     writer.write(line + System.lineSeparator());

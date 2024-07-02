@@ -4,8 +4,9 @@
 
 Source Code : https://github.com/affandyfandy/java-jebi/tree/week_04/Week%2004/Assignment%202/Code/lab1
 
+### **`AppConfig.java`**
 
-**App.java**
+### **Code:**
 ```java
 package jebi.hendardi.assignment.config;
 
@@ -18,16 +19,40 @@ public class AppConfig {
 }
 ```
 
-#
-**EmailService.java**
+### **Explanation:**
+- **Purpose:** 
+  This class is used to configure the Spring application context.
+  
+- **Annotations:**
+  - `@Configuration`: Indicates that the class can be used by the Spring IoC container as a source of bean definitions. This is typically used to mark configuration classes that define beans or other application settings.
+  - `@ComponentScan`: Specifies the base packages to scan for Spring components (such as `@Component`, `@Service`, `@Repository`, etc.). Here, it tells Spring to scan the package `jebi.hendardi.assignment` for beans, enabling automatic detection and registration of beans within that package.
+
+---
+
+## **`EmailService.java`**
+
+### **Code:**
 ```java
 public interface EmailService {
     void sendEmail(String to, String subject, String body);
 }
 ```
 
-#
-**EmailServiceImpl.java**
+### **Explanation:**
+- **Purpose:** 
+  This interface defines a contract for sending emails. It serves as a blueprint that other classes must implement to provide email-sending functionality.
+  
+- **Methods:**
+  - `sendEmail`: The method signature defines a contract that requires any implementing class to provide functionality for sending an email. It takes three parameters:
+    - `to`: The recipient's email address.
+    - `subject`: The subject of the email.
+    - `body`: The body of the email.
+
+---
+
+## **`EmailServiceImpl.java`**
+
+### **Code:**
 ```java
 import org.springframework.stereotype.Service;
 
@@ -41,10 +66,24 @@ public class EmailServiceImpl implements EmailService {
     }
 }
 ```
-#
-**EmployeeService.java**
-```java
 
+### **Explanation:**
+- **Purpose:** 
+  This class provides a concrete implementation of the `EmailService` interface. It defines how the email-sending operation is carried out.
+  
+- **Annotations:**
+  - `@Service`: Indicates that the class is a service component in the Spring framework. This annotation is a specialization of `@Component`, used for classes that provide some business functionalities.
+
+- **Methods:**
+  - `sendEmail`: Implements the `sendEmail` method defined in the `EmailService` interface. The method prints the email details to the console, simulating the email-sending process. It uses:
+    - `System.out.println`: Prints the email details (recipient, subject, and body) to the console.
+
+---
+
+## **`EmployeeService.java`**
+
+### **Code:**
+```java
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,10 +124,30 @@ public class EmployeeService {
 }
 ```
 
-##
-**UnitTest : EmployeeServiceTest.java**
-```java
+### **Explanation:**
+- **Purpose:** 
+  This class provides methods for notifying employees via email. It demonstrates different ways to inject dependencies (specifically, the `EmailService`) into a class using Spring.
 
+- **Annotations:**
+  - `@Service`: Marks the class as a Spring service, which means it’s a component that provides some business logic and is managed by the Spring container.
+  - `@Autowired`: Indicates that Spring should automatically inject a dependency into the annotated field, constructor, or setter method.
+
+- **Dependency Injection Types:**
+  - **Constructor-based Injection:** The `EmailService` is injected via the class constructor. The constructor is annotated with `@Autowired`, allowing Spring to inject the dependency when the `EmployeeService` bean is created.
+  - **Field-based Injection:** The `EmailService` is injected directly into the field `fieldEmailService`, which is annotated with `@Autowired`.
+  - **Setter-based Injection:** The `EmailService` is injected via the setter method `setEmailService`. The method is annotated with `@Autowired`, allowing Spring to inject the dependency when the setter is called.
+
+- **Methods:**
+  - `notifyEmployeeByConstructor`: Uses the constructor-injected `emailService` to send an email. It calls `sendEmail` on the `emailService` instance.
+  - `notifyEmployeeByField`: Uses the field-injected `fieldEmailService` to send an email. It calls `sendEmail` on the `fieldEmailService` instance.
+  - `notifyEmployeeBySetter`: Uses the setter-injected `setterEmailService` to send an email. It calls `sendEmail` on the `setterEmailService` instance.
+
+---
+
+## **`EmployeeServiceTest.java`**
+
+### **Code:**
+```java
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -116,10 +175,59 @@ public class EmployeeServiceTest {
 }
 ```
 
+### **Explanation:**
+- **Purpose:** 
+  This class provides unit tests for the `EmployeeService` methods to verify that email notifications are sent correctly using different types of dependency injections.
+  
+- **Annotations:**
+  - `@SpringBootTest`: Indicates that the class is a Spring Boot test and should load the full application context. It allows for testing in a real or simulated environment, ensuring that all components and beans are properly loaded and can be tested.
+  - `@Autowired`: Indicates that Spring should inject the `EmployeeService` dependency into the test class.
+
+- **Test Methods:**
+  - `testNotifyEmployeeByConstructor`: Tests the `notifyEmployeeByConstructor` method. It sends a sample email and prints its details to the console.
+  - `testNotifyEmployeeByField`: Tests the `notifyEmployeeByField` method. It sends a sample email and prints its details to the console.
+  - `testNotifyEmployeeBySetter`: Tests the `notifyEmployeeBySetter` method. It sends a sample email and prints its details to the console.
+
+Each test method verifies that the corresponding injection method (`constructor`, `field`, or `setter`) correctly enables the `EmployeeService` to send an email using the `EmailService` implementation.
+
+
 **Output Unit Test :**
 ![alt text](img/image.png)
 
 
+#
+# Program Flow
+
+## 1. Application Configuration and Bean Initialization
+
+**AppConfig.java** is the configuration class that enables component scanning in the package `jebi.hendardi.assignment`. When the Spring application starts, it scans this package to discover beans annotated with `@Component`, `@Service`, etc.
+
+**Scanning:** Spring finds `EmailServiceImpl` and `EmployeeService` during the component scan and registers them as beans in the application context.
+
+## 2. Bean Registration and Dependency Injection
+
+**EmailServiceImpl.java** is marked with `@Service`, so Spring registers it as a service bean. This class implements the `EmailService` interface and provides the functionality to send emails by printing the details to the console.
+
+**EmployeeService.java** is also marked with `@Service`, making it a service bean. This class depends on `EmailService` for sending emails and demonstrates three types of dependency injection:
+
+- **Constructor-based Injection:** Spring injects `EmailServiceImpl` into `EmployeeService` through the constructor when the `EmployeeService` bean is created.
+- **Field-based Injection:** Spring directly injects `EmailServiceImpl` into the private field `fieldEmailService` annotated with `@Autowired`.
+- **Setter-based Injection:** Spring injects `EmailServiceImpl` into `EmployeeService` through the setter method `setEmailService`, also annotated with `@Autowired`.
+
+## 3. Running the Program
+
+Typically, this kind of Spring application would be run within a context, such as a web server or a standalone application. For testing purposes, we use unit tests to simulate the behavior.
+
+## 4. Testing the Functionality
+
+**EmployeeServiceTest.java** is a unit test class annotated with `@SpringBootTest`, which tells Spring to start the entire application context for testing.
+
+**Dependency Injection:** Spring injects the `EmployeeService` bean into the test class.
+
+**Test Methods:**
+- `testNotifyEmployeeByConstructor()`: Calls `notifyEmployeeByConstructor` on `EmployeeService`, which uses the constructor-injected `emailService` to send an email and print the details.
+- `testNotifyEmployeeByField()`: Calls `notifyEmployeeByField`, using the field-injected `fieldEmailService` to send an email.
+- `testNotifyEmployeeBySetter()`: Calls `notifyEmployeeBySetter`, using the setter-injected `setterEmailService` to send an email.
 
 
 

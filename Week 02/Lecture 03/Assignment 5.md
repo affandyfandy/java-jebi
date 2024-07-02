@@ -125,15 +125,16 @@ Input: file data (.csv or .txt) and position key field for txt or key field name
 Output: write to new file with no duplication by key field
 
 ```java
-import java.io.BufferedReader;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RemoveDuplicates {
-
     public static void main(String[] args) {
         String inputFile = "data.csv";
         String outputFile = "output.csv";
@@ -148,35 +149,43 @@ public class RemoveDuplicates {
     }
 
     public static void removeDuplicates(String inputFile, String outputFile, String keyField) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-        FileWriter writer = new FileWriter(outputFile);
+        CSVReader reader = new CSVReader(new FileReader(inputFile));
+        CSVWriter writer = new CSVWriter(new FileWriter(outputFile));
 
-        Map<String, String> uniqueEntries = new HashMap<>();
-        String line;
+        Set<String> uniqueKeys = new HashSet<>();
+        String[] nextLine;
+        boolean isHeader = true;
+        int keyFieldIndex = -1;
 
-        // Read header and write to output file
-        if ((line = reader.readLine()) != null) {
-            writer.write(line + System.lineSeparator());
-        }
-
-        // Process each line of the input file
-        while ((line = reader.readLine()) != null) {
-            String[] fields = line.split(",");
-            if (fields.length > 0) {
-                String key = fields[0]; 
-
-                // Check if this key is already present (to remove duplicates)
-                if (!uniqueEntries.containsKey(key)) {
-                    uniqueEntries.put(key, line);
-                    writer.write(line + System.lineSeparator());
+        while ((nextLine = reader.readNext()) != null) {
+            if (isHeader) {
+                keyFieldIndex = getFieldIndex(nextLine, keyField);
+                writer.writeNext(nextLine);
+                isHeader = false;
+            } else {
+                if (keyFieldIndex == -1) {
+                    throw new IllegalArgumentException("Key field not found.");
+                }
+                String key = nextLine[keyFieldIndex];
+                if (uniqueKeys.add(key)) {
+                    writer.writeNext(nextLine);
                 }
             }
         }
-
         reader.close();
         writer.close();
     }
+
+    private static int getFieldIndex(String[] header, String keyField) {
+        for (int i = 0; i < header.length; i++) {
+            if (header[i].equalsIgnoreCase(keyField)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
+
 ```
 
 

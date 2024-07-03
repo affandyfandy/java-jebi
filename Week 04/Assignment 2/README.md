@@ -196,15 +196,15 @@ Each test method verifies that the corresponding injection method (`constructor`
 
 
 #
-# Program Flow
+### Program Flow
 
-## 1. Application Configuration and Bean Initialization
+### a. Application Configuration and Bean Initialization
 
 **AppConfig.java** is the configuration class that enables component scanning in the package `jebi.hendardi.assignment`. When the Spring application starts, it scans this package to discover beans annotated with `@Component`, `@Service`, etc.
 
 **Scanning:** Spring finds `EmailServiceImpl` and `EmployeeService` during the component scan and registers them as beans in the application context.
-
-## 2. Bean Registration and Dependency Injection
+#
+### b. Bean Registration and Dependency Injection
 
 **EmailServiceImpl.java** is marked with `@Service`, so Spring registers it as a service bean. This class implements the `EmailService` interface and provides the functionality to send emails by printing the details to the console.
 
@@ -213,12 +213,12 @@ Each test method verifies that the corresponding injection method (`constructor`
 - **Constructor-based Injection:** Spring injects `EmailServiceImpl` into `EmployeeService` through the constructor when the `EmployeeService` bean is created.
 - **Field-based Injection:** Spring directly injects `EmailServiceImpl` into the private field `fieldEmailService` annotated with `@Autowired`.
 - **Setter-based Injection:** Spring injects `EmailServiceImpl` into `EmployeeService` through the setter method `setEmailService`, also annotated with `@Autowired`.
-
-## 3. Running the Program
+#
+### c. Running the Program
 
 Typically, this kind of Spring application would be run within a context, such as a web server or a standalone application. For testing purposes, we use unit tests to simulate the behavior.
-
-## 4. Testing the Functionality
+#
+### d. Testing the Functionality
 
 **EmployeeServiceTest.java** is a unit test class annotated with `@SpringBootTest`, which tells Spring to start the entire application context for testing.
 
@@ -373,9 +373,7 @@ public class ClassB {
 #
 ## 4. Explain and give examples for some annotations
 
-# Spring Annotations
-
-## @Configuration
+### @Configuration
 Marks a class as a source of bean definitions for the Spring IoC container. Typically used to define beans using the `@Bean` annotation.
 
 **Example:**
@@ -389,8 +387,8 @@ public class AppConfig {
     }
 }
 ```
-
-## @Bean
+#
+### @Bean
 Indicates that a method produces a bean to be managed by the Spring container. Typically used in `@Configuration` classes.
 
 **Example:**
@@ -404,8 +402,8 @@ public class AppConfig {
     }
 }
 ```
-
-## @ComponentScan
+#
+### @ComponentScan
 Configures component scanning directives for use with `@Configuration` classes. It automatically discovers and registers beans in the Spring application context.
 
 **Example:**
@@ -415,8 +413,8 @@ Configures component scanning directives for use with `@Configuration` classes. 
 public class AppConfig {
 }
 ```
-
-## @Component
+#
+### @Component
 Indicates that an annotated class is a "component". Such classes are considered as candidates for auto-detection when using annotation-based configuration and classpath scanning.
 
 **Example:**
@@ -430,8 +428,8 @@ public class EmailServiceImpl implements EmailService {
     }
 }
 ```
-
-## @Service
+#
+### @Service
 Specialization of `@Component`. It indicates that an annotated class is a "service", originally defined by Domain-Driven Design (DDD) as an operation offered as an interface that stands alone in the model, with no encapsulated state.
 
 **Example:**
@@ -447,8 +445,8 @@ public class EmployeeService {
     }
 }
 ```
-
-## @Autowired
+#
+### @Autowired
 Marks a constructor, field, setter method, or config method to be autowired by Spring's dependency injection facilities. It is an alternative to the XML `<property>` or `<constructor-arg>` elements.
 
 **Example:**
@@ -464,8 +462,8 @@ public class EmployeeService {
     }
 }
 ```
-
-## @Scope
+#
+### @Scope
 Configures the scope of a bean. It can be used at the class level or on a `@Bean` method in a `@Configuration` class. Common scopes are singleton (default) and prototype.
 
 **Example:**

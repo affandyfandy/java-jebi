@@ -25,9 +25,9 @@ This XML configuration defines a bean for an `Employee` class with the specified
 <beans>
     <bean id="employee" class="com.example.Employee">
         <constructor-arg name="id" value="1" />
-        <constructor-arg name="name" value="John Doe" />
-        <constructor-arg name="age" value="30" />
-        <constructor-arg name="department" value="HR" />
+        <constructor-arg name="name" value="Jebi Hendardi" />
+        <constructor-arg name="age" value="20" />
+        <constructor-arg name="department" value="Developer" />
     </bean>
 </beans>
 ```

@@ -107,7 +107,7 @@ Source Code : https://github.com/affandyfandy/java-jebi/tree/week_04/Week%2004/A
     ![alt text](img/3.2.png)
 
 ## 2. Creating a Controller for Request Scope
-
+This controller interacts with EmployeeService and demonstrates request scope.
 ```java
 package jebi.hendardi.assignment.controller;
 
@@ -163,6 +163,14 @@ public class EmployeeController {
     }
 }
 ```
+
+**Explanation:**
+- `Controller Setup`: EmployeeController is a REST controller that exposes endpoints for various injection types (/notify-constructor, /notify-field, /notify-setter) and prototype scope (/prototype-scope).
+
+- `Injection and Scoping`: EmployeeService is injected using constructor injection (@Autowired). PrototypeService instances (prototypeService1, prototypeService2) are injected to demonstrate prototype scope.
+
+- `Endpoint Methods`: Each method calls corresponding methods in EmployeeService to simulate notifications. **/prototype-scope** endpoint demonstrates prototype scope by printing and returning instance details of PrototypeService.
+
 **Output Test `/prototype-scope` with Postman**
 
 ![alt text](img/3.3.png)

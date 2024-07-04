@@ -167,10 +167,11 @@ public class EmployeeController {
 **Explanation:**
 - `Controller Setup`: EmployeeController is a REST controller that exposes endpoints for various injection types (/notify-constructor, /notify-field, /notify-setter) and prototype scope (/prototype-scope).
 
-- `Injection and Scoping`: EmployeeService is injected using constructor injection (@Autowired). PrototypeService instances (prototypeService1, prototypeService2) are injected to demonstrate prototype scope.
+- `Injection and Scoping`: Instances of PrototypeService, namely prototypeService1 and prototypeService2, are injected into EmployeeController. These instances are annotated with @PrototypeScope, indicating that a new instance is created each time it is requested. This scope is useful for scenarios where each request or usage should receive a fresh instance of the service.
 
-- `Endpoint Methods`: Each method calls corresponding methods in EmployeeService to simulate notifications. **/prototype-scope** endpoint demonstrates prototype scope by printing and returning instance details of PrototypeService.
+- `Endpoint Methods`: **/prototype-scope** endpoint illustrates the prototype scope by interacting with prototypeService1 and prototypeService2. It prints and returns details about these services, highlighting their unique instance identifiers or properties. This example underscores how Spring manages bean scopes and ensures appropriate lifecycle management based on scope annotations.
 
+#
 **Output Test `/prototype-scope` with Postman**
 
 ![alt text](img/3.3.png)

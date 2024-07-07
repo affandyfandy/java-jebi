@@ -175,7 +175,9 @@ public interface EmployeeService {
 
 
 #
-### 5. Service Impl
+### 5. [Transaction Management] `Service Impl`
+The @Transactional annotation is a key feature of Spring Framework, enabling declarative transaction management. When applied to a method or a class, it ensures that a set of database operations are executed within a single transaction context. If any operation within this transaction fails, all operations are rolled back to maintain data consistency. Conversely, if all operations succeed, the transaction is committed, and the changes are persisted in the database.
+
 ```java
 package com.lecture8.assignment3.service;
 
@@ -249,10 +251,19 @@ public class EmployeeServiceImpl implements EmployeeService {
   - `update(String db, Employee employee)`: Updates an existing `Employee` record in the specified database.
   - `delete(String db, String id)`: Deletes an `Employee` record by ID from the specified database.
   
+**How It Works**
+- `Save Operation`: The save method is annotated with @Transactional, meaning it runs within a transactional context. When an Employee object is saved, the method attempts to insert the employee record into the database. If the insertion is successful (indicated by a return value greater than 0), the method returns the Employee object. If the insertion fails, a RuntimeException is thrown, causing the transaction to roll back, and no changes are made to the database.
+
+- `Update Operation`: Similarly, the update method is transactional. It attempts to update an existing employee record. If the update operation succeeds, the updated Employee object is returned. If it fails, a RuntimeException is thrown, triggering a rollback of the transaction.
+
+- `Delete Operation`: The delete method is also transactional. It deletes an employee record based on the provided ID. If the deletion is successful, it returns a success message. If it fails, a RuntimeException is thrown, and the transaction is rolled back.
 
 
+**Benefits of Transactional Management**
+- `Data Integrity`: Ensures that all operations within a transaction are completed successfully before committing, maintaining the integrity of the data.
+- `Consistency`: Prevents partial updates to the database, which could lead to inconsistent data states.
+- `Error Handling`: By throwing exceptions in case of failures, we ensure that transactions are rolled back, and appropriate actions can be taken to handle the errors.
 #
-### REST Endpoints
 ### REST Endpoints
 
 | HTTP Method | Endpoint                         | Description                                                                                         |
@@ -687,6 +698,3 @@ For Maven, add the following dependency to `pom.xml`:
 ## Conclusion
 
 Lombok is a powerful tool for Java developers, helping to reduce boilerplate code and improve productivity. By using annotations like `@Getter`, `@Setter`, `@Data`, and `@Builder`, Lombok can automate the generation of common methods and patterns, leading to cleaner and more maintainable code.
-
-
-

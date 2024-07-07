@@ -27,11 +27,11 @@ INSERT INTO employee (id, name, dob, address, department) VALUES
 ### 2. Configure Data Source in application.properties
 
 ```properties
-spring.application.name=week4_assignment
+spring.application.name=jebi
 
-spring.datasource.url=jdbc:mysql://localhost:3306/week4_assignment?allowPublicKeyRetrieval=true&useSSL=false
+spring.datasource.url=jdbc:mysql://localhost:3306/assignment2?allowPublicKeyRetrieval=true&useSSL=false
 spring.datasource.username=root
-spring.datasource.password=password123
+spring.datasource.password=
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 spring.jpa.hibernate.ddl-auto=update

@@ -1,6 +1,5 @@
 package jebi.hendardi.assignment.service;
 
-import jebi.hendardi.assignment.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,6 @@ public class EmployeeService {
     private final EmailService emailService;
 
     // Constructor-based injection
-    @Autowired
     public EmployeeService(EmailService emailService) {
         this.emailService = emailService;
     }

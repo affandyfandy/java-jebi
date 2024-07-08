@@ -3,59 +3,48 @@ package com.lecture8.assignment3.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.lecture8.assignment3.entity.Employee;
 import com.lecture8.assignment3.repository.EmployeeRepository;
 
 @Service
-@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
     
     private final EmployeeRepository employeeRepository;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository){
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
     @Override
+    @Transactional
     public Employee save(String db, Employee employee) {
-        int res = employeeRepository.save(db, employee);
-        if (res > 0){
-            return employee;
-        }
-        return null;
+        int result = employeeRepository.save(db, employee);
+        return result == 1 ? employee : null; // Return null if save failed
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Employee> findAll(String db) {
-        var listEmployee = employeeRepository.findAll(db);
-        return listEmployee;
+        return employeeRepository.findAll(db);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Employee findEmployeeById(String db, String id) {
-        var employee = employeeRepository.findById(db, id);
-        if (employee != null){
-            return employee;
-        }
-        return null;
+        return employeeRepository.findById(db, id);
     }
 
     @Override
+    @Transactional
     public Employee update(String db, Employee employee) {
-        int res = employeeRepository.update(db, employee);
-        if (res > 0){
-            return employee;
-        }
-        return null;
+        int result = employeeRepository.update(db, employee);
+        return result == 1 ? employee : null; // Return null if update failed
     }
 
     @Override
+    @Transactional
     public String delete(String db, String id) {
-        int res = employeeRepository.deleteById(db, id);
-        if (res > 0){
-            return "success";
-        }
-        return "failed";
+        int result = employeeRepository.deleteById(db, id);
+        return result == 1 ? "Deleted successfully" : "Deletion failed"; // Return status message
     }
 }

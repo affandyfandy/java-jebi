@@ -1,74 +1,138 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fsoft</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
+      body {
+        font-family: "Roboto";
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      p {
+        font-size: 14px;
+        white-space: nowrap;
+        text-wrap: nowrap;
+        flex-wrap: nowrap;
+        word-wrap: nowrap;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        font-size: 12px;
+      }
+      th {
+        word-wrap: break-word;
+        white-space: normal;
+      }
+      .customer-info {
+        display: flex;
+        width: 100%;
+      }
+      h3,
+      h2 {
+        text-align: center;
+        color: #027ebc;
+      }
+      h4 {
+        margin: 0 0 10px 0;
+      }
+      .account-info {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        border: 2px solid black;
+      }
+      .account-info th,
+      .account-info td {
+        padding: 8px;
+        text-align: left;
+      }
+      .account-info td::before {
+        content: ":";
+        padding-right: 10px;
+      }
+      .message-details th {
+        background-color: #027ebc;
+        color: #fff;
+      }
+      hr {
+        border: none;
+        height: 2px;
+        background-color: black;
+      }
+      @media print {
+        .page-break {
+          page-break-before: always;
         }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <h2>FPT BE COURSE</h2>
+    <h3>Generate PDF</h3>
     <div>
-        <h2>Employee Report</h2>
-        <div>
-            <strong>CEO : </strong> Jebi Hendardi
-        </div>
-        <div>
-            <strong>Generated on : </strong> <span th:text="${currentDate}"></span>
-        </div>
-        <div>
-            <strong>Total Records : </strong> <span th:text="${recordCount}"></span>
-        </div>
-        <div>
-            <strong>Total Salary : </strong> <span th:text="${totalSalary}"></span>
-        </div>
-        <div>
-            <strong>Average Salary : </strong> <span th:text="${averageSalary}"></span>
-        </div>
-        <div>
-            <strong>Highest Salary Employee : </strong> <span th:text="${highestSalaryEmployee != null ? highestSalaryEmployee.name : ''}"></span>
-            with salary <span th:text="${highestSalaryEmployee != null ? highestSalaryEmployee.salary : ''}"></span>
-        </div>
-        <div>
-            <strong>Lowest Salary Employee : </strong> <span th:text="${lowestSalaryEmployee != null ? lowestSalaryEmployee.name : ''}"></span>
-            with salary <span th:text="${lowestSalaryEmployee != null ? lowestSalaryEmployee.salary : ''}"></span>
-        </div>
-
-        <h3>Employee List</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>DOB</th>
-                    <th>Address</th>
-                    <th>Department</th>
-                    <th>Salary</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="employee : ${employees}">
-                    <td th:text="${employee.id}"></td>
-                    <td th:text="${employee.name}"></td>
-                    <td th:text="${employee.dob}"></td>
-                    <td th:text="${employee.address}"></td>
-                    <td th:text="${employee.department}"></td>
-                    <td th:text="${employee.salary}"></td>
-                </tr>
-            </tbody>
-        </table>
+      <div class="customer-info">
+        <p>User: <span>Jebi Hendardi</span></p>
+        <p style="width: 100%"></p>
+        <p>Date: <span th:text="${currentDate}"></span></p>
+      </div>
     </div>
-
-</body>
+    <hr />
+    <h4>Message summary</h4>
+    <table class="account-info">
+      <tbody>
+        <tr>
+          <th>Employee highest salary</th>
+          <td><span th:text="${highestSalaryEmployee != null ? highestSalaryEmployee.name : 'N/A'}"></span></td>
+          <th>Max salary</th>
+          <td><span th:text="${highestSalaryEmployee != null ? highestSalaryEmployee.salary : 'N/A'}"></span></td>
+        </tr>
+        <tr>
+          <th>Employee lowest salary</th>
+          <td><span th:text="${lowestSalaryEmployee != null ? lowestSalaryEmployee.name : 'N/A'}"></span></td>
+          <th>Min salary</th>
+          <td><span th:text="${lowestSalaryEmployee != null ? lowestSalaryEmployee.salary : 'N/A'}"></span></td>
+        </tr>
+        <tr>
+          <th>Total record</th>
+          <td><span th:text="${recordCount}"></span></td>
+          <th>Salary avg</th>
+          <td><span th:text="${averageSalary}"></span></td>
+        </tr>
+        <tr>
+          <th>Total Salary</th>
+          <td colspan="3"><span th:text="${totalSalary}"></span></td>
+        </tr>
+      </tbody>
+    </table>
+    <hr style="background-color: #999" />
+    <h4>Message details</h4>
+    <table class="message-details">
+      <tbody>
+        <tr>
+          <th>No</th>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Dob</th>
+          <th>Address</th>
+          <th>Department</th>
+          <th>Salary</th>
+        </tr>
+        <tr th:each="employee, iterStat : ${employees}">
+          <td th:text="${iterStat.count}"></td>
+          <td th:text="${employee.id}"></td>
+          <td th:text="${employee.name}"></td>
+          <td th:text="${currentDate}"></td>
+          <td th:text="${employee.address}"></td>
+          <td th:text="${employee.department}"></td>
+          <td th:text="${employee.salary}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
 </html>

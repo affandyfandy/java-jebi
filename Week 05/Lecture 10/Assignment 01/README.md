@@ -280,19 +280,22 @@ Add a new employee to the database using a HTTP `POST` request to `/employee/add
 - Prepare a JSON payload containing details of a new employee.
 - Send a `POST` request to `/employee/add` with the JSON payload in the request body.
 
-![alt text](img/2.6.png)
+![alt text](img/image-12.png)
 
 
 #
 ### Validation
 
 1. **Name Validation**
-   - **Purpose**: Ensures that the `name` field contains only letters and spaces.
+   - **Purpose**: Ensures that the `name` field contains only letters and spaces and cant be null/blank.
    - **Regex**: `^[a-zA-Z\\s]+$`
    - **Message**: "Name must contain only letters and spaces"
    - **Usage**: Validates that the `name` provided is composed solely of alphabetical characters and spaces.
     
     ![Name Validation](img/image-8.png)
+
+    **Blank Name Validation**
+    ![alt text](img/image-13.png)
 
 1. **Email Validation**
    - **Purpose**: Validates that the `email` field adheres to a valid email format.

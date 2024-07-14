@@ -1,5 +1,5 @@
 #
-### Assignment 1 - Spring CRUD with CSV Import to database
+### Assignment 1 - Spring CRUD with DTO and validation
 
 #### Project Structure
 ```
@@ -65,7 +65,7 @@ menu
 #
 ## 2. Add Data Transfer Objects (DTOs)
 
-**File **: [EmployeeDTO.java](https://github.com/affandyfandy/java-jebi/blob/week_05/Week_05/Lecture_10/Assignment_01/src/main/java/jebi/hendardi/lecture5/dto/EmployeeDTO.java)
+**File** : [EmployeeDTO.java](https://github.com/affandyfandy/java-jebi/blob/week_05/Week_05/Lecture_10/Assignment_01/src/main/java/jebi/hendardi/lecture5/dto/EmployeeDTO.java)
 
 
 DTOs are used to encapsulate data and send it across different layers of the application. They help in reducing the number of calls and providing a consistent data format.
@@ -116,7 +116,7 @@ public class EmployeeDTO {
 #
 ## 2. MapStruct for Object Mapping
 
-File : [EmployeeMapper.java](https://github.com/affandyfandy/java-jebi/blob/week_05/Week_05/Lecture_10/Assignment_01/src/main/java/jebi/hendardi/lecture5/mapper/EmployeeMapper.java)
+**File** : [EmployeeMapper.java](https://github.com/affandyfandy/java-jebi/blob/week_05/Week_05/Lecture_10/Assignment_01/src/main/java/jebi/hendardi/lecture5/mapper/EmployeeMapper.java)
 
 
 MapStruct is used to automatically map between DTOs and entities, reducing boilerplate code.
@@ -196,7 +196,7 @@ Provides a centralized exception handling mechanism, improving code maintainabil
 #
 ## 4. Implement DTO and validation in service
 
-**File **: [EmployeeService.java](https://github.com/affandyfandy/java-jebi/blob/week_05/Week%2005/Lecture%2010/Assignment%2001/src/main/java/jebi/hendardi/lecture5/service/EmployeeService.java)
+**File** : [EmployeeService.java](https://github.com/affandyfandy/java-jebi/blob/week_05/Week%2005/Lecture%2010/Assignment%2001/src/main/java/jebi/hendardi/lecture5/service/EmployeeService.java)
 
 
 This file serves as the service layer in the application, responsible for managing operations related to Employee entities. It encapsulates business logic and interacts with the repository layer (EmployeeRepository) and mapping layer (EmployeeMapper).

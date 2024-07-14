@@ -1,5 +1,5 @@
 #
-### Assignment 1 - Spring CRUD with DTO and validation
+### Assignment 1 - Spring CRUD with CSV Import to database
 
 #### Project Structure
 ```
@@ -184,6 +184,32 @@ public interface EmployeeMapper {
 
 Provides a centralized exception handling mechanism, improving code maintainability and user experience.
 
+```java
+package jebi.hendardi.lecture5.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+            errors.put(error.getField(), error.getDefaultMessage());
+        }
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+}
+```
 **Annotations:**
 - `@RestControllerAdvice`: Indicates that this class provides global exception handling for all controllers.
 - `@ExceptionHandler`: Specifies the type of exception to handle.
@@ -201,7 +227,65 @@ Provides a centralized exception handling mechanism, improving code maintainabil
 
 This file serves as the service layer in the application, responsible for managing operations related to Employee entities. It encapsulates business logic and interacts with the repository layer (EmployeeRepository) and mapping layer (EmployeeMapper).
 
+```java
+package jebi.hendardi.lecture5.service;
 
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import jebi.hendardi.lecture5.dto.EmployeeDTO;
+import jebi.hendardi.lecture5.mapper.EmployeeMapper;
+import jebi.hendardi.lecture5.model.Employee;
+import jebi.hendardi.lecture5.repository.EmployeeRepository;
+
+@Service
+@Validated
+@Transactional
+public class EmployeeService {
+    private final EmployeeRepository employeeRepository;
+    private final EmployeeMapper employeeMapper = EmployeeMapper.INSTANCE;
+
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
+
+    public List<EmployeeDTO> findEmployeesByDepartment(String department) {
+        List<Employee> employees = employeeRepository.findEmployeesByDepartmentIgnoreCase(department);
+        return employeeMapper.toDTOs(employees);
+    }
+
+    public EmployeeDTO addEmployee(@Valid EmployeeDTO employeeDTO) {
+        Employee employee = employeeMapper.toEntity(employeeDTO);
+        Employee savedEmployee = employeeRepository.save(employee);
+        return employeeMapper.toDTO(savedEmployee);
+    }
+
+    public List<EmployeeDTO> findAllEmployees() {
+        List<Employee> employees = employeeRepository.findAll();
+        return employeeMapper.toDTOs(employees);
+    }
+
+    public EmployeeDTO updateEmployee(@Valid EmployeeDTO employeeDTO) {
+        Employee employee = employeeMapper.toEntity(employeeDTO);
+        Employee updatedEmployee = employeeRepository.save(employee);
+        return employeeMapper.toDTO(updatedEmployee);
+    }
+
+    public EmployeeDTO findEmployeeById(UUID id) {
+        Employee employee = employeeRepository.findById(id).orElse(null);
+        return employeeMapper.toDTO(employee);
+    }
+
+    public void deleteEmployee(UUID id) {
+        employeeRepository.deleteEmployeeById(id);
+    }
+}
+```
 **Annotations :**
 - `@Service`: Indicates that the class is a service component in Spring, handling business logic. It is automatically detected during component scanning and registered in the application context.
   

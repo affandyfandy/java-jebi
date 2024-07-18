@@ -56,6 +56,7 @@
 ### Run App :
 
 **Add Employee**
+
 ![alt text](image-6.png)
 #
 **Get Employee with paging**
@@ -67,12 +68,15 @@ can change value page and size from parameter (in this case use page=0 and size 
 ![alt text](image-10.png)
 #
 **Add Department**
+
 ![alt text](image-7.png)
 
 #
 **Add Salary to employee**
+
 ![alt text](image-8.png)
 
 #
 **Add title to employee**
+
 ![alt text](image-9.png)

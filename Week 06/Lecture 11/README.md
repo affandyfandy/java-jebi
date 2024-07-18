@@ -1,3 +1,51 @@
+### Project Structure
+```
+
+
+src
+├── main
+│   ├── java
+│   │   └── jebi
+│   │       └── hendardi
+│   │           └── spring
+│   │               ├── controller
+│   │               │   ├── DepartmentController.java
+│   │               │   ├── EmployeeController.java
+│   │               │   ├── SalaryController.java
+│   │               │   └── TitleController.java
+│   │               │
+│   │               ├── dto
+│   │               │   └── EmployeeDTO.java
+│   │               │
+│   │               ├── entity
+│   │               │   ├── Department.java
+│   │               │   ├── DeptEmp.java
+│   │               │   ├── DeptEmpId.java
+│   │               │   ├── DeptManager.java
+│   │               │   ├── DeptManagerId.java
+│   │               │   ├── Employee.java
+│   │               │   ├── Gender.java
+│   │               │   ├── Salary.java
+│   │               │   ├── SalaryId.java
+│   │               │   ├── Title.java
+│   │               │   └── TitleId.java
+│   │               │
+│   │               ├── repository
+│   │               │   ├── DepartmentRepository.java
+│   │               │   ├── DeptEmpRepository.java
+│   │               │   ├── DeptManagerRepository.java
+│   │               │   ├── EmployeeRepository.java
+│   │               │   ├── SalaryRepository.java
+│   │               │   └── TitleRepository.java
+│   │               │
+│   │               └── service
+│   │                   ├── DepartmentService.java
+│   │                   ├── EmployeeService.java
+│   │                   ├── SalaryService.java
+│   │                   └── TitleService.java
+```
+#
+### Database
 ![alt text](image.png)
 
 #### This database design automatically created when program started

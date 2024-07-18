@@ -1,7 +1,8 @@
 package jebi.hendardi.spring.dto;
 
-import lombok.Data;
 import java.util.Date;
+
+import lombok.Data;
 
 @Data
 public class EmployeeDTO {
@@ -10,4 +11,6 @@ public class EmployeeDTO {
     private String lastName;
     private String gender;
     private Date hireDate;
+    private Integer lastSalary;
+    private String lastTitle;
 }

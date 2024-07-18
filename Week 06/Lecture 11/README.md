@@ -57,15 +57,22 @@
 
 **Add Employee**
 ![alt text](image-6.png)
+#
+**Get Employee with paging**
 
+`GET http://localhost:8080/employees?page=0&size=10`
 
+can change value page and size from parameter (in this case use page=0 and size = 10)
+
+![alt text](image-10.png)
+#
 **Add Department**
 ![alt text](image-7.png)
 
-
+#
 **Add Salary to employee**
 ![alt text](image-8.png)
 
-
+#
 **Add title to employee**
 ![alt text](image-9.png)

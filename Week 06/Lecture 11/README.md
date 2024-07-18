@@ -1,3 +1,7 @@
+![alt text](image.png)
+
+#### This database design automatically created when program started
+#
 ### API Endpoints
 
 ### DepartmentController

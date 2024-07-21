@@ -3,6 +3,7 @@ package jebi.hendardi.spring.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import jebi.hendardi.spring.dto.EmployeeDTO;
@@ -27,18 +28,7 @@ public class EmployeeService {
     private TitleRepository titleRepository;
 
     public Page<EmployeeDTO> getAllEmployees(Pageable pageable) {
-        return employeeRepository.findAll(pageable).map(employee -> {
-            EmployeeDTO employeeDTO = mapToDTO(employee);
-            Salary lastSalary = salaryRepository.findTopByEmployeeOrderByToDateDesc(employee.getEmpNo());
-            Title lastTitle = titleRepository.findTopByEmployeeOrderByToDateDesc(employee.getEmpNo());
-            if (lastSalary != null) {
-                employeeDTO.setLastSalary(lastSalary.getSalary());
-            }
-            if (lastTitle != null) {
-                employeeDTO.setLastTitle(lastTitle.getTitle());
-            }
-            return employeeDTO;
-        });
+        return employeeRepository.findAll(pageable).map(this::mapToDTO);
     }
 
     public Employee createEmployee(EmployeeDTO employeeDTO) {
@@ -70,6 +60,10 @@ public class EmployeeService {
         employeeRepository.deleteById(empNo);
     }
 
+    public Page<Employee> searchEmployees(Specification<Employee> spec, Pageable pageable) {
+        return employeeRepository.findAll(spec, pageable);
+    }
+
     private EmployeeDTO mapToDTO(Employee employee) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setBirthDate(employee.getBirthDate());
@@ -77,6 +71,14 @@ public class EmployeeService {
         employeeDTO.setLastName(employee.getLastName());
         employeeDTO.setGender(employee.getGender().name());
         employeeDTO.setHireDate(employee.getHireDate());
+        Salary lastSalary = salaryRepository.findTopByEmployeeOrderByToDateDesc(employee.getEmpNo());
+        Title lastTitle = titleRepository.findTopByEmployeeOrderByToDateDesc(employee.getEmpNo());
+        if (lastSalary != null) {
+            employeeDTO.setLastSalary(lastSalary.getSalary());
+        }
+        if (lastTitle != null) {
+            employeeDTO.setLastTitle(lastTitle.getTitle());
+        }
         return employeeDTO;
     }
 }

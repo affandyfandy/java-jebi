@@ -46,63 +46,9 @@ src
 ```
 #
 ### Database
-![alt text](image.png)
+![alt text](img/image-14.png)
 
 #### This database design automatically created when program started
-#
-### API Endpoints
-
-### DepartmentController
-
-- **GET /departments**
-  - Retrieves a list of all departments.
-  
-- **POST /departments**
-  - Creates a new department.
-  
-- **PUT /departments/{deptNo}**
-  - Updates an existing department by its department number (`deptNo`).
-  
-- **DELETE /departments/{deptNo}**
-  - Deletes a department by its department number (`deptNo`).
-#
-### EmployeeController
-
-- **GET /employees**
-  - Retrieves a paginated list of all employees.
-  
-- **POST /employees**
-  - Creates a new employee.
-  
-- **PUT /employees/{empNo}**
-  - Updates an existing employee by their employee number (`empNo`).
-  
-- **DELETE /employees/{empNo}**
-  - Deletes an employee by their employee number (`empNo`).
-#
-### SalaryController
-
-- **POST /salaries**
-  - Adds a new salary record for an employee.
-  
-- **PUT /salaries/{empNo}**
-  - Updates the salary of an employee by their employee number (`empNo`).
-#
-### TitleController
-
-- **POST /titles**
-  - Adds a new title for an employee.
-  
-- **PUT /titles/{empNo}**
-  - Updates the title of an employee by their employee number (`empNo`).
-
-#
-
-![alt text](img/image-1.png)
-![alt text](img/image-2.png)
-![alt text](img/image-3.png)
-![alt text](img/image-4.png)
-![alt text](img/image-5.png)
 
 #
 ### Run App :
@@ -136,3 +82,13 @@ src
 can change value page and size from parameter (in this case use page=0 and size = 10)
 
 ![alt text](img/image-13.png)
+
+#
+**Search by first Name**
+
+![alt text](img/image-15.png)
+
+
+#
+**Search by last Name**
+![alt text](img/image-16.png)

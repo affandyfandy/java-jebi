@@ -38,7 +38,7 @@ public class FilterConfig {
 ```
 
 - **Explanation**: The `FilterConfig` class configures the `ApiKeyFilter` to be applied to all endpoints under `/products/*`. The `FilterRegistrationBean` registers the filter and associates it with the specified URL pattern.
-
+#
 ### 2. API Key Entity
 
 #### `ApiKey.java`
@@ -64,7 +64,7 @@ public class ApiKey {
 ```
 
 - **Explanation**: The `ApiKey` entity contains fields for the `id`, `key`, `username`, and `lastUsed` timestamp. The `lastUsed` field tracks the last time the API key was used.
-
+#
 ### 3. API Key Filter
 
 #### `ApiKeyFilter.java`
@@ -115,7 +115,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 ```
 
 - **Explanation**: The `ApiKeyFilter` extends `OncePerRequestFilter` to ensure it is executed only once per request. It retrieves the `api-key` from the request header, validates it using `ApiKeyService`, adds the `username` and `timestamp` to the response header, and updates the last usage time of the API key.
-
+#
 ### 4. API Key Service
 
 #### `ApiKeyService.java`
@@ -155,7 +155,7 @@ public class ApiKeyService {
 ```
 
 - **Explanation**: The `ApiKeyService` provides methods to check if an API key is valid (`isValidApiKey`), retrieve the username associated with an API key (`getUsernameForApiKey`), and update the last usage timestamp (`updateLastUsed`).
-
+#
 ### 5. Product Controller
 
 #### `ProductController.java`
@@ -230,7 +230,6 @@ public class ProductController {
 
 # Testing
 
-```
 | No | Method | Endpoint        | Headers                  | Body (JSON)                          | Expected Response  | Description                                       |
 |----|--------|-----------------|--------------------------|--------------------------------------|--------------------|---------------------------------------------------|
 | 1  | GET    | /products       | api-key: {validApiKey}   |                                      | 200 OK             | Fetch all products. Username and timestamp headers should be included. |
@@ -239,4 +238,4 @@ public class ProductController {
 | 4  | POST   | /products       | api-key: {validApiKey}   | { "name": "Product A", "price": 10.0 } | 201 Created        | Create a new product. Username and timestamp headers should be included. |
 | 5  | PUT    | /products/{id}  | api-key: {validApiKey}   | { "name": "Product A", "price": 12.0 } | 200 OK / 404 Not Found | Update an existing product by ID. Username and timestamp headers should be included. |
 | 6  | DELETE | /products/{id}  | api-key: {validApiKey}   |                                      | 204 No Content     | Delete a product by ID. Username and timestamp headers should be included. |
-```
+

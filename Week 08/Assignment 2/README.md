@@ -1,6 +1,18 @@
-# Spring Boot CRUD Project with API Key Verification
+## Spring Boot CRUD Project with API Key Verification
 
-## 📂 Project Structure
+### 🎯 Project Objectives
+
+
+**Implement Secure Access**:
+- Protect API endpoints by implementing an API key authentication mechanism.
+- Ensure that only authorized users can access and modify data.
+
+**CRUD Operations**:
+- Develop a comprehensive CRUD (Create, Read, Update, Delete) system for managing products.
+- Ensure smooth integration with the database for efficient data handling.
+
+#
+### 📂 Project Structure
 
 The project is structured as follows:
 

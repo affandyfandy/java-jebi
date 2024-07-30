@@ -1,11 +1,10 @@
 package jebi.hendardi.spring.config;
 
+import jebi.hendardi.spring.filter.ApiKeyFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import jebi.hendardi.spring.filter.ApiKeyFilter;
 
 @Configuration
 public class FilterConfig {

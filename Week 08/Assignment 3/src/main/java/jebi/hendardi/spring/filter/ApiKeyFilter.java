@@ -1,6 +1,8 @@
 package jebi.hendardi.spring.filter;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,12 +31,14 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Add username to header and track last usage time
-        String username = apiKeyService.getUsernameForApiKey(apiKey);
-        response.addHeader("username", username);
-        response.addHeader("timestamp", String.valueOf(System.currentTimeMillis()));
-        apiKeyService.updateLastUsed(apiKey);
+        String username = apiKeyService.getUsernameByApiKey(apiKey);
+        if (username != null) {
+            response.addHeader("username", username);
+            request.setAttribute("username", username);
+        }
 
+        response.addHeader("source", "fpt-software");
+        response.addHeader("timestamp", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
         filterChain.doFilter(request, response);
     }
 }

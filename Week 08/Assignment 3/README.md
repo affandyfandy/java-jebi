@@ -1,163 +1,116 @@
-### 📘 Project Documentation: Simple Interceptor
+### 📚 Project Documentation: Assignment 3 - Simple Interceptor
 #
 ### 🎯 Project Objective
 
-The objective of this project is to create a simple interceptor for a Spring Boot application. The interceptor should perform the following tasks:
-1. Store the username for each API key and add the username to the request header.
-2. Print the username in a function within the controller.
-3. Include a `timestamp` header in all responses returned to the client.
-4. Store the last time the API key was used.
+The goal of this project is to enhance the existing system by implementing an interceptor that performs the following tasks:
 
-
+1. **Store Username for Each API Key:** Extract the username associated with each API key, add it to the request header, and print it in a controller function.
+2. **Add Timestamp to Responses:** Include a "timestamp" header with the current time in all responses returned to the client.
+3. **Track API Key Usage:** Record the last time each API key was used.
 #
-### 🔄 Updates and Implementation
+### 🔄 Interceptor Flow Explanation
 
-#### 1. Store Username for Each API Key
-- The `ApiKey` entity was updated to include a `username` field.
-- The `ApiKeyService` was modified to retrieve the username associated with the API key and set it in the request header.
-- The `ApiKeyFilter` was updated to add the username to the request header.
+The interceptor, `ApiKeyInterceptor`, is designed to intercept incoming HTTP requests and perform the following operations before and after request processing:
 
-#### 2. Print Username in Controller
-- A method was added to the `ProductController` to print the username stored in the request header.
+1. **Pre-Handle Phase:**
+   - The interceptor extracts the `api-key` from the request header.
+   - Validates the `api-key` using `ApiKeyService`.
+   - If the `api-key` is invalid, it sends an HTTP 401 Unauthorized response.
+   - If valid, it retrieves the associated username and adds it to the request attributes.
+   - Adds the username and current timestamp to the response headers.
 
-#### 3. Include `timestamp` Header in All Responses
-- The `ApiKeyFilter` was updated to add a `timestamp` header to each response, indicating the current time.
-
-#### 4. Store the Last Time the API Key Was Used
-- The `ApiKey` entity was updated to include a `lastUsed` field.
-- The `ApiKeyService` was modified to update the `lastUsed` field whenever an API key is used.
-
+2. **After Completion Phase:**
+   - Updates the `last_used` timestamp for the `api-key` in the database.
+   - Adds a current timestamp to the response headers again to ensure consistency.
 #
-### 🛠️ Updated Code
+## 🛠️ Interceptor Configuration
 
-### `ApiKey` Entity
+The interceptor is configured in the `InterceptorConfig` class, which registers the `ApiKeyInterceptor` to intercept all requests to `/products/**`.
 
+### 📝 Code Snippets
+
+#### 🛠️ Interceptor Configuration (`InterceptorConfig.java`)
 ```java
-package jebi.hendardi.spring.entity;
+package jebi.hendardi.spring.config;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Data;
-
-import java.time.LocalDateTime;
-
-@Entity
-@Data
-@Table(name = "apikey")
-public class ApiKey {
-    @Id
-    private String id;
-
-    @Column(name = "xkey")
-    private String key;
-
-    @Column(name = "username")
-    private String username;
-
-    @Column(name = "last_used")
-    private LocalDateTime lastUsed;
-}
-```
-
-### `ApiKeyService`
-
-```java
-package jebi.hendardi.spring.service;
-
-import jebi.hendardi.spring.entity.ApiKey;
-import jebi.hendardi.spring.repository.ApiKeyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import jebi.hendardi.spring.interceptor.ApiKeyInterceptor;
 
-import java.time.LocalDateTime;
+@Configuration
+public class InterceptorConfig implements WebMvcConfigurer {
 
-@Service
-public class ApiKeyService {
     @Autowired
-    private ApiKeyRepository apiKeyRepository;
+    private ApiKeyInterceptor apiKeyInterceptor;
 
-    public boolean isValidApiKey(String key) {
-        return apiKeyRepository.findByKey(key) != null;
-    }
-
-    public String getUsernameByApiKey(String key) {
-        ApiKey apiKey = apiKeyRepository.findByKey(key);
-        if (apiKey != null) {
-            apiKey.setLastUsed(LocalDateTime.now());
-            apiKeyRepository.save(apiKey);
-            return apiKey.getUsername();
-        }
-        return null;
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(apiKeyInterceptor).addPathPatterns("/products/**");
     }
 }
 ```
 
-### `ApiKeyFilter`
-
+#### 🔄 Interceptor Implementation (`ApiKeyInterceptor.java`)
 ```java
-package jebi.hendardi.spring.filter;
+package jebi.hendardi.spring.interceptor;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
+import java.time.Instant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
+import org.springframework.web.servlet.HandlerInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jebi.hendardi.spring.service.ApiKeyService;
 
 @Component
-public class ApiKeyFilter extends OncePerRequestFilter {
+public class ApiKeyInterceptor implements HandlerInterceptor {
 
     @Autowired
     private ApiKeyService apiKeyService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         String apiKey = request.getHeader("api-key");
 
         if (apiKey == null || !apiKeyService.isValidApiKey(apiKey)) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid API Key");
-            return;
+            return false;
         }
 
-        String username = apiKeyService.getUsernameByApiKey(apiKey);
-        if (username != null) {
-            response.addHeader("username", username);
-            request.setAttribute("username", username);
-        }
+        String username = apiKeyService.getUsernameForKey(apiKey);
+        request.setAttribute("username", username);
+        request.setAttribute("apiKey", apiKey);
+        response.addHeader("username", username);
+        response.addHeader("timestamp", Instant.now().toString());
 
-        response.addHeader("source", "fpt-software");
-        response.addHeader("timestamp", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
-        filterChain.doFilter(request, response);
+        return true;
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        String apiKey = (String) request.getAttribute("apiKey");
+        if (apiKey != null) {
+            apiKeyService.updateLastUsed(apiKey);
+        }
+        response.addHeader("timestamp", Instant.now().toString());
     }
 }
 ```
-
-### `ProductController`
-
+#### 🌐 Controller Modification (`ProductController.java`)
 ```java
 package jebi.hendardi.spring.controller;
 
-import jebi.hendardi.spring.entity.Product;
-import jebi.hendardi.spring.service.ProductService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import jakarta.servlet.http.HttpServletRequest;
-
-import java.util.List;
+import jebi.hendardi.spring.entity.Product;
+import jebi.hendardi.spring.service.ProductService;
 
 @RestController
 @RequestMapping("/products")
@@ -166,18 +119,17 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private HttpServletRequest request;
-
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        printUsername();
+    public ResponseEntity<List<Product>> getAllProducts(HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        System.out.println("Request made by user: " + username);
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        printUsername();
+    public ResponseEntity<Product> getProductById(@PathVariable Long id, HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        System.out.println("Request made by user: " + username);
         Product product = productService.getProductById(id);
         if (product != null) {
             return ResponseEntity.ok(product);
@@ -187,14 +139,16 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        printUsername();
+    public ResponseEntity<Product> createProduct(@RequestBody Product product, HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        System.out.println("Request made by user: " + username);
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(product));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        printUsername();
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product, HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        System.out.println("Request made by user: " + username);
         Product updatedProduct = productService.updateProduct(id, product);
         if (updatedProduct != null) {
             return ResponseEntity.ok(updatedProduct);
@@ -204,18 +158,15 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        printUsername();
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id, HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        System.out.println("Request made by user: " + username);
         productService.deleteProduct(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
-    private void printUsername() {
-        String username = (String) request.getAttribute("username");
-        System.out.println("Username: " + username);
-    }
 }
 ```
+
 #
 ### 🌐 Endpoint Table
 
@@ -260,8 +211,6 @@ INSERT INTO product (id, name, price) VALUES
 | Delete a product                | DELETE | /products/1        | api-key           |                                       | 204 No Content                  |
 | Get product with invalid API key| GET    | /products          | invalid-api-key   |                                       | 401 Unauthorized                |
 
-
-
 #
 ### ✅ Test Cases
 
@@ -288,6 +237,10 @@ INSERT INTO product (id, name, price) VALUES
   **Response : Header**
       
   ![alt text](img/image-3.png)
+  
+  **Hibernate Log**
+
+  ![alt text](img/image-16.png)
 
 ---
 
@@ -295,13 +248,13 @@ INSERT INTO product (id, name, price) VALUES
 
 - **Body**
   
-  ![alt text](img/image-4.png)
+  ![alt text](img/image-5.png)
 
 ---
 
 - **Authorization With Unregistered API Key**
     
-  ![alt text](img/image-5.png)
+  ![alt text](img/image-4.png)
 
 ---
 
@@ -314,6 +267,10 @@ INSERT INTO product (id, name, price) VALUES
   **Response : Header**
       
   ![alt text](img/image-7.png)
+
+  **Hibernate Log**
+
+  ![alt text](img/image-17.png)
 
 ---
 
@@ -335,6 +292,10 @@ INSERT INTO product (id, name, price) VALUES
       
   ![alt text](img/image-10.png)
 
+  **Hibernate Log**
+
+  ![alt text](img/image-18.png)
+
 ---
 
 ### 4. Delete Product
@@ -354,6 +315,10 @@ INSERT INTO product (id, name, price) VALUES
   **Response : Header**
       
   ![alt text](img/image-13.png)
+
+  **Hibernate Log**
+  
+  ![alt text](img/image-19.png)
 
 #
 ### Test Using Another Api Key

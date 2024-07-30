@@ -1,12 +1,12 @@
 package jebi.hendardi.spring.entity;
 
+import java.time.Instant;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -22,5 +22,5 @@ public class ApiKey {
     private String username;
 
     @Column(name = "last_used")
-    private LocalDateTime lastUsed;
+    private Instant lastUsed;
 }

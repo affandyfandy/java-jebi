@@ -5,7 +5,7 @@ import jebi.hendardi.spring.repository.ApiKeyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Service
 public class ApiKeyService {
@@ -16,13 +16,16 @@ public class ApiKeyService {
         return apiKeyRepository.findByKey(key) != null;
     }
 
-    public String getUsernameByApiKey(String key) {
+    public String getUsernameForKey(String key) {
+        ApiKey apiKey = apiKeyRepository.findByKey(key);
+        return apiKey != null ? apiKey.getUsername() : null;
+    }
+
+    public void updateLastUsed(String key) {
         ApiKey apiKey = apiKeyRepository.findByKey(key);
         if (apiKey != null) {
-            apiKey.setLastUsed(LocalDateTime.now());
+            apiKey.setLastUsed(Instant.now());
             apiKeyRepository.save(apiKey);
-            return apiKey.getUsername();
         }
-        return null;
     }
 }

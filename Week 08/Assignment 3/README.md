@@ -269,13 +269,13 @@ INSERT INTO product (id, name, price) VALUES
 
 - **Body**
   
-  ![alt text](image.png)
+  ![alt text](img/image.png)
 
 ---
 
 - **Authorization With Unregistered API Key**
     
-  ![alt text](image-1.png)
+  ![alt text](img/image-1.png)
 
 ---
 
@@ -283,11 +283,11 @@ INSERT INTO product (id, name, price) VALUES
   
   **Response : Body** 
       
-  ![alt text](image-2.png)
+  ![alt text](img/image-2.png)
 
   **Response : Header**
       
-  ![alt text](image-3.png)
+  ![alt text](img/image-3.png)
 
 ---
 
@@ -295,13 +295,13 @@ INSERT INTO product (id, name, price) VALUES
 
 - **Body**
   
-  ![alt text](image-4.png)
+  ![alt text](img/image-4.png)
 
 ---
 
 - **Authorization With Unregistered API Key**
     
-  ![alt text](image-5.png)
+  ![alt text](img/image-5.png)
 
 ---
 
@@ -309,11 +309,11 @@ INSERT INTO product (id, name, price) VALUES
   
   **Response : Body** 
       
-  ![alt text](image-6.png)
+  ![alt text](img/image-6.png)
 
   **Response : Header**
       
-  ![alt text](image-7.png)
+  ![alt text](img/image-7.png)
 
 ---
 
@@ -321,7 +321,7 @@ INSERT INTO product (id, name, price) VALUES
 
 - **Authorization With Unregistered API Key**
     
-  ![alt text](image-8.png)
+  ![alt text](img/image-8.png)
 
 ---
 
@@ -329,11 +329,11 @@ INSERT INTO product (id, name, price) VALUES
   
   **Response : Body** 
       
-  ![alt text](image-9.png)
+  ![alt text](img/image-9.png)
 
   **Response : Header**
       
-  ![alt text](image-10.png)
+  ![alt text](img/image-10.png)
 
 ---
 
@@ -341,7 +341,7 @@ INSERT INTO product (id, name, price) VALUES
 
 - **Authorization With Unregistered API Key**
     
-  ![alt text](image-11.png)
+  ![alt text](img/image-11.png)
 
 ---
 
@@ -349,8 +349,14 @@ INSERT INTO product (id, name, price) VALUES
   
   **Response : Body** 
       
-  ![alt text](image-12.png)
+  ![alt text](img/image-12.png)
 
   **Response : Header**
       
-  ![alt text](image-13.png)
+  ![alt text](img/image-13.png)
+
+#
+### Test Using Another Api Key
+![alt text](img/image-14.png)
+
+![alt text](img/image-15.png)

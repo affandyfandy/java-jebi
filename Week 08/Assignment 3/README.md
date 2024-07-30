@@ -227,7 +227,7 @@ public class ProductController {
 | PUT    | /products/{id}     | Update an existing product    | api-key                  | {"name": "Product A Updated", "price": 15.0} |
 | DELETE | /products/{id}     | Delete a product              | api-key                  |                                       |
 
-            |                                   |
+
 #
 
 ### 📊 Initial Data for Testing

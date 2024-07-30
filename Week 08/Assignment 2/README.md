@@ -134,21 +134,96 @@ Configures the `ApiKeyFilter` for the application.
 - **Purpose**: Sets up the filter for handling requests and responses.
 
 
-### Initializes the database with sample data.
+### Initializes the database with api key sample data.
 ```sql
-INSERT INTO api_key (id, key) VALUES ('1', 'test-key');
-INSERT INTO product (name, price) VALUES ('Product 1', 10.0);
-INSERT INTO product (name, price) VALUES ('Product 2', 20.0);
+INSERT INTO apikey (id, xkey) VALUES
+('apikey1', 'jebi17'),
+('apikey2', 'light17'),
+('apikey3', 'nite17');
 ```
+#
+### Testing with Postman
 
-## Testing with Postman
-
-### Test Cases
 
 | Request Type | Endpoint           | Headers                                | Body (if applicable)                        | Expected Response       |
 |--------------|---------------------|----------------------------------------|---------------------------------------------|-------------------------|
-| GET          | `/products`         | `api-key: test-key`                     | N/A                                         | 200 OK, List of products |
-| GET          | `/products/{id}`    | `api-key: test-key`                     | N/A                                         | 200 OK, Product details |
-| POST         | `/products`         | `api-key: test-key`, `Content-Type: application/json` | `{ "name": "New Product", "price": 30.0 }` | 201 Created, Product created |
-| PUT          | `/products/{id}`    | `api-key: test-key`, `Content-Type: application/json` | `{ "name": "Updated Product", "price": 35.0 }` | 200 OK, Product updated |
-| DELETE       | `/products/{id}`    | `api-key: test-key`                     | N/A                                         | 200 OK, Product deleted |
+| GET          | `/products`         | `api-key: {xkey}`                     | N/A                                         | 200 OK, List of products |
+| GET          | `/products/{id}`    | `api-key: {xkey}`                     | N/A                                         | 200 OK, Product details |
+| POST         | `/products`         | `api-key: {xkey}`, `Content-Type: application/json` | `{ "name": "New Product", "price": 30.0 }` | 201 Created, Product created |
+| PUT          | `/products/{id}`    | `api-key: {xkey}`, `Content-Type: application/json` | `{ "name": "Updated Product", "price": 35.0 }` | 200 OK, Product updated |
+| DELETE       | `/products/{id}`    | `api-key: {xkey}`                     | N/A                                         | 200 OK, Product deleted |
+
+
+#
+### Test Cases
+
+**1. Add Product**
+   - Body
+  
+      ![alt text](img/image.png)
+   #
+   - Authorization With Unregistered API Key
+    
+      ![alt text](img/image-1.png)
+   #
+   - Authorization With Correct API Key
+  
+      **Response : Body** 
+      
+      ![alt text](img/image-2.png)
+
+     **Response : Header**
+      
+      ![alt text](img/image-3.png)
+#
+
+**2. Update Product**
+   - Body
+  
+      ![alt text](img/image-4.png)
+   #
+   - Authorization With Unregistered API Key
+    
+      ![alt text](img/image-5.png)
+   #
+   - Authorization With Correct API Key
+  
+      **Response : Body** 
+      
+      ![alt text](img/image-6.png)
+
+     **Response : Header**
+      
+      ![alt text](img/image-7.png)
+#
+**3. Get Product**
+
+   - Authorization With Unregistered API Key
+    
+      ![alt text](img/image-8.png)
+   #
+   - Authorization With Correct API Key
+  
+      **Response : Body** 
+      
+      ![alt text](img/image-9.png)
+
+     **Response : Header**
+      
+      ![alt text](img/image-10.png)
+#
+**4. Delete Product**
+
+   - Authorization With Unregistered API Key
+    
+      ![alt text](img/image-11.png)
+   #
+   - Authorization With Correct API Key
+  
+      **Response : Body** 
+      
+      ![alt text](img/image-12.png)
+
+     **Response : Header**
+      
+      ![alt text](img/image-13.png)

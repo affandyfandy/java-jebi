@@ -1,13 +1,13 @@
-package jebi.hendardi.spring;
+package jebi.hendardi.webClient;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Application {
+public class WebClientApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(WebClientApplication.class, args);
 	}
 
 }

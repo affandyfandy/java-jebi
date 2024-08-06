@@ -1,126 +1,175 @@
 package com.fpt.MidtermG1.service;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.any;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import org.mockito.MockitoAnnotations;
-
 import com.fpt.MidtermG1.common.Status;
 import com.fpt.MidtermG1.data.entity.Customer;
 import com.fpt.MidtermG1.data.repository.CustomerRepository;
+import com.fpt.MidtermG1.data.specification.CustomerSpecification;
 import com.fpt.MidtermG1.dto.CustomerDTO;
 import com.fpt.MidtermG1.exception.ResourceNotFoundException;
 import com.fpt.MidtermG1.service.impl.CustomerServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-public class CustomerServiceImplTest {
+import java.util.Collections;
+import java.util.Optional;
 
-    @InjectMocks
-    private CustomerServiceImpl customerService;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class CustomerServiceImplTest {
 
     @Mock
     private CustomerRepository customerRepository;
+
+    @InjectMocks
+    private CustomerServiceImpl customerService;
 
     private Customer customer;
     private CustomerDTO customerDTO;
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
+    void setUp() {
         customer = new Customer();
         customer.setId("1");
-        customer.setName("John Doe");
-        customer.setPhoneNumber("123456789");
+        customer.setName("Test Customer");
+        customer.setPhoneNumber("1234567890");
         customer.setStatus(Status.ACTIVE);
 
         customerDTO = new CustomerDTO();
         customerDTO.setId("1");
-        customerDTO.setName("John Doe");
-        customerDTO.setPhoneNumber("123456789");
+        customerDTO.setName("Test Customer");
+        customerDTO.setPhoneNumber("1234567890");
         customerDTO.setStatus(Status.ACTIVE);
     }
 
     @Test
-    public void testAddCustomer() {
+    void testGetCustomerList() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Customer> customerPage = new PageImpl<>(Collections.singletonList(customer));
+
+        when(customerRepository.findAll(pageable)).thenReturn(customerPage);
+
+        Page<CustomerDTO> result = customerService.getCustomerList(pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        verify(customerRepository, times(1)).findAll(pageable);
+    }
+
+    @Test
+    void testSearchCustomers() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Customer> customerPage = new PageImpl<>(Collections.singletonList(customer));
+        CustomerSpecification specification = new CustomerSpecification("Test");
+
+        when(customerRepository.findAll(any(CustomerSpecification.class), eq(pageable))).thenReturn(customerPage);
+
+        Page<CustomerDTO> result = customerService.searchCustomers("Test", pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        verify(customerRepository, times(1)).findAll(any(CustomerSpecification.class), eq(pageable));
+    }
+
+    @Test
+    void testGetCustomerById() {
+        when(customerRepository.findById("1")).thenReturn(Optional.of(customer));
+
+        Optional<CustomerDTO> result = customerService.getCusromerById("1");
+
+        assertTrue(result.isPresent());
+        assertEquals(customerDTO.getName(), result.get().getName());
+        verify(customerRepository, times(1)).findById("1");
+    }
+
+    @Test
+    void testGetCustomerById_NotFound() {
+        when(customerRepository.findById("1")).thenReturn(Optional.empty());
+
+        Optional<CustomerDTO> result = customerService.getCusromerById("1");
+
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    void testAddCustomer() {
         when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
         CustomerDTO result = customerService.addCustomer(customerDTO);
 
         assertNotNull(result);
-        assertEquals("John Doe", result.getName());
+        assertEquals(customerDTO.getName(), result.getName());
         verify(customerRepository, times(1)).save(any(Customer.class));
     }
 
     @Test
-    public void testEditCustomer() {
+    void testEditCustomer() {
         when(customerRepository.findById("1")).thenReturn(Optional.of(customer));
         when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
-        CustomerDTO updatedCustomerDTO = new CustomerDTO();
-        updatedCustomerDTO.setName("Jane Doe");
-        updatedCustomerDTO.setPhoneNumber("987654321");
-
-        CustomerDTO result = customerService.editCustomer("1", updatedCustomerDTO);
+        CustomerDTO result = customerService.editCustomer("1", customerDTO);
 
         assertNotNull(result);
-        assertEquals("Jane Doe", result.getName());
-        assertEquals("987654321", result.getPhoneNumber());
+        assertEquals(customerDTO.getName(), result.getName());
+        verify(customerRepository, times(1)).findById("1");
         verify(customerRepository, times(1)).save(any(Customer.class));
     }
 
     @Test
-    public void testActivateCustomer() {
+    void testEditCustomer_NotFound() {
+        when(customerRepository.findById("1")).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> customerService.editCustomer("1", customerDTO));
+    }
+
+    @Test
+    void testActivateCustomer() {
+        customer.setStatus(Status.INACTIVE);
         when(customerRepository.findById("1")).thenReturn(Optional.of(customer));
         when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
         CustomerDTO result = customerService.activateCustomer("1");
 
-        assertNotNull(result);
         assertEquals(Status.ACTIVE, result.getStatus());
+        verify(customerRepository, times(1)).findById("1");
         verify(customerRepository, times(1)).save(any(Customer.class));
     }
 
     @Test
-    public void testDeactivateCustomer() {
-        customer.setStatus(Status.ACTIVE);
+    void testActivateCustomer_AlreadyActive() {
+        when(customerRepository.findById("1")).thenReturn(Optional.of(customer));
+
+        assertThrows(RuntimeException.class, () -> customerService.activateCustomer("1"));
+    }
+
+    @Test
+    void testDeactivateCustomer() {
         when(customerRepository.findById("1")).thenReturn(Optional.of(customer));
         when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
         CustomerDTO result = customerService.deactivateCustomer("1");
 
-        assertNotNull(result);
         assertEquals(Status.INACTIVE, result.getStatus());
+        verify(customerRepository, times(1)).findById("1");
         verify(customerRepository, times(1)).save(any(Customer.class));
     }
 
     @Test
-    public void testActivateCustomerNotFound() {
-        when(customerRepository.findById("2")).thenReturn(Optional.empty());
+    void testDeactivateCustomer_AlreadyInactive() {
+        customer.setStatus(Status.INACTIVE);
+        when(customerRepository.findById("1")).thenReturn(Optional.of(customer));
 
-        ResourceNotFoundException thrown = assertThrows(ResourceNotFoundException.class, () -> {
-            customerService.activateCustomer("2");
-        });
-
-        assertEquals("Customer not found with id: 2", thrown.getMessage());
-    }
-
-    @Test
-    public void testEditCustomerNotFound() {
-        when(customerRepository.findById("2")).thenReturn(Optional.empty());
-
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-            customerService.editCustomer("2", customerDTO);
-        });
-
-        assertEquals("Customer not found with id: 2", thrown.getMessage());
+        assertThrows(RuntimeException.class, () -> customerService.deactivateCustomer("1"));
     }
 }

@@ -7,14 +7,21 @@ import com.fpt.MidtermG1.dto.ProductDTO;
 import com.fpt.MidtermG1.exception.ResourceNotFoundException;
 import com.fpt.MidtermG1.service.impl.ProductServiceImpl;
 import com.fpt.MidtermG1.util.ExcelUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -23,6 +30,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,14 +65,15 @@ class ProductServiceImplTest {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Product> productPage = new PageImpl<>(Collections.singletonList(product));
 
-        when(productRepository.findAll((Example<Product>) any(), eq(pageable))).thenReturn(productPage);
+        when(productRepository.findAll((Specification<Product>) any(), eq(pageable))).thenReturn(productPage);
 
         Page<ProductDTO> result = productService.listAllProduct(pageable, "name:Test");
 
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());
-        verify(productRepository, times(1)).findAll((Example<Product>) any(), eq(pageable));
+        verify(productRepository, times(1)).findAll((Specification<Product>) any(), eq(pageable));
     }
+
 
     @Test
     void testFindProductById() {
@@ -117,15 +126,39 @@ class ProductServiceImplTest {
 
     @Test
     void testImportExcel() throws Exception {
-        InputStream inputStream = mock(InputStream.class);
+        // Create a simple Excel workbook with Apache POI
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Products");
+        Row header = sheet.createRow(0);
+        header.createCell(0).setCellValue("ID");
+        header.createCell(1).setCellValue("Name");
+        header.createCell(2).setCellValue("Price");
+        header.createCell(3).setCellValue("Status");
+
+        Row dataRow = sheet.createRow(1);
+        dataRow.createCell(0).setCellValue(1);
+        dataRow.createCell(1).setCellValue("Test Product");
+        dataRow.createCell(2).setCellValue(100.0);
+        dataRow.createCell(3).setCellValue("ACTIVE");
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        workbook.write(bos);
+        workbook.close();
+
+        byte[] excelBytes = bos.toByteArray();
+        InputStream inputStream = new ByteArrayInputStream(excelBytes);
         List<Product> products = Collections.singletonList(product);
 
-        when(ExcelUtil.parseProductFile(inputStream)).thenReturn(products);
+        // Mock the static method of ExcelUtil class
+        try (MockedStatic<ExcelUtil> mockedExcelUtil = mockStatic(ExcelUtil.class)) {
+            mockedExcelUtil.when(() -> ExcelUtil.parseProductFile(any(InputStream.class))).thenReturn(products);
 
-        productService.importExcel(inputStream);
+            productService.importExcel(inputStream);
 
-        verify(productRepository, times(1)).saveAll(products);
+            verify(productRepository, times(1)).saveAll(products);
+        }
     }
+
 
     @Test
     void testActivateProduct() {

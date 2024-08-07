@@ -149,7 +149,6 @@ class ProductServiceImplTest {
         InputStream inputStream = new ByteArrayInputStream(excelBytes);
         List<Product> products = Collections.singletonList(product);
 
-        // Mock the static method of ExcelUtil class
         try (MockedStatic<ExcelUtil> mockedExcelUtil = mockStatic(ExcelUtil.class)) {
             mockedExcelUtil.when(() -> ExcelUtil.parseProductFile(any(InputStream.class))).thenReturn(products);
 

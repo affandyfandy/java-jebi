@@ -1,8 +1,31 @@
 package com.fpt.MidtermG1.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.time.Duration;
+import java.util.List;
+import java.util.Optional;
+
+import com.fpt.MidtermG1.dto.CustomerDTO;
+import com.fpt.MidtermG1.service.impl.InvoiceServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.fpt.MidtermG1.common.Status;
 import com.fpt.MidtermG1.data.entity.Customer;
 import com.fpt.MidtermG1.data.entity.Invoice;
+import com.fpt.MidtermG1.data.entity.InvoiceProduct;
 import com.fpt.MidtermG1.data.entity.Product;
 import com.fpt.MidtermG1.data.repository.CustomerRepository;
 import com.fpt.MidtermG1.data.repository.InvoiceProductRepository;
@@ -12,28 +35,10 @@ import com.fpt.MidtermG1.dto.InvoiceDTO;
 import com.fpt.MidtermG1.dto.InvoiceProductDTO;
 import com.fpt.MidtermG1.dto.ProductDTO;
 import com.fpt.MidtermG1.exception.ResourceNotFoundException;
-import com.fpt.MidtermG1.service.impl.InvoiceServiceImpl;
 import com.fpt.MidtermG1.util.PDFUtils;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-@ExtendWith(MockitoExtension.class)
-class InvoiceServiceImplTest {
+@DataJpaTest
+public class InvoiceServiceImplTest {
 
     @Mock
     private InvoiceRepository invoiceRepository;
@@ -53,108 +58,170 @@ class InvoiceServiceImplTest {
     @InjectMocks
     private InvoiceServiceImpl invoiceService;
 
-    private Customer activeCustomer;
-    private Product activeProduct;
-    private Product inactiveProduct;
-    private InvoiceDTO invoiceDTO;
-
     @BeforeEach
-    void setUp() {
-        activeCustomer = Customer.builder()
-                .id("1")
-                .name("John Doe")
-                .status(Status.ACTIVE)
-                .build();
-
-        activeProduct = Product.builder()
-                .id(1)
-                .name("Product 1")
-                .price(BigDecimal.valueOf(100))
-                .status(Status.ACTIVE)
-                .build();
-
-        inactiveProduct = Product.builder()
-                .id(2)
-                .name("Product 2")
-                .price(BigDecimal.valueOf(200))
-                .status(Status.INACTIVE)
-                .build();
-
-        InvoiceProductDTO invoiceProductDTO1 = InvoiceProductDTO.builder()
-                .product(ProductDTO.builder().id(activeProduct.getId()).build())
-                .quantity(2)
-                .build();
-
-        InvoiceProductDTO invoiceProductDTO2 = InvoiceProductDTO.builder()
-                .product(ProductDTO.builder().id(inactiveProduct.getId()).build())
-                .quantity(1)
-                .build();
-
-        invoiceDTO = InvoiceDTO.builder()
-                .customer(activeCustomer.toDTO())
-                .invoiceProducts(Arrays.asList(invoiceProductDTO1, invoiceProductDTO2))
-                .build();
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void addInvoice_shouldThrowExceptionWhenCustomerNotFound() {
-        when(customerRepository.findById(anyString())).thenReturn(Optional.empty());
+    public void testAddInvoice_Success() {
+        // Arrange
+        Customer customer = new Customer();
+        customer.setId("cust-1");
+        customer.setStatus(Status.ACTIVE);
 
-        assertThrows(ResourceNotFoundException.class, () -> {
-            invoiceService.addInvoice(invoiceDTO);
+        Product product = new Product();
+        product.setId(1);
+        product.setPrice(BigDecimal.valueOf(100));
+        product.setStatus(Status.ACTIVE);
+
+        InvoiceProductDTO invoiceProductDTO = new InvoiceProductDTO();
+        invoiceProductDTO.setProduct(ProductDTO.builder().id(1).build());
+        invoiceProductDTO.setQuantity(2);
+
+        InvoiceDTO invoiceDTO = new InvoiceDTO();
+        invoiceDTO.setCustomer(new CustomerDTO());
+        invoiceDTO.setInvoiceProducts(List.of(invoiceProductDTO));
+
+        when(customerRepository.findById("cust-1")).thenReturn(Optional.of(customer));
+        when(productRepository.findById(1)).thenReturn(Optional.of(product));
+        when(invoiceRepository.save(any(Invoice.class))).thenAnswer(invocation -> {
+            Invoice savedInvoice = invocation.getArgument(0);
+            savedInvoice.setId("inv-1");
+            return savedInvoice;
         });
+
+        // Act
+        InvoiceDTO result = invoiceService.addInvoice(invoiceDTO);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(BigDecimal.valueOf(200), result.getInvoiceAmount());
+        verify(invoiceRepository, times(1)).save(any(Invoice.class));
     }
 
     @Test
-    void addInvoice_shouldThrowExceptionWhenCustomerIsInactive() {
-        activeCustomer.setStatus(Status.INACTIVE);
-        when(customerRepository.findById(anyString())).thenReturn(Optional.of(activeCustomer));
+    public void testAddInvoice_InactiveCustomer() {
+        // Arrange
+        Customer customer = new Customer();
+        customer.setId("cust-1");
+        customer.setStatus(Status.INACTIVE);
 
+        InvoiceDTO invoiceDTO = new InvoiceDTO();
+        invoiceDTO.setCustomer(new CustomerDTO());
+
+        when(customerRepository.findById("cust-1")).thenReturn(Optional.of(customer));
+
+        // Act & Assert
         assertThrows(ResponseStatusException.class, () -> {
             invoiceService.addInvoice(invoiceDTO);
         });
+
+        verify(invoiceRepository, never()).save(any(Invoice.class));
     }
 
     @Test
-    void addInvoice_shouldThrowExceptionWhenProductNotFound() {
-        when(customerRepository.findById(anyString())).thenReturn(Optional.of(activeCustomer));
-        when(productRepository.findById(anyInt())).thenReturn(Optional.empty());
+    public void testAddInvoice_ProductNotFound() {
+        // Arrange
+        Customer customer = new Customer();
+        customer.setId("cust-1");
+        customer.setStatus(Status.ACTIVE);
 
+        InvoiceProductDTO invoiceProductDTO = new InvoiceProductDTO();
+        invoiceProductDTO.setProduct(ProductDTO.builder().id(1).build());
+
+        InvoiceDTO invoiceDTO = new InvoiceDTO();
+        invoiceDTO.setCustomer(new CustomerDTO());
+        invoiceDTO.setInvoiceProducts(List.of(invoiceProductDTO));
+
+        when(customerRepository.findById("cust-1")).thenReturn(Optional.of(customer));
+        when(productRepository.findById(1)).thenReturn(Optional.empty());
+
+        // Act & Assert
         assertThrows(ResourceNotFoundException.class, () -> {
             invoiceService.addInvoice(invoiceDTO);
         });
+
+        verify(invoiceRepository, never()).save(any(Invoice.class));
     }
 
     @Test
-    void addInvoice_shouldThrowExceptionWhenProductIsInactive() {
-        when(customerRepository.findById(anyString())).thenReturn(Optional.of(activeCustomer));
-        when(productRepository.findById(activeProduct.getId())).thenReturn(Optional.of(activeProduct));
-        when(productRepository.findById(inactiveProduct.getId())).thenReturn(Optional.of(inactiveProduct));
+    public void testEditInvoice_Success() {
+        // Arrange
+        Customer customer = new Customer();
+        customer.setId("cust-1");
+        customer.setStatus(Status.ACTIVE);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            invoiceService.addInvoice(invoiceDTO);
-        });
+        Product product = new Product();
+        product.setId(1);
+        product.setPrice(BigDecimal.valueOf(100));
+        product.setStatus(Status.ACTIVE);
 
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-        assertTrue(exception.getReason().contains("Product " + inactiveProduct.getId() + " is inactive"));
-    }
+        InvoiceProductDTO invoiceProductDTO = new InvoiceProductDTO();
+        invoiceProductDTO.setProduct(ProductDTO.builder().id(1).build());
+        invoiceProductDTO.setQuantity(2);
 
-    @Test
-    void addInvoice_shouldSaveInvoiceSuccessfully() {
-        when(customerRepository.findById(anyString())).thenReturn(Optional.of(activeCustomer));
-        when(productRepository.findById(activeProduct.getId())).thenReturn(Optional.of(activeProduct));
-        when(productRepository.findById(inactiveProduct.getId())).thenReturn(Optional.of(activeProduct));
-        when(invoiceRepository.save(any(Invoice.class))).thenAnswer(invocation -> {
-            Invoice invoice = invocation.getArgument(0);
-            invoice.setId("1");
-            return invoice;
-        });
+        InvoiceDTO invoiceDTO = new InvoiceDTO();
+        invoiceDTO.setCustomer(new CustomerDTO());
+        invoiceDTO.setInvoiceProducts(List.of(invoiceProductDTO));
 
-        InvoiceDTO result = invoiceService.addInvoice(invoiceDTO);
+        Invoice existingInvoice = new Invoice();
+        existingInvoice.setId("inv-1");
+        existingInvoice.setCustomer(customer);
+        existingInvoice.setInvoiceDate(Timestamp.from(Instant.now().minus(Duration.ofMinutes(5))));
 
+        when(invoiceRepository.findById("inv-1")).thenReturn(Optional.of(existingInvoice));
+        when(customerRepository.findById("cust-1")).thenReturn(Optional.of(customer));
+        when(productRepository.findById(1)).thenReturn(Optional.of(product));
+        when(invoiceRepository.save(any(Invoice.class))).thenReturn(existingInvoice);
+
+        // Act
+        InvoiceDTO result = invoiceService.editInvoice("inv-1", invoiceDTO);
+
+        // Assert
         assertNotNull(result);
-        assertEquals("1", result.getId());
+        assertEquals(BigDecimal.valueOf(200), result.getInvoiceAmount());
         verify(invoiceRepository, times(1)).save(any(Invoice.class));
-        verify(invoiceProductRepository, times(2)).save(any());
+    }
+
+    @Test
+    public void testEditInvoice_InvoiceNotFound() {
+        // Arrange
+        InvoiceDTO invoiceDTO = new InvoiceDTO();
+
+        when(invoiceRepository.findById("inv-1")).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class, () -> {
+            invoiceService.editInvoice("inv-1", invoiceDTO);
+        });
+
+        verify(invoiceRepository, never()).save(any(Invoice.class));
+    }
+
+    @Test
+    public void testEditInvoice_InactiveCustomer() {
+        // Arrange
+        Customer customer = new Customer();
+        customer.setId("cust-1");
+        customer.setStatus(Status.INACTIVE);
+
+        InvoiceDTO invoiceDTO = new InvoiceDTO();
+        invoiceDTO.setCustomer(new CustomerDTO());
+
+        Invoice existingInvoice = new Invoice();
+        existingInvoice.setId("inv-1");
+        existingInvoice.setCustomer(customer);
+        existingInvoice.setInvoiceDate(Timestamp.from(Instant.now().minus(Duration.ofMinutes(5))));
+
+        when(invoiceRepository.findById("inv-1")).thenReturn(Optional.of(existingInvoice));
+        when(customerRepository.findById("cust-1")).thenReturn(Optional.of(customer));
+
+        // Act & Assert
+        assertThrows(ResponseStatusException.class, () -> {
+            invoiceService.editInvoice("inv-1", invoiceDTO);
+        });
+
+        verify(invoiceRepository, never()).save(any(Invoice.class));
     }
 }

@@ -59,6 +59,16 @@
 #### Analyze Project
 ![alt text](img/image-1.png)
 
+
+#### Execute maven command in project directory
+```
+mvn clean verify sonar: sonar \
+-Dsonar.projectKey=jebi \
+-Dsonar.projectName='jebi' \
+-Dsonar.host.url=http://localhost:9000\
+-Dsonar.token=sqp_a0c7652840774d228ff73ed6e70a37c8a97ed15f
+```
+
 #### Result 
 ![alt text](img/image-3.png)
 

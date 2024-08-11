@@ -1,24 +1,26 @@
 package com.fpt.midtemg1.data.entity;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import com.fpt.midtemg1.dto.InvoiceDTO;
 
-public class InvoiceTest {
+class InvoiceTest {
     private Invoice invoice;
     private Customer customer;
     private Set<InvoiceProduct> invoiceProducts;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         customer = new Customer();
         invoiceProducts = new HashSet<>();
         invoice = Invoice.builder()
@@ -33,7 +35,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testOnCreate() {
+    void testOnCreate() {
         invoice.onCreate();
         assertNotNull(invoice.getCreatedTime());
         assertNotNull(invoice.getUpdatedTime());
@@ -41,7 +43,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testPreUpdate() throws InterruptedException {
+    void testPreUpdate() throws InterruptedException {
         Timestamp oldTime = invoice.getUpdatedTime();
         TimeUnit.MILLISECONDS.sleep(10);
         invoice.preUpdate();
@@ -50,7 +52,7 @@ public class InvoiceTest {
     }
 
     @Test
-    public void testToDTO() {
+    void testToDTO() {
         InvoiceDTO dto = invoice.toDTO();
         assertEquals(invoice.getId(), dto.getId());
         assertEquals(invoice.getCustomer().toDTO(), dto.getCustomer());

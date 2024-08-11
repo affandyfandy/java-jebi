@@ -1,15 +1,22 @@
 package com.fpt.midtemg1.specification;
 
+import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.eq;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.jpa.domain.Specification;
+
+import com.fpt.midtemg1.data.entity.Customer;
+import com.fpt.midtemg1.data.entity.Invoice;
 import com.fpt.midtemg1.specifications.InvoiceSpecification;
 import com.fpt.midtemg1.specifications.InvoiceSpecificationsBuilder;
 import com.fpt.midtemg1.specifications.SearchCriteria;
-import com.fpt.midtemg1.data.entity.Customer;
-import com.fpt.midtemg1.data.entity.Invoice;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.jpa.domain.Specification;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -18,17 +25,7 @@ import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Calendar;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-
-public class InvoiceSpecificationTest {
+class InvoiceSpecificationTest {
 
     @Mock
     private Root<Invoice> root;
@@ -47,7 +44,7 @@ public class InvoiceSpecificationTest {
     }
 
     @Test
-    public void testToPredicate_invoiceAmountGreaterThan() {
+    void testToPredicate_invoiceAmountGreaterThan() {
         SearchCriteria criteria = new SearchCriteria("invoiceAmount", ">", new BigDecimal("1000"));
         invoiceSpecification = new InvoiceSpecification(criteria);
 
@@ -60,7 +57,7 @@ public class InvoiceSpecificationTest {
     }
 
     @Test
-    public void testToPredicate_invoiceAmountLessThan() {
+    void testToPredicate_invoiceAmountLessThan() {
         SearchCriteria criteria = new SearchCriteria("invoiceAmount", "<", new BigDecimal("1000"));
         invoiceSpecification = new InvoiceSpecification(criteria);
 
@@ -73,7 +70,7 @@ public class InvoiceSpecificationTest {
     }
 
     @Test
-    public void testToPredicate_customerId() {
+    void testToPredicate_customerId() {
         SearchCriteria criteria = new SearchCriteria("customer.id", ":", "12345");
         invoiceSpecification = new InvoiceSpecification(criteria);
 
@@ -89,7 +86,7 @@ public class InvoiceSpecificationTest {
     }
 
     @Test
-    public void testToPredicate_customerName() {
+    void testToPredicate_customerName() {
         SearchCriteria criteria = new SearchCriteria("customer.name", ":", "John Doe");
         invoiceSpecification = new InvoiceSpecification(criteria);
 
@@ -105,7 +102,7 @@ public class InvoiceSpecificationTest {
     }
 
     @Test
-    public void testBuild_singleSpecification() {
+    void testBuild_singleSpecification() {
         InvoiceSpecificationsBuilder builder = new InvoiceSpecificationsBuilder();
         builder.with("invoiceAmount", ">", new BigDecimal("1000"));
 
@@ -114,7 +111,7 @@ public class InvoiceSpecificationTest {
     }
 
     @Test
-    public void testBuild_multipleSpecifications() {
+    void testBuild_multipleSpecifications() {
         InvoiceSpecificationsBuilder builder = new InvoiceSpecificationsBuilder();
         builder.with("invoiceAmount", ">", new BigDecimal("1000"))
                 .with("customer.name", ":", "John Doe");

@@ -1,13 +1,22 @@
 package com.fpt.midtemg1.specification;
 
+import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import org.springframework.data.jpa.domain.Specification;
+
 import com.fpt.midtemg1.data.entity.Product;
 import com.fpt.midtemg1.specifications.ProductSpecification;
 import com.fpt.midtemg1.specifications.ProductSpecificationsBuilder;
 import com.fpt.midtemg1.specifications.SearchCriteria;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.data.jpa.domain.Specification;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -15,13 +24,7 @@ import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
-import java.math.BigDecimal;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
-public class ProductSpecificationTest {
+class ProductSpecificationTest {
 
     private ProductSpecification productSpecification;
     private ProductSpecificationsBuilder productSpecificationsBuilder;
@@ -30,14 +33,14 @@ public class ProductSpecificationTest {
     private CriteriaBuilder builder;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         root = mock(Root.class);
         query = mock(CriteriaQuery.class);
         builder = mock(CriteriaBuilder.class);
     }
 
     @Test
-    public void testToPredicate_greaterThan() {
+    void testToPredicate_greaterThan() {
         // Arrange
         SearchCriteria criteria = new SearchCriteria("price", ">", new BigDecimal("100"));
         productSpecification = new ProductSpecification(criteria);
@@ -57,7 +60,7 @@ public class ProductSpecificationTest {
     }
 
     @Test
-    public void testToPredicate_lessThan() {
+    void testToPredicate_lessThan() {
         // Arrange
         SearchCriteria criteria = new SearchCriteria("price", "<", new BigDecimal("50"));
         productSpecification = new ProductSpecification(criteria);
@@ -77,7 +80,7 @@ public class ProductSpecificationTest {
     }
 
     @Test
-    public void testProductSpecificationsBuilder_empty() {
+    void testProductSpecificationsBuilder_empty() {
         // Arrange
         productSpecificationsBuilder = new ProductSpecificationsBuilder();
 
@@ -89,7 +92,7 @@ public class ProductSpecificationTest {
     }
 
     @Test
-    public void testProductSpecificationsBuilder_withSingleCriterion() {
+    void testProductSpecificationsBuilder_withSingleCriterion() {
         // Arrange
         productSpecificationsBuilder = new ProductSpecificationsBuilder();
         productSpecificationsBuilder.with("name", ":", "Product A");

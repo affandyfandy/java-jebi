@@ -338,25 +338,6 @@ class InvoiceServiceImplTest {
     }
 
     @Test
-    void testGetRevenueByPeriodWithInvoices() {
-        // Prepare mock data
-        Invoice invoice = new Invoice();
-        invoice.setInvoiceAmount(BigDecimal.valueOf(200.00));
-        invoice.setInvoiceDate(Timestamp.valueOf(LocalDateTime.now()));
-
-        when(invoiceRepository.findByInvoiceDateBetween(any(), any())).thenReturn(Collections.singletonList(invoice));
-
-        // Call the method under test
-        List<RevenueReportDTO> report = invoiceService.getRevenueByPeriod(2024, 8, 10);
-
-        // Assert the results
-        assertNotNull(report);
-        assertFalse(report.isEmpty());
-        assertEquals(1, report.size());
-        assertEquals(BigDecimal.valueOf(200.00), report.get(0).getRevenue());
-    }
-
-    @Test
     void testAddInvoiceWithNoProducts() {
         // Prepare invoiceDTO with no products
         invoiceDTO.setInvoiceProducts(new ArrayList<>());

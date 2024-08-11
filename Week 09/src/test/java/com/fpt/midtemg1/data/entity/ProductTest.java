@@ -1,26 +1,26 @@
 package com.fpt.midtemg1.data.entity;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import com.fpt.midtemg1.common.Status;
-import com.fpt.midtemg1.data.entity.Product;
-import com.fpt.midtemg1.data.entity.InvoiceProduct;
 import com.fpt.midtemg1.dto.ProductDTO;
 
-public class ProductTest {
+class ProductTest {
     private Product product;
     private Set<InvoiceProduct> invoiceProducts;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         invoiceProducts = new HashSet<>();
         product = Product.builder()
                 .id(1)
@@ -34,7 +34,7 @@ public class ProductTest {
     }
 
     @Test
-    public void testOnCreate() {
+    void testOnCreate() {
         product.onCreate();
         assertNotNull(product.getCreatedTime());
         assertNotNull(product.getUpdatedTime());
@@ -42,7 +42,7 @@ public class ProductTest {
     }
 
     @Test
-    public void testPreUpdate() throws InterruptedException {
+    void testPreUpdate() throws InterruptedException {
         Timestamp oldTime = product.getUpdatedTime();
         TimeUnit.MILLISECONDS.sleep(10);
         product.preUpdate();
@@ -52,7 +52,7 @@ public class ProductTest {
 
 
     @Test
-    public void testToDTO() {
+    void testToDTO() {
         ProductDTO dto = product.toDTO();
         assertEquals(product.getId(), dto.getId());
         assertEquals(product.getName(), dto.getName());

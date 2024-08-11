@@ -1,5 +1,15 @@
 package com.fpt.midtemg1.service.impl;
 
+import java.io.InputStream;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
 import com.fpt.midtemg1.common.Status;
 import com.fpt.midtemg1.data.entity.Product;
 import com.fpt.midtemg1.data.repository.ProductRepository;
@@ -10,18 +20,8 @@ import com.fpt.midtemg1.exception.ResourceNotFoundException;
 import com.fpt.midtemg1.service.ProductService;
 import com.fpt.midtemg1.specifications.ProductSpecificationsBuilder;
 import com.fpt.midtemg1.util.ExcelUtil;
-import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
-import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
 
         String[] criteria = sanitizedSearch.split(",");
         for (String criterion : criteria) {
-            String[] parts = criterion.split("[:<>]", 2); // Split into two parts: key and value
+            String[] parts = criterion.split("[:<>]", 2); 
             if (parts.length == 2) {
                 String key = parts[0].trim();
                 String value = parts[1].trim();

@@ -1,28 +1,34 @@
 package com.fpt.midtemg1.controller;
 
-import com.fpt.midtemg1.common.Status;
-import com.fpt.midtemg1.dto.CustomerDTO;
-import com.fpt.midtemg1.service.CustomerService;
+import java.util.Arrays;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import java.util.Arrays;
-import java.util.Optional;
-
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.fpt.midtemg1.common.Status;
+import com.fpt.midtemg1.dto.CustomerDTO;
+import com.fpt.midtemg1.service.CustomerService;
 
 @WebMvcTest(CustomerController.class)
 public class CustomerControllerTest {
@@ -38,7 +44,7 @@ public class CustomerControllerTest {
     private static final String BASE_URL = "/api/v1/customers";
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         customerDTO = CustomerDTO.builder()
                 .id("C001")
@@ -54,7 +60,7 @@ public class CustomerControllerTest {
 
     // Test: Get Customer List
     @Test
-    public void testGetCustomerList() throws Exception {
+    void testGetCustomerList() throws Exception {
         Pageable pageable = PageRequest.of(0, 10);
         Page<CustomerDTO> customerPage = new PageImpl<>(Arrays.asList(customerDTO));
         when(customerService.getCustomerList(pageable)).thenReturn(customerPage);
@@ -71,8 +77,8 @@ public class CustomerControllerTest {
 
     // Test: Get Customer By ID
     @Test
-    public void testGetCustomerById() throws Exception {
-        when(customerService.getCusromerById("C001")).thenReturn(Optional.of(customerDTO));
+    void testGetCustomerById() throws Exception {
+        when(customerService.getCustomerById("C001")).thenReturn(Optional.of(customerDTO));
 
         mockMvc.perform(get(BASE_URL + "/C001"))
                 .andExpect(status().isOk())
@@ -86,7 +92,7 @@ public class CustomerControllerTest {
 
     // Test: Add Customer
     @Test
-    public void testAddCustomer() throws Exception {
+    void testAddCustomer() throws Exception {
         when(customerService.addCustomer(any(CustomerDTO.class))).thenReturn(customerDTO);
 
         mockMvc.perform(post(BASE_URL)
@@ -103,7 +109,7 @@ public class CustomerControllerTest {
 
     // Test: Edit Customer
     @Test
-    public void testEditCustomer() throws Exception {
+    void testEditCustomer() throws Exception {
         when(customerService.editCustomer(eq("C001"), any(CustomerDTO.class))).thenReturn(customerDTO);
 
         mockMvc.perform(put(BASE_URL + "/C001")
@@ -120,7 +126,7 @@ public class CustomerControllerTest {
 
     // Test: Activate Customer
     @Test
-    public void testActivateCustomer() throws Exception {
+    void testActivateCustomer() throws Exception {
         when(customerService.activateCustomer("C001")).thenReturn(customerDTO);
 
         mockMvc.perform(put(BASE_URL + "/activate/C001"))
@@ -135,7 +141,7 @@ public class CustomerControllerTest {
 
     // Test: Deactivate Customer
     @Test
-    public void testDeactivateCustomer() throws Exception {
+    void testDeactivateCustomer() throws Exception {
         CustomerDTO deactivatedCustomerDTO = CustomerDTO.builder()
                 .id("C001")
                 .name("Jebi Hendardi")
@@ -157,8 +163,8 @@ public class CustomerControllerTest {
 
     // Test: Get Customer By ID Not Found
     @Test
-    public void testGetCustomerByIdNotFound() throws Exception {
-        when(customerService.getCusromerById("C001")).thenReturn(Optional.empty());
+    void testGetCustomerByIdNotFound() throws Exception {
+        when(customerService.getCustomerById("C001")).thenReturn(Optional.empty());
 
         mockMvc.perform(get(BASE_URL + "/C001"))
                 .andExpect(status().isNotFound())
@@ -167,7 +173,7 @@ public class CustomerControllerTest {
 
     // Test: Get Customer List Empty
     @Test
-    public void testGetCustomerListEmpty() throws Exception {
+    void testGetCustomerListEmpty() throws Exception {
         Pageable pageable = PageRequest.of(0, 10);
         Page<CustomerDTO> customerPage = new PageImpl<>(Arrays.asList()); // Empty list
         when(customerService.getCustomerList(pageable)).thenReturn(customerPage);
@@ -179,7 +185,7 @@ public class CustomerControllerTest {
 
     // Test: Activate Customer Already Active
     @Test
-    public void testActivateCustomerAlreadyActive() throws Exception {
+    void testActivateCustomerAlreadyActive() throws Exception {
         CustomerDTO alreadyActiveCustomerDTO = CustomerDTO.builder()
                 .id("C001")
                 .name("Jebi Hendardi")
@@ -198,7 +204,7 @@ public class CustomerControllerTest {
 
     // Test: Deactivate Customer Already Inactive
     @Test
-    public void testDeactivateCustomerAlreadyInactive() throws Exception {
+    void testDeactivateCustomerAlreadyInactive() throws Exception {
         CustomerDTO alreadyInactiveCustomerDTO = CustomerDTO.builder()
                 .id("C001")
                 .name("Jebi Hendardi")
@@ -217,7 +223,7 @@ public class CustomerControllerTest {
 
     // Test: Add Customer Internal Error
     @Test
-    public void testAddCustomerInternalError() throws Exception {
+    void testAddCustomerInternalError() throws Exception {
         when(customerService.addCustomer(any(CustomerDTO.class))).thenThrow(new RuntimeException("Internal server error"));
 
         mockMvc.perform(post(BASE_URL)
@@ -229,7 +235,7 @@ public class CustomerControllerTest {
 
     // Test: Search Customers Empty Result
     @Test
-    public void testSearchCustomersEmptyResult() throws Exception {
+    void testSearchCustomersEmptyResult() throws Exception {
         Pageable pageable = PageRequest.of(0, 10);
         Page<CustomerDTO> emptyCustomerPage = new PageImpl<>(Arrays.asList()); // Empty result
         when(customerService.searchCustomers(eq("non-existent-keyword"), eq(pageable))).thenReturn(emptyCustomerPage);
@@ -241,7 +247,7 @@ public class CustomerControllerTest {
 
     // Test: Edit Customer Internal Error
     @Test
-    public void testEditCustomerInternalError() throws Exception {
+    void testEditCustomerInternalError() throws Exception {
         when(customerService.editCustomer(eq("C001"), any(CustomerDTO.class))).thenThrow(new RuntimeException("Internal server error"));
 
         mockMvc.perform(put(BASE_URL + "/C001")

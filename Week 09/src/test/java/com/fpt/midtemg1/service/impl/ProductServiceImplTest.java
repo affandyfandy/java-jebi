@@ -1,24 +1,5 @@
 package com.fpt.midtemg1.service.impl;
 
-import com.fpt.midtemg1.common.Status;
-import com.fpt.midtemg1.data.entity.Product;
-import com.fpt.midtemg1.data.repository.ProductRepository;
-import com.fpt.midtemg1.dto.ProductDTO;
-import com.fpt.midtemg1.exception.ProductStatusException;
-import com.fpt.midtemg1.exception.ResourceNotFoundException;
-import com.fpt.midtemg1.util.ExcelUtil;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.mock.web.MockMultipartFile;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -26,10 +7,33 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+
+import com.fpt.midtemg1.common.Status;
+import com.fpt.midtemg1.data.entity.Product;
+import com.fpt.midtemg1.data.repository.ProductRepository;
+import com.fpt.midtemg1.dto.ProductDTO;
+import com.fpt.midtemg1.exception.ProductStatusException;
+import com.fpt.midtemg1.exception.ResourceNotFoundException;
 
 class ProductServiceImplTest {
 

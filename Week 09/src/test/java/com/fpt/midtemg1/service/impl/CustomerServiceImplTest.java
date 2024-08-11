@@ -1,21 +1,28 @@
 package com.fpt.midtemg1.service.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import com.fpt.midtemg1.common.Status;
 import com.fpt.midtemg1.data.entity.Customer;
@@ -23,10 +30,6 @@ import com.fpt.midtemg1.data.repository.CustomerRepository;
 import com.fpt.midtemg1.dto.CustomerDTO;
 import com.fpt.midtemg1.exception.CustomerNotFoundException;
 import com.fpt.midtemg1.exception.CustomerStatusException;
-import org.springframework.data.jpa.domain.Specification;
-
-import java.util.List;
-import java.util.ArrayList;
 
 class CustomerServiceImplTest {
 
@@ -88,7 +91,7 @@ class CustomerServiceImplTest {
     void testGetCustomerById() {
         when(customerRepository.findById(anyString())).thenReturn(Optional.of(customer));
 
-        Optional<CustomerDTO> result = customerService.getCusromerById(customer.getId());
+        Optional<CustomerDTO> result = customerService.getCustomerById(customer.getId());
 
         assertTrue(result.isPresent());
         assertEquals("John Doe", result.get().getName());
@@ -98,7 +101,7 @@ class CustomerServiceImplTest {
     void testGetCustomerById_NotFound() {
         when(customerRepository.findById(anyString())).thenReturn(Optional.empty());
 
-        Optional<CustomerDTO> result = customerService.getCusromerById("nonexistent-id");
+        Optional<CustomerDTO> result = customerService.getCustomerById("nonexistent-id");
 
         assertFalse(result.isPresent());
     }

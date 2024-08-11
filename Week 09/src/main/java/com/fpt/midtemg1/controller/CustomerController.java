@@ -51,7 +51,7 @@ public class CustomerController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("id") String id) {
-        Optional<CustomerDTO> customerOpt = customerService.getCusromerById(id);
+        Optional<CustomerDTO> customerOpt = customerService.getCustomerById(id);
 
         if (customerOpt.isPresent()) {
             return ResponseEntity.ok(customerOpt.get());

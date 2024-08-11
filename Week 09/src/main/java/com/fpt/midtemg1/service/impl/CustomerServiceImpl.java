@@ -9,17 +9,17 @@ import org.springframework.stereotype.Service;
 import com.fpt.midtemg1.common.Status;
 import com.fpt.midtemg1.data.entity.Customer;
 import com.fpt.midtemg1.data.repository.CustomerRepository;
-import com.fpt.midtemg1.specifications.CustomerSpecification;
 import com.fpt.midtemg1.dto.CustomerDTO;
 import com.fpt.midtemg1.exception.CustomerNotFoundException;
 import com.fpt.midtemg1.exception.CustomerStatusException;
 import com.fpt.midtemg1.service.CustomerService;
+import com.fpt.midtemg1.specifications.CustomerSpecification;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
     private static final String CUSTOMER_NOT_FOUND_MESSAGE = "Customer not found with id: ";
@@ -28,74 +28,61 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Page<CustomerDTO> getCustomerList(Pageable pageable) {
-        Page<Customer> customers = customerRepository.findAll(pageable);
-        return customers.map(Customer::toDTO);
+        return customerRepository.findAll(pageable)
+                                 .map(Customer::toDTO);
     }
 
     @Override
     public Page<CustomerDTO> searchCustomers(String keyword, Pageable pageable) {
-        CustomerSpecification specification = new CustomerSpecification(keyword);
-        Page<Customer> customers = customerRepository.findAll(specification, pageable);
-        return customers.map(Customer::toDTO);
+        return customerRepository.findAll(new CustomerSpecification(keyword), pageable)
+                                 .map(Customer::toDTO);
     }
 
     @Override
-    public Optional<CustomerDTO> getCusromerById(String id) {
-        return customerRepository.findById(id).map(Customer::toDTO);
+    public Optional<CustomerDTO> getCustomerById(String id) {
+        return customerRepository.findById(id)
+                                 .map(Customer::toDTO);
     }
 
     @Override
-    public CustomerDTO addCustomer(@Valid CustomerDTO body) {
-        Customer response = customerRepository.save(body.toEntity());
-        return response.toDTO();
+    public CustomerDTO addCustomer(@Valid CustomerDTO customerDTO) {
+        return customerRepository.save(customerDTO.toEntity())
+                                 .toDTO();
     }
 
     @Override
-    public CustomerDTO editCustomer(String id, @Valid CustomerDTO body) {
+    public CustomerDTO editCustomer(String id, @Valid CustomerDTO customerDTO) {
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new CustomerNotFoundException(CUSTOMER_NOT_FOUND_MESSAGE + id));
+                                              .orElseThrow(() -> new CustomerNotFoundException(CUSTOMER_NOT_FOUND_MESSAGE + id));
 
-        if (body.getName() != null) {
-            customer.setName(body.getName());
-        }
+        if (customerDTO.getName() != null) customer.setName(customerDTO.getName());
+        if (customerDTO.getPhoneNumber() != null) customer.setPhoneNumber(customerDTO.getPhoneNumber());
+        if (customerDTO.getStatus() != null) customer.setStatus(customerDTO.getStatus());
 
-        if (body.getPhoneNumber() != null) {
-            customer.setPhoneNumber(body.getPhoneNumber());
-        }
-
-        if (body.getStatus() != null) {
-            customer.setStatus(body.getStatus());
-        }
-
-        customer = customerRepository.save(customer);
-        return customer.toDTO();
+        return customerRepository.save(customer)
+                                 .toDTO();
     }
 
     @Override
     public CustomerDTO activateCustomer(String id) {
-        Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new CustomerNotFoundException(CUSTOMER_NOT_FOUND_MESSAGE + id));
-
-        if (customer.getStatus() == Status.INACTIVE) {
-            customer.setStatus(Status.ACTIVE);
-        } else {
-            throw new CustomerStatusException("Customer status already " + customer.getStatus());
-        }
-
-        return customerRepository.save(customer).toDTO();
+        return updateCustomerStatus(id, Status.ACTIVE, Status.INACTIVE);
     }
 
     @Override
     public CustomerDTO deactivateCustomer(String id) {
-        Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new CustomerNotFoundException(CUSTOMER_NOT_FOUND_MESSAGE + id));
+        return updateCustomerStatus(id, Status.INACTIVE, Status.ACTIVE);
+    }
 
-        if (customer.getStatus() == Status.ACTIVE) {
-            customer.setStatus(Status.INACTIVE);
-        } else {
-            throw new CustomerStatusException("Customer status already " + customer.getStatus());
+    private CustomerDTO updateCustomerStatus(String id, Status newStatus, Status requiredCurrentStatus) {
+        Customer customer = customerRepository.findById(id)
+                                              .orElseThrow(() -> new CustomerNotFoundException(CUSTOMER_NOT_FOUND_MESSAGE + id));
+
+        if (customer.getStatus() != requiredCurrentStatus) {
+            throw new CustomerStatusException("Customer status is already " + customer.getStatus());
         }
 
-        return customerRepository.save(customer).toDTO();
+        customer.setStatus(newStatus);
+        return customerRepository.save(customer)
+                                 .toDTO();
     }
 }

@@ -96,8 +96,6 @@ public class InvoiceController {
         }
     }
 
-
-
     @GetMapping("/report")
     public List<RevenueReportDTO> getRevenueReport(@RequestParam(required = false) Integer year,
             @RequestParam(required = false) Integer month,

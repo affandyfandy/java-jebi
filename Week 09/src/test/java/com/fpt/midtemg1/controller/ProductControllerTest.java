@@ -1,32 +1,45 @@
 package com.fpt.midtemg1.controller;
 
-import com.fpt.midtemg1.common.Status;
-import com.fpt.midtemg1.dto.ProductDTO;
-import com.fpt.midtemg1.service.ProductService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.*;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.fpt.midtemg1.common.Status;
+import com.fpt.midtemg1.dto.ProductDTO;
+import com.fpt.midtemg1.service.ProductService;
 
 @WebMvcTest(ProductController.class)
-public class ProductControllerTest {
+class ProductControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,7 +52,7 @@ public class ProductControllerTest {
     private static final String BASE_URL = "/api/v1/products";
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         productDTO = ProductDTO.builder()
                 .id(1)
@@ -54,7 +67,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testGetAllProducts() throws Exception {
+    void testGetAllProducts() throws Exception {
         Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "name"));
         Page<ProductDTO> productPage = new PageImpl<>(Arrays.asList(productDTO), pageable, 1);
         when(productService.listAllProduct(pageable, null)).thenReturn(productPage);
@@ -74,7 +87,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testAddProduct() throws Exception {
+    void testAddProduct() throws Exception {
         when(productService.saveProduct(any(ProductDTO.class))).thenReturn(productDTO);
 
         mockMvc.perform(post(BASE_URL)
@@ -90,7 +103,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testEditProduct() throws Exception {
+    void testEditProduct() throws Exception {
         when(productService.updateProduct(eq(1), any(ProductDTO.class))).thenReturn(Optional.of(productDTO));
 
         mockMvc.perform(put(BASE_URL + "/1")
@@ -106,7 +119,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testEditProductNotFound() throws Exception {
+    void testEditProductNotFound() throws Exception {
         when(productService.updateProduct(eq(1), any(ProductDTO.class))).thenReturn(Optional.empty());
 
         mockMvc.perform(put(BASE_URL + "/1")
@@ -117,7 +130,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testImportProducts() throws Exception {
+    void testImportProducts() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "test.xlsx", "application/vnd.ms-excel", new ByteArrayInputStream("test".getBytes()));
         doNothing().when(productService).importExcel(file.getInputStream());
 
@@ -129,7 +142,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testActivateProduct() throws Exception {
+    void testActivateProduct() throws Exception {
         when(productService.activateProduct(1)).thenReturn(productDTO);
 
         mockMvc.perform(put(BASE_URL + "/activate/1"))
@@ -141,7 +154,7 @@ public class ProductControllerTest {
 
 
     @Test
-    public void testActivateProductNotFound() throws Exception {
+    void testActivateProductNotFound() throws Exception {
         when(productService.activateProduct(1)).thenThrow(new RuntimeException("Product not found"));
 
         mockMvc.perform(put(BASE_URL + "/activate/1"))
@@ -151,7 +164,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testActivateProductAlreadyActive() throws Exception {
+    void testActivateProductAlreadyActive() throws Exception {
         // Product is already active
         when(productService.activateProduct(1)).thenThrow(new RuntimeException("Product already active"));
 
@@ -164,7 +177,7 @@ public class ProductControllerTest {
 
 
     @Test
-    public void testDeactivateProduct() throws Exception {
+    void testDeactivateProduct() throws Exception {
         // Product is being deactivated
         ProductDTO deactivatedProductDTO = ProductDTO.builder()
                 .id(1)
@@ -184,7 +197,7 @@ public class ProductControllerTest {
 
 
     @Test
-    public void testDeactivateProductNotFound() throws Exception {
+    void testDeactivateProductNotFound() throws Exception {
         // Set up the ProductService to throw an exception for not found
         when(productService.deactivateProduct(1)).thenThrow(new RuntimeException("Product not found"));
 
@@ -196,7 +209,7 @@ public class ProductControllerTest {
 
 
     @Test
-    public void testDeactivateProductAlreadyInactive() throws Exception {
+    void testDeactivateProductAlreadyInactive() throws Exception {
         // Product is already inactive
         when(productService.deactivateProduct(1)).thenThrow(new RuntimeException("Product already inactive"));
 
@@ -208,7 +221,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testAddProductValidationError() throws Exception {
+    void testAddProductValidationError() throws Exception {
         String invalidProductJson = "{\"id\":1,\"name\":\"\",\"price\":100.0,\"status\":\"ACTIVE\"}"; // Name is blank
 
         mockMvc.perform(post(BASE_URL)
@@ -219,7 +232,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testEditProductValidationError() throws Exception {
+    void testEditProductValidationError() throws Exception {
         String invalidProductJson = "{\"id\":1,\"name\":\"\",\"price\":100.0,\"status\":\"ACTIVE\"}"; // Name is blank
 
         mockMvc.perform(put(BASE_URL + "/1")
@@ -230,7 +243,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testImportProductsIOException() throws Exception {
+    void testImportProductsIOException() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "test.xlsx", "application/vnd.ms-excel", new byte[0]);
 
         doThrow(new IOException("Test IOException")).when(productService).importExcel(any());
@@ -242,7 +255,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testImportProductsRuntimeException() throws Exception {
+    void testImportProductsRuntimeException() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "test.xlsx", "application/vnd.ms-excel", new byte[0]);
 
         doThrow(new RuntimeException("Test RuntimeException")).when(productService).importExcel(any());
@@ -257,7 +270,7 @@ public class ProductControllerTest {
 
 
     @Test
-    public void testActivateProductUnexpectedException() throws Exception {
+    void testActivateProductUnexpectedException() throws Exception {
         when(productService.activateProduct(1)).thenThrow(new RuntimeException("Product not found"));
 
         mockMvc.perform(put(BASE_URL + "/activate/1"))
@@ -268,7 +281,7 @@ public class ProductControllerTest {
 
 
     @Test
-    public void testDeactivateProductUnexpectedException() throws Exception {
+    void testDeactivateProductUnexpectedException() throws Exception {
         when(productService.deactivateProduct(1)).thenThrow(new RuntimeException("Product not found"));
 
         mockMvc.perform(put(BASE_URL + "/deactivate/1"))

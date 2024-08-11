@@ -1,22 +1,22 @@
 package com.fpt.midtemg1.data.entity;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.fpt.midtemg1.common.Status;
 import com.fpt.midtemg1.dto.CustomerDTO;
 
-public class CustomerTest {
+class CustomerTest {
     private Customer customer;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         customer = Customer.builder()
                 .id("12345")
                 .name("John Doe")
@@ -28,7 +28,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testOnCreate() {
+    void testOnCreate() {
         customer.onCreate();
         assertNotNull(customer.getCreatedTime());
         assertNotNull(customer.getUpdatedTime());
@@ -36,7 +36,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testPreUpdate() throws InterruptedException {
+    void testPreUpdate() throws InterruptedException {
         Timestamp oldTime = customer.getUpdatedTime();
         TimeUnit.MILLISECONDS.sleep(10);
         customer.preUpdate();
@@ -46,7 +46,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void testToDTO() {
+    void testToDTO() {
         CustomerDTO dto = customer.toDTO();
         assertEquals(customer.getId(), dto.getId());
         assertEquals(customer.getName(), dto.getName());

@@ -200,7 +200,7 @@ INSERT INTO api_key (XKEY) VALUES
 
 ![alt text](img/image.png)
 
-## 🧪 Testing Requests to Product Service
+## 🧪 Testing Requests to Client Service
 
 ### 1. ❌ Without API Key
 
@@ -214,7 +214,7 @@ INSERT INTO api_key (XKEY) VALUES
 
 ![alt text](img/image-3.png)
 #
-## 🧪 Testing Requests to Client Service
+## 🧪 Testing Requests to Product Service
 
 ### 1. ❌ Without API Key
 

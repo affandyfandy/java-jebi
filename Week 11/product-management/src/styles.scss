@@ -1,0 +1,153 @@
+/* Importing the variables */
+@import './styles/variables';
+
+
+/* Font */
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    color: $text-color;
+    background-color: $background-color;
+    margin: 0;
+    padding: 0;
+}
+
+/* Anchor Tags */
+a {
+    color: $secondary-color;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+        text-decoration: underline;
+        color: darken($secondary-color, 10%);
+    }
+}
+
+/* Container */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Buttons */
+button {
+    background-color: $primary-color;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+        background-color: lighten($primary-color, 10%);
+        transform: translateY(-2px);
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px lighten($primary-color, 40%);
+    }
+}
+
+/* Card Style */
+.card {
+    background-color: white;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* Input Styles */
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+
+    &:focus {
+        outline: none;
+        border-color: $secondary-color;
+        box-shadow: 0 0 5px lighten($secondary-color, 40%);
+    }
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid $border-color;
+        background-color: white;
+
+        &:last-child {
+            border-right: none;
+        }
+    }
+
+    th {
+        background-color: $primary-color;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: lighten($primary-color, 10%);
+        }
+    }
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-width: 500px;
+    width: 100%;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+}

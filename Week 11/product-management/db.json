@@ -1,0 +1,68 @@
+{
+  "products": [
+    {
+      "id": "A1B2C3",
+      "name": "Toyota Corolla",
+      "price": 20000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-01T10:00:00Z",
+      "updatedAt": "2024-02-01T12:00:00Z"
+    },
+    {
+      "id": "D4E5F6",
+      "name": "Honda Civic",
+      "price": 22000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-02T11:00:00Z",
+      "updatedAt": "2024-02-02T13:00:00Z"
+    },
+    {
+      "id": "G7H8I9",
+      "name": "Ford Mustang",
+      "price": 35000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-03T09:00:00Z",
+      "updatedAt": "2024-02-03T14:00:00Z"
+    },
+    {
+      "id": "J1K2L3",
+      "name": "Chevrolet Camaro",
+      "price": 37000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-04T08:30:00Z",
+      "updatedAt": "2024-02-04T15:30:00Z"
+    },
+    {
+      "id": "M4N5O6",
+      "name": "BMW 3 Series",
+      "price": 41000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-05T14:00:00Z",
+      "updatedAt": "2024-02-05T17:00:00Z"
+    },
+    {
+      "id": "P7Q8R9",
+      "name": "Audi A4",
+      "price": 43000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-06T16:00:00Z",
+      "updatedAt": "2024-02-06T18:00:00Z"
+    },
+    {
+      "id": "S1T2U3",
+      "name": "Mercedes-Benz C-Class",
+      "price": 45000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-07T17:00:00Z",
+      "updatedAt": "2024-02-07T19:00:00Z"
+    },
+    {
+      "id": "V4W5X6",
+      "name": "Tesla Model 3",
+      "price": 50000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-08T18:00:00Z",
+      "updatedAt": "2024-02-08T20:00:00Z"
+    }
+  ]
+}

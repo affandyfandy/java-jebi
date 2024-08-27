@@ -161,4 +161,4 @@ export class StandaloneComponent {}
 Using standalone components in Angular can simplify your application structure, improve modularity, and align with the future direction of Angular. However, it's essential to understand both approaches to choose the one that best fits your project needs.
 
 
-![alt text](image.png)
+![alt text](img/image.png)

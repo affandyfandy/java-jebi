@@ -1,0 +1,220 @@
+{
+  "products": [
+    {
+      "id": "A1B2C3",
+      "name": "Toyota Corolla",
+      "price": 20000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-01T10:00:00Z",
+      "updatedAt": "2024-02-01T12:00:00Z"
+    },
+    {
+      "id": "D4E5F6",
+      "name": "Honda Civic",
+      "price": 22000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-02T11:00:00Z",
+      "updatedAt": "2024-02-02T13:00:00Z"
+    },
+    {
+      "id": "G7H8I9",
+      "name": "Ford Mustang",
+      "price": 35000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-03T09:00:00Z",
+      "updatedAt": "2024-02-03T14:00:00Z"
+    },
+    {
+      "id": "J1K2L3",
+      "name": "Chevrolet Camaro",
+      "price": 37000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-04T08:30:00Z",
+      "updatedAt": "2024-02-04T15:30:00Z"
+    },
+    {
+      "id": "M4N5O6",
+      "name": "BMW 3 Series",
+      "price": 41000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-05T14:00:00Z",
+      "updatedAt": "2024-02-05T17:00:00Z"
+    },
+    {
+      "id": "P7Q8R9",
+      "name": "Audi A4",
+      "price": 43000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-06T16:00:00Z",
+      "updatedAt": "2024-02-06T18:00:00Z"
+    },
+    {
+      "id": "S1T2U3",
+      "name": "Mercedes-Benz C-Class",
+      "price": 45000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-07T17:00:00Z",
+      "updatedAt": "2024-02-07T19:00:00Z"
+    },
+    {
+      "id": "V4W5X6",
+      "name": "Tesla Model 3",
+      "price": 50000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-08T18:00:00Z",
+      "updatedAt": "2024-02-08T20:00:00Z"
+    },
+    {
+      "id": "X7Y8Z9",
+      "name": "Nissan Altima",
+      "price": 24000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-09T11:30:00Z",
+      "updatedAt": "2024-02-09T12:45:00Z"
+    },
+    {
+      "id": "A2B3C4",
+      "name": "Hyundai Sonata",
+      "price": 26000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-10T10:00:00Z",
+      "updatedAt": "2024-02-10T13:00:00Z"
+    },
+    {
+      "id": "D5E6F7",
+      "name": "Kia Optima",
+      "price": 27000,
+      "status": "INACTIVE",
+      "createdAt": "2024-01-11T09:15:00Z",
+      "updatedAt": "2024-02-11T14:15:00Z"
+    },
+    {
+      "id": "G8H9I1",
+      "name": "Subaru Legacy",
+      "price": 28000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-12T14:00:00Z",
+      "updatedAt": "2024-02-12T15:30:00Z"
+    },
+    {
+      "id": "J2K3L4",
+      "name": "Mazda 6",
+      "price": 29000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-13T16:00:00Z",
+      "updatedAt": "2024-02-13T17:00:00Z"
+    },
+    {
+      "id": "M7N8O9",
+      "name": "Volkswagen Passat",
+      "price": 30000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-14T18:00:00Z",
+      "updatedAt": "2024-02-14T18:30:00Z"
+    },
+    {
+      "id": "P1Q2R3",
+      "name": "Chrysler 300",
+      "price": 32000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-15T10:30:00Z",
+      "updatedAt": "2024-02-15T11:00:00Z"
+    },
+    {
+      "id": "S4T5U6",
+      "name": "Buick LaCrosse",
+      "price": 33000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-16T11:45:00Z",
+      "updatedAt": "2024-02-16T12:30:00Z"
+    },
+    {
+      "id": "V7W8X9",
+      "name": "Lincoln MKZ",
+      "price": 34000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-17T12:00:00Z",
+      "updatedAt": "2024-02-17T13:00:00Z"
+    },
+    {
+      "id": "Y1Z2A3",
+      "name": "Acura TLX",
+      "price": 35000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-18T13:30:00Z",
+      "updatedAt": "2024-02-18T14:00:00Z"
+    },
+    {
+      "id": "B4C5D6",
+      "name": "Infiniti Q50",
+      "price": 36000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-19T14:15:00Z",
+      "updatedAt": "2024-02-19T15:15:00Z"
+    },
+    {
+      "id": "E7F8G9",
+      "name": "Genesis G70",
+      "price": 37000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-20T15:00:00Z",
+      "updatedAt": "2024-02-20T16:00:00Z"
+    },
+    {
+      "id": "H1I2J3",
+      "name": "Alfa Romeo Giulia",
+      "price": 38000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-21T16:30:00Z",
+      "updatedAt": "2024-02-21T17:30:00Z"
+    },
+    {
+      "id": "K4L5M6",
+      "name": "Land Rover Discovery",
+      "price": 40000,
+      "status": "INACTIVE",
+      "createdAt": "2024-01-22T17:00:00Z",
+      "updatedAt": "2024-02-22T18:00:00Z"
+    },
+    {
+      "id": "N7O8P9",
+      "name": "Jaguar XF",
+      "price": 42000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-23T18:00:00Z",
+      "updatedAt": "2024-02-23T19:00:00Z"
+    },
+    {
+      "id": "Q1R2S3",
+      "name": "Porsche Panamera",
+      "price": 60000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-24T19:00:00Z",
+      "updatedAt": "2024-02-24T20:00:00Z"
+    },
+    {
+      "id": "T4U5V6",
+      "name": "Maserati Ghibli",
+      "price": 65000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-25T20:00:00Z",
+      "updatedAt": "2024-02-25T21:00:00Z"
+    },
+    {
+      "id": "W7X8Y9",
+      "name": "Bentley Continental GT",
+      "price": 200000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-26T21:00:00Z",
+      "updatedAt": "2024-02-26T22:00:00Z"
+    },
+    {
+      "id": "Z1A2B3",
+      "name": "Ferrari Portofino",
+      "price": 220000,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-27T22:00:00Z",
+      "updatedAt": "2024-02-27T23:00:00Z"
+    }
+  ]
+}

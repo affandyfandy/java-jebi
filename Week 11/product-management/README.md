@@ -2,6 +2,105 @@
 
 This application allows users to manage products, including creating, editing, deleting, and listing products. It also includes features for searching, sorting, and paginating the product list.
 
+## Overview
+
+This Angular project is focused on product management. Below is the explanation of the components, services, routes, and lifecycle hooks within the project.
+
+### 1. `src/app/config/app.config.ts`
+
+This file defines a constant `RouterConfig` that holds route information for the product page.
+- **Purpose**: Provides configuration for routing, specifically the path, link, and title of the product page.
+- **Usage**: The `RouterConfig` is used in the main routing configuration to load the `ProductListComponent`.
+
+### 2. `src/app/main/component/footer.component.ts`
+
+This file defines the `FooterComponent` with a simple HTML and CSS structure.
+- **Purpose**: This component renders the footer section of the application.
+- **Lifecycle**: `FooterComponent` is a standalone component that gets included in the main application component.
+- **Usage**: It’s imported and used in the `AppComponent`.
+
+### 3. `src/app/component/header/header.component.ts`
+
+Similar to the footer, this file defines the `HeaderComponent`.
+- **Purpose**: Renders the header of the application, typically used for navigation or branding.
+- **Lifecycle**: Standalone, used in the main application component.
+- **Usage**: Imported into the `AppComponent`.
+
+### 4. `src/app/component/main/app.component.ts`
+
+This is the root component of the application.
+- **Purpose**: The `AppComponent` is the root of the application, responsible for rendering the header, footer, and main content via `RouterOutlet`.
+- **Lifecycle**:
+  - `ngOnInit`: Not implemented, but it would be used for any initialization logic.
+  - `ngAfterViewInit`: Could be used to handle actions after the view is fully initialized.
+- **Usage**: The main template (`app.component.html`) pulls in the router outlet and the header and footer components to build the main layout of the app.
+
+### 5. `src/app/models/product.model.ts`
+
+This file defines the `Product` interface, which is used across the application to represent a product.
+- **Purpose**: Serves as a model for the product data, ensuring consistent structure throughout the application.
+- **Fields**:
+  - `id`, `name`, `price`, `status`, `createdAt`, `updatedAt`.
+- **Usage**: The `Product` model is used by services and components to manipulate product data.
+
+### 6. `src/app/pages/product/product-form/product-form.component.ts`
+
+This component handles the form for adding and editing products.
+- **Purpose**: Provides a form for creating or updating a product. It emits events when the form is saved or canceled.
+- **Lifecycle**:
+  - `ngOnInit`: Initializes the form and pre-fills it if editing an existing product.
+- **Key Methods**:
+  - `onSubmit`: Validates the form and emits the product data.
+  - `onClose`: Closes the form and emits a cancel event.
+- **Usage**: Included in the `ProductListComponent` and displayed when adding or editing a product.
+
+### 7. `src/app/pages/product/product-list/product-list.component.ts`
+
+This component displays the list of products and allows for product management (add, edit, delete).
+- **Purpose**: Manages the list of products, handling operations like sorting, filtering, and pagination.
+- **Lifecycle**:
+  - `ngOnInit`: Fetches the list of products from the service.
+- **Key Methods**:
+  - `getProductList`: Fetches and updates the list of products.
+  - `onSave`: Handles the saving of a product, either updating an existing product or adding a new one.
+  - `onCancel`: Closes the form modal.
+  - `onSort`: Sorts the products by the selected column.
+  - `toggleStatus`: Toggles the product status between 'ACTIVE' and 'INACTIVE'.
+  - `onPageChange`: Updates the pagination.
+  - `deleteProduct`: Deletes a product and updates the list.
+- **Usage**: Handles most of the user interactions related to product management.
+
+### 8. `src/app/pages/product/product.routes.ts`
+
+This file defines the route configuration for the product module.
+- **Purpose**: Maps the default route to the `ProductListComponent`.
+- **Usage**: Loaded as a child route in the main `app.routes.ts` file.
+
+### 9. `src/app/services/product.service.ts`
+
+This service handles HTTP requests to the backend API related to products.
+- **Purpose**: Provides CRUD operations for products.
+- **Key Methods**:
+  - `getProducts`: Fetches the list of products.
+  - `addProduct`: Sends a POST request to add a new product.
+  - `updateProduct`: Sends a PUT request to update an existing product.
+  - `getProductById`: Fetches a product by its ID.
+  - `deleteProduct`: Sends a DELETE request to remove a product.
+- **Usage**: Injected into components to handle product data operations.
+
+### 10. `src/app/app.config.ts`
+
+This file configures the Angular application.
+- **Purpose**: Provides the router and HTTP client services to the application.
+- **Usage**: Used at the application level to set up providers for routing and HTTP requests.
+
+### 11. `src/app/app.routes.ts`
+
+Defines the main routing configuration for the application.
+- **Purpose**: Handles the main routes for the application. It lazy loads the product module and includes a wildcard route that redirects to the root.
+- **Usage**: Ensures that the `ProductListComponent` is loaded when the user navigates to the root path.
+
+
 ## Features
 
 - **Add Product**: Allows adding a new product with details such as ID, name, price, and status.

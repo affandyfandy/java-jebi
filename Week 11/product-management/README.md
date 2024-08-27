@@ -1,27 +1,66 @@
-# ProductManagementApp
+# Product Management
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.6.
+This application allows users to manage products, including creating, editing, deleting, and listing products. It also includes features for searching, sorting, and paginating the product list.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Add Product**: Allows adding a new product with details such as ID, name, price, and status.
+- **Edit Product**: Enables editing the details of an existing product.
+- **Delete Product**: Allows deletion of a product from the list.
+- **Search and Filter**: Provides a search functionality for products by name.
+- **Sorting**: Supports sorting of the product list by different columns such as name, price, etc.
+- **Pagination**: Displays the product list in pages to enhance usability and performance.
+#
+## Setup and Installation
 
-## Code scaffolding
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+2. **Start the JSON Server**:
+   Before running the application, ensure that the JSON server is running to simulate an API backend.
 
-## Build
+   Run the following command to start the JSON server:
+   ```bash
+   npx json-server --watch db.json
+   ```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+   This command watches the `db.json` file for changes and provides RESTful API endpoints for the data.
 
-## Running unit tests
+3. **Run the Angular Application**:
+   ```bash
+   ng serve
+   ```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+   Open the browser and navigate to `http://localhost:4200/` to access the application.
+#
+## Project Structure
 
-## Running end-to-end tests
+The project follows a modular structure, where each feature or component is encapsulated within its own module. Key directories and files include:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- **`src/app/config/`**: Contains configuration files for routing and application constants.
+- **`src/app/main/components/`**: Contains shared components like the header and footer.
+- **`src/app/pages/product/`**: Contains product-related components, such as the product form and product list.
+- **`src/app/services/`**: Contains services for handling business logic and API calls.
+- **`src/app/models/`**: Contains data models (interfaces) representing the application's data structures.
+#
+## Components
 
-## Further help
+### 1. ProductFormComponent
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+This component provides a form for adding or editing a product. It includes input fields for product ID, name, price, and status, supporting both the addition of new products and updating existing ones.
+
+### 2. ProductListComponent
+
+This component displays a list of products with features such as searching, sorting, pagination, and actions for editing or deleting a product.
+#
+## Screenshots
+
+![Screenshot 1](img/image.png)
+![Screenshot 2](img/image-1.png)
+![Screenshot 3](img/image-2.png)
+![Screenshot 4](img/image-3.png)
+![Screenshot 5](img/image-4.png)
+![Screenshot 6](img/image-5.png)
+![Screenshot 7](img/image-6.png)

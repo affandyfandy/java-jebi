@@ -16,17 +16,18 @@ export class ProductFormComponent implements OnInit {
   @Output() cancel = new EventEmitter<void>();
 
   productForm: FormGroup = this.fb.group({
+    id: ['', Validators.required],
     name: ['', Validators.required],
     price: ['', Validators.required],
     status: ['ACTIVE', Validators.required],
   });
   isVisible = true;
 
-  constructor(private fb: FormBuilder) {
-  }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.productForm = this.fb.group({
+      id: [{ value: this.product?.id || '', disabled: !!this.product }, Validators.required],
       name: [this.product?.name || '', Validators.required],
       price: [this.product?.price || '', Validators.required],
       status: [this.product?.status || 'ACTIVE', Validators.required],
@@ -35,7 +36,7 @@ export class ProductFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.productForm.valid) {
-      const productData = this.productForm.value;
+      const productData = this.productForm.getRawValue();
       if (this.product) {
         productData.id = this.product.id;
       }
